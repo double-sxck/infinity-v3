@@ -6,6 +6,9 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<></>} />
+        <Route path="/profile" element={<></>} />
+        <Route path="/write" element={<></>} />
+        <Route path="/view" element={<></>} />
       </Routes>
     </div>
   );
