@@ -25,7 +25,7 @@ export const InputBox = styled.input`
 
   padding-left: 2.4rem;
 
-  border: 1px solid #9a9a9a;
+  border: 0.1rem solid #9a9a9a;
   border-radius: 2.4rem 0rem 0rem 2.4rem;
 
   ::placeholder {
@@ -48,7 +48,7 @@ export const SearchStick = styled.div`
   box-sizing: border-box;
 
   border-radius: 0rem 2.4rem 2.4rem 0rem;
-  border: 1px solid #9a9a9a;
+  border: 0.1rem solid #9a9a9a;
   border-left: none;
 `;
 
@@ -56,7 +56,7 @@ export const UserProfileBox = styled.div`
   width: 4.8rem;
   height: 4.8rem;
 
-  border: 1px solid #9a9a9a;
+  border: 0.1rem solid #9a9a9a;
   border-radius: 50%;
 
   display: flex;
