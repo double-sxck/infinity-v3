@@ -4,6 +4,6 @@ export const SidebarBox = styled.div`
   width: 24rem;
   height: 100vh;
 
-  position: sticky;
+  position: fixed;
   top: 8rem;
 `;
