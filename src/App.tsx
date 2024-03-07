@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { HeaderBar, MainPage, Sidebar } from "./components";
+import { HeaderBar, MainPage, Sidebar, UserPage } from "./components";
 import NovelSearchBox from "./components/main/search/index";
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/search" element={<NovelSearchBox />} />
-          <Route path="/profile" element={<></>} />
+          <Route path="/profile" element={<UserPage />} />
           <Route path="/write" element={<></>} />
           <Route path="/view" element={<></>} />
         </Routes>
