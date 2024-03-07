@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { HeaderBar, MainPage, Sidebar } from "./components";
+import NovelSearchBox from "./components/main/search/index";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<MainPage />} />
+          <Route path="/search" element={<NovelSearchBox />} />
           <Route path="/profile" element={<></>} />
           <Route path="/write" element={<></>} />
           <Route path="/view" element={<></>} />
