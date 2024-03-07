@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { HeaderBar, Sidebar } from "./components";
+import { HeaderBar, MainPage, Sidebar } from "./components";
+import NovelSearchBox from "./components/main/search/index";
 
 function App() {
   return (
@@ -14,10 +15,12 @@ function App() {
           position: "fixed",
           left: "24rem",
           overflow: "auto",
+          padding: "4rem 12rem 12rem 4rem",
         }}
       >
         <Routes>
-          <Route path="/" element={<></>} />
+          <Route path="/" element={<MainPage />} />
+          <Route path="/search" element={<NovelSearchBox />} />
           <Route path="/profile" element={<></>} />
           <Route path="/write" element={<></>} />
           <Route path="/view" element={<></>} />
