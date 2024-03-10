@@ -39,6 +39,10 @@ export const HerfLine = styled.div`
   border-top: 1px solid #9a9a9a;
 `;
 
-export const InfoItem = styled.p`
-  text-decoration: underline;
+export const InfoItem = styled.p<{ type: boolean }>`
+  width: auto + 1rem;
+  border-bottom: ${(props) => (props.type ? "0.2rem solid black" : "none")};
+
+  font-weight: 400;
+  font-size: 2.4rem;
 `;
