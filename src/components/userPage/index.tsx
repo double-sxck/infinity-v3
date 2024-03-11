@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import * as S from "./style";
 import UserDefualtIcon from "../../assets/images/UserDefaultIcon";
 import { Column, Row } from "../../styles/ui";
+import UserContents from "./page/user";
+import NovelContents from "./page/novel";
+import LikeContents from "./page/like";
 
 const UserPage = () => {
   const [pageType, usePageType] = useState<boolean[]>([true, false, false]);
@@ -53,9 +56,15 @@ const UserPage = () => {
             </S.InfoItem>
           </Row>
         </div>
-
         <S.HerfChildLine />
       </S.ChooseInfomation>
+      {pageType[0] === true ? (
+        <UserContents />
+      ) : pageType[1] === true ? (
+        <NovelContents />
+      ) : (
+        <LikeContents />
+      )}
     </>
   );
 };
