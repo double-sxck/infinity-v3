@@ -2,10 +2,14 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { HeaderBar, MainPage, Sidebar, UserPage } from "./components";
 import NovelSearchBox from "./components/main/search/index";
+import { useLoginModal } from "./hooks/useLoginMdal";
+import LoginModal from "./layout/login";
 
 function App() {
+  const { modalState } = useLoginModal();
   return (
     <>
+      {modalState.show && <LoginModal />}
       <HeaderBar />
       <Sidebar />
       <div
@@ -14,6 +18,7 @@ function App() {
           height: "calc(100vh - 8rem",
           position: "fixed",
           left: "24rem",
+          // marginLeft: "24rem",
           overflow: "auto",
           padding: "4rem 12rem 12rem 4rem",
         }}

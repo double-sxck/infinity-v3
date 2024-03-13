@@ -1,39 +1,29 @@
-import { useEffect, RefObject } from "react";
+import React, { useEffect } from "react";
 
-export default function useOutsideClick(
-  refs: Array<RefObject<HTMLElement> | undefined>,
-  handler?: () => void
-) {
+export function useOutSideClick(
+  ref: React.MutableRefObject<any>, // generic으로 바꿀 예정
+  handlerCallback: (event?: CustomEvent<MouseEvent>) => void
+): void {
   useEffect(() => {
-    function handleClickOutside(event: any) {
-      if (!handler) return;
-
-      // Clicked browser's scrollbar
-      if (
-        event.target === document.getElementsByTagName("html")[0] &&
-        event.clientX >= document.documentElement.offsetWidth
-      )
+    // 커스텀 이벤트 선언
+    const listener = (event: CustomEvent<MouseEvent>) => {
+      // reference가 없거나
+      // 클릭한 element가 reference 하위에 속한 element라면
+      // 함수 종료
+      if (!ref.current || ref.current.contains(event.target)) {
         return;
-
-      let containedToAnyRefs = false;
-      for (const rf of refs) {
-        if (rf && rf.current && rf.current.contains(event.target)) {
-          containedToAnyRefs = true;
-          break;
-        }
       }
-
-      // Not contained to any given refs
-      if (!containedToAnyRefs) {
-        handler();
-      }
-    }
-
-    // Bind the event listener
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      // Unbind the event listener on clean up
-      document.removeEventListener("mousedown", handleClickOutside);
+      handlerCallback(event);
     };
-  }, [refs, handler]);
+
+    // component 가 mount 되었을때 document에 event 등록
+    document.addEventListener("mousedown", listener as EventListener);
+    document.addEventListener("touchstart", listener as EventListener);
+    return () => {
+      // component가 unmount 되었을때 document에서 event 등록 해제
+      document.removeEventListener("mousedown", listener as EventListener);
+      document.removeEventListener("touchstart", listener as EventListener);
+    };
+    // ref나 callback 함수가 변경되었을때 이벤트 새로 생성 및 등록
+  }, [ref, handlerCallback]);
 }
