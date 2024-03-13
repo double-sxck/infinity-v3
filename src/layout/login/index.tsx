@@ -9,6 +9,8 @@ const LoginModal = () => {
   const { closeModal } = useLoginModal();
   const ref = useRef<HTMLDivElement>(null); // HTMLDivElement에 대한 Ref 생성
   useOutSideClick(ref, closeModal);
+  // event.stopPropagation();
+
   return (
     <S.Page>
       <S.Modal ref={ref}>
@@ -17,10 +19,28 @@ const LoginModal = () => {
             <LogoTextIcon color="#000000" width={240} height={66.45} />
             <S.ModalMainText>로그인</S.ModalMainText>
           </div>
-          <S.InputText type="text" placeholder="아이디" />
+          <S.InputText
+            type="text"
+            placeholder="아이디"
+            onChange={() => {
+              console.log("헤헤");
+            }}
+          />
           <S.Row>
-            <S.CreateText>계정 만들기</S.CreateText>
-            <S.NextButton type="button" value={"다음"} />
+            <S.CreateText
+              onClick={() => {
+                console.log("히히");
+              }}
+            >
+              계정 만들기
+            </S.CreateText>
+            <S.NextButton
+              type="button"
+              value={"다음"}
+              onClick={() => {
+                console.log("홍홍");
+              }}
+            />
           </S.Row>
         </Column>
       </S.Modal>

@@ -5,7 +5,7 @@ export const Page = styled.div`
   height: 100vh;
   background-color: #2c333e70; /* 배경색에 투명도 적용 */
   position: fixed;
-  z-index: 99;
+  z-index: 2;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,6 +20,8 @@ export const Modal = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  z-index: 3;
 `;
 
 export const ModalMainText = styled.p`
@@ -29,6 +31,7 @@ export const ModalMainText = styled.p`
   color: #2c333e;
 
   margin-top: 2rem;
+  text-align: center;
 `;
 
 export const InputText = styled.input`
@@ -37,6 +40,19 @@ export const InputText = styled.input`
 
   border: 0.1rem solid #9a9a9a;
   border-radius: 2.4rem;
+
+  display: flex;
+  align-items: center;
+
+  &::placeholder {
+    color: #9a9a9a;
+    font-size: 3rem;
+    font-weight: 400;
+    display: flex;
+    align-items: center; /* 요소를 수직으로 가운데 정렬합니다. */
+    justify-content: center; /* 요소를 수평으로 가운데 정렬합니다. */
+    height: 100%; /* 높이를 100%로 설정하여 수직 가운데 정렬합니다. */
+  }
 `;
 
 export const CreateText = styled.p`
