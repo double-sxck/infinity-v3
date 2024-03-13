@@ -2,10 +2,14 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { HeaderBar, MainPage, Sidebar, UserPage } from "./components";
 import NovelSearchBox from "./components/main/search/index";
+import { useLoginModal } from "./hooks/useLoginMdal";
+import LoginModal from "./layout/login";
 
 function App() {
+  const { modalState } = useLoginModal();
   return (
     <>
+      {modalState.show && <LoginModal />}
       <HeaderBar />
       <Sidebar />
       <div

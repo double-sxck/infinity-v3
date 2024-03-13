@@ -11,11 +11,10 @@ import { useLoginModal } from "../../hooks/useLoginMdal"; // useLoginModal 임�
 import LoginModal from "../../layout/login";
 
 const HeaderBar = () => {
-  const { openModal, modalState } = useLoginModal(); // useLoginModal 호출 위치 변경
+  const { openModal } = useLoginModal(); // useLoginModal 호출 위치 변경
 
   return (
     <>
-      {modalState.show && <LoginModal />}
       <S.Header>
         <LogoTextIcon width={116} height={32} />
         <Row gap={0}>
