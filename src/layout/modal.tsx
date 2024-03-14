@@ -1,19 +1,25 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useLoginModal } from "../hooks/useLoginMdal";
 import { useOutSideClick } from "../hooks/useOutsideClick";
 import LoginModalPage from "./login";
+import JoinInfinity from "./join";
 
 const LoginModal = () => {
   const { closeModal } = useLoginModal();
   const ref = useRef<HTMLDivElement>(null); // HTMLDivElement에 대한 Ref 생성
   useOutSideClick(ref, closeModal);
-  // event.stopPropagation();
+
+  const [join, useJoin] = useState<boolean>(false);
 
   return (
     <Page>
       <Modal ref={ref}>
-        <LoginModalPage />
+        {join ? (
+          <JoinInfinity setState={useJoin} />
+        ) : (
+          <LoginModalPage setState={useJoin} />
+        )}
       </Modal>
     </Page>
   );
