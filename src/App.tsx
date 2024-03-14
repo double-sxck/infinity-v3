@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { HeaderBar, MainPage, Sidebar, UserPage } from "./components";
 import NovelSearchBox from "./components/main/search/index";
 import { useLoginModal } from "./hooks/useLoginMdal";
-import LoginModal from "./layout/login";
+import LoginModal from "./layout/modal";
 
 function App() {
   const { modalState } = useLoginModal();
