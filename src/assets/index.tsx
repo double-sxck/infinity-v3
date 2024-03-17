@@ -13,3 +13,6 @@ export { default as HeartArrowIcon } from "./images/HeartArrowIcon";
 export { default as CopyIcon } from "./images/CopyIcon";
 export { default as CoffeeIcon } from "./images/CoffeeIcon";
 export { default as BookIcon } from "./images/BookIcon";
+export { default as ImagesIcon } from "./images/Images";
+export { default as PlayButtonIcon } from "./images/PlayButton";
+export { default as TrashIcon } from "./images/TrashIcon";
