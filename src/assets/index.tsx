@@ -16,3 +16,6 @@ export { default as BookIcon } from "./images/BookIcon";
 export { default as ImagesIcon } from "./images/Images";
 export { default as PlayButtonIcon } from "./images/PlayButton";
 export { default as TrashIcon } from "./images/TrashIcon";
+export { default as TextInputIcon } from "./images/TextInputIcon";
+export { default as BrashIcon } from "./images/BrashIcon";
+export { default as ImageIcon } from "./images/Image";

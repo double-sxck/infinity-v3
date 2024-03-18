@@ -5,6 +5,7 @@ import {
   MainPage,
   Sidebar,
   UserPage,
+  ViewPage,
   WritePage,
 } from "./components";
 import NovelSearchBox from "./components/main/search/index";
@@ -33,7 +34,7 @@ function App() {
           <Route path="/search" element={<NovelSearchBox />} />
           <Route path="/profile" element={<UserPage />} />
           <Route path="/write" element={<WritePage />} />
-          <Route path="/view" element={<></>} />
+          <Route path="/view" element={<ViewPage />} />
         </Routes>
       </div>
     </>
