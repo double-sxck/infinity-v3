@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const CustomAxios = axios.create({
-  baseURL: "http://localhost:3001/api-docs/",
+  baseURL: "http://localhost:3001/api-docs",
   withCredentials: true,
 });
 

@@ -54,3 +54,13 @@ export const Row = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
+export const ErrorMsg = styled.p`
+  color: #2c333e;
+  font-size: 2rem;
+  font-weight: 400;
+
+  text-align: end;
+
+  margin-top: 2.8rem;
+`;

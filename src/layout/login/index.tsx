@@ -7,6 +7,9 @@ import { LogoTextIcon } from "../../assets";
 
 interface ChildProps {
   setState: React.Dispatch<React.SetStateAction<boolean>>;
+  inputState: React.Dispatch<
+    React.SetStateAction<{ id: string; pw: string; nickName: string }>
+  >;
 }
 
 const LoginModalPage: React.FC<ChildProps> = ({ setState }) => {
