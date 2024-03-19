@@ -5,7 +5,7 @@ export const UserPageBox = styled.div`
   height: auto;
 
   box-sizing: border-box;
-  padding: 6rem 16rem;
+  padding: 4rem 8rem 5rem;
 `;
 
 export const NickNameText = styled.p`
@@ -21,27 +21,22 @@ export const UserProfileText = styled.p`
 `;
 
 export const ChooseInfomation = styled.div`
-  position: relative;
+  padding-left: 2rem;
 `;
 
 export const HerfChildLine = styled.div`
-  width: 100%;
+  width: calc(100% + 2rem);
 
   border-top: 1px solid #9a9a9a;
 
-  position: absolute;
+  margin-left: -2rem;
   top: 100%;
 `;
 
-export const HerfLine = styled.div`
-  width: 100%;
-
-  border-top: 1px solid #9a9a9a;
-`;
-
 export const InfoItem = styled.p<{ type: boolean }>`
-  width: auto + 1rem;
   border-bottom: ${(props) => (props.type ? "0.2rem solid black" : "none")};
+
+  padding: 1rem 0.5rem;
 
   font-weight: 400;
   font-size: 2.4rem;

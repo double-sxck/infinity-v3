@@ -18,7 +18,7 @@ export const Header = styled.header`
 `;
 
 export const InputBox = styled.input`
-  width: 80rem;
+  width: 70rem;
   height: 4.8rem;
 
   box-sizing: border-box;
@@ -28,11 +28,7 @@ export const InputBox = styled.input`
   border: 0.1rem solid #9a9a9a;
   border-radius: 2.4rem 0rem 0rem 2.4rem;
 
-  ::placeholder {
-    color: #9a9a9a;
-    font-weight: 400;
-    font-size: 2.4rem;
-  }
+  font-size: 2.4rem;
 `;
 
 export const SearchStick = styled.div`
@@ -56,7 +52,7 @@ export const UserProfileBox = styled.div`
   width: 4.8rem;
   height: 4.8rem;
 
-  border: 0.1rem solid #9a9a9a;
+  border: 0.1rem solid #d9d9d9;
   border-radius: 50%;
 
   display: flex;

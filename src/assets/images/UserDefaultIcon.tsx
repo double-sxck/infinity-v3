@@ -5,7 +5,7 @@ interface SVGAttributeProps extends React.SVGAttributes<HTMLOrSVGElement> {
   height?: number;
 }
 
-const UserDefualtIcon = ({ width = 200, height = 200 }: SVGAttributeProps) => {
+const UserDefualtIcon = ({ width = 160, height = 160 }: SVGAttributeProps) => {
   return (
     <svg
       width={width}

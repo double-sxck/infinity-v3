@@ -1,5 +1,14 @@
 import styled from "styled-components";
 
+export const Title = styled.div`
+  width: calc(100% - 24rem);
+  margin: 4rem 0;
+
+  font-size: 4.8rem;
+  font-weight: 700;
+  text-align: center;
+`
+
 export const ContentBox = styled.div`
   width: 48rem;
   height: 66.3rem;
@@ -13,14 +22,15 @@ export const ContentText = styled.p`
   font-weight: 400;
   color: #2c333e;
   text-align: center;
+  line-height: 4rem;
 `;
 
 export const ContentInputBox = styled.input`
   width: 22rem;
-  height: 4.4rem;
+  height: 4.2rem;
   border: 0.2rem solid #2c333e;
   border-radius: 2.4rem 2.4rem 2.4rem 0rem;
-  padding: 0.5rem;
+  padding: 0.5rem 2rem;
   font-size: 2.4rem;
   font-weight: 400;
 
@@ -40,7 +50,7 @@ export const RowText = styled.p`
 
 export const HelfLine = styled.div`
   border-top: 0.1rem solid #9a9a9a;
-  margin: 4rem 0rem;
+  margin: 1rem 0rem;
   width: 100%;
 `;
 
@@ -65,16 +75,28 @@ export const WriteButton = styled.div`
   border-radius: 2.4rem;
 `;
 
-export const VeiwNovel = styled.p`
+export const VeiwNovel = styled.div`
   width: 100%;
   height: 100%;
 
-  box-sizing: border-box;
   padding: 2rem;
 
   color: #2c333e;
   font-size: 2.4rem;
   font-weight: 400;
+  line-height: 3rem;
 
   overflow: auto;
+  white-space: pre-wrap;
 `;
+
+export const KeywordBox = styled.div`
+  height: 30rem;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2.5rem;
+
+  overflow: auto;
+`

@@ -28,5 +28,15 @@ export const ContentsArea = styled.div`
 
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 5.9rem;
+  grid-gap: 8.8rem;
 `;
+
+export const SearchContentsArea = styled.div`
+  width: 100%;
+
+  margin: 4rem auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4rem
+`

@@ -17,7 +17,8 @@ export const SidebarText = styled.p`
 `;
 
 export const SidebarContour = styled.div`
-  width: 100%;
+  width: calc(100% + 4.8rem);
+  margin-left: -2.4rem;
   border-top: 1px solid #9a9a9a;
 `;
 
@@ -33,3 +34,7 @@ export const Between = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
+
+export const Subtitle = styled.p`
+  font-size: 2.5rem;
+`
