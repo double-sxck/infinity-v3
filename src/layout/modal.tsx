@@ -11,14 +11,23 @@ const LoginModal = () => {
   useOutSideClick(ref, closeModal);
 
   const [join, useJoin] = useState<boolean>(false);
+  const [idpw, setIdpw] = useState<{
+    id: string;
+    pw: string;
+    nickName: string;
+  }>({
+    id: "",
+    pw: "",
+    nickName: "",
+  });
 
   return (
     <Page>
       <Modal ref={ref}>
         {join ? (
-          <JoinInfinity setState={useJoin} />
+          <JoinInfinity setState={useJoin} inputState={setIdpw} value={idpw} />
         ) : (
-          <LoginModalPage setState={useJoin} />
+          <LoginModalPage setState={useJoin} inputState={setIdpw} />
         )}
       </Modal>
     </Page>
