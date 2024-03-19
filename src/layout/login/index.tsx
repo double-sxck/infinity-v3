@@ -31,7 +31,8 @@ const LoginModalPage: React.FC<ChildProps> = ({
         id: value.id,
         pwd: value.pw,
       });
-      console.log(response.data);
+      localStorage.setItem("refresh-token", response.data.token);
+      closeModal();
     } catch (error) {
       setFaild(true);
       console.error(error);
