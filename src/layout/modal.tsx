@@ -18,7 +18,7 @@ const LoginModal = () => {
   }>({
     id: "",
     pw: "",
-    nickName: "익명",
+    nickName: "",
   });
 
   return (

@@ -3,6 +3,7 @@ import * as S from "./style";
 import { Column } from "../../styles/ui";
 import { LogoTextIcon } from "../../assets";
 import CustomAxios from "../../axios/customAxios";
+import { instance } from "../../apis/instance";
 
 interface ChildProps {
   setState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,11 +24,20 @@ const JoinInfinity: React.FC<ChildProps> = ({
   const PostLogin = async () => {
     try {
       console.log("회원가입");
-      const response = await CustomAxios.post("/api/v3/user/signup", {
+      console.log(value);
+      const response = await instance.post("/user/signup", {
         id: value.id,
-        pw: value.pw,
-        nickName: value.nickName,
+        pwd: value.pw,
+        nickname: value.nickName,
       });
+      // const response = await axios.post(
+      //   "http://localhost:3001/api/v3/user/signup",
+      //   {
+      //     id: value.id,
+      //     pwd: value.pw,
+      //     nickname: value.nickName,
+      //   }
+      // );
       console.log(response.data);
       setState(false);
     } catch (e) {
