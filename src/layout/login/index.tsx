@@ -4,19 +4,38 @@ import { useOutSideClick } from "../../hooks/useOutsideClick";
 import { useLoginModal } from "../../hooks/useLoginMdal";
 import { Column } from "../../styles/ui";
 import { LogoTextIcon } from "../../assets";
+import { instance } from "../../apis/instance";
 
 interface ChildProps {
   setState: React.Dispatch<React.SetStateAction<boolean>>;
   inputState: React.Dispatch<
     React.SetStateAction<{ id: string; pw: string; nickName: string }>
   >;
+  value: { id: string; pw: string; nickName: string };
 }
 
-const LoginModalPage: React.FC<ChildProps> = ({ setState }) => {
+const LoginModalPage: React.FC<ChildProps> = ({
+  setState,
+  inputState,
+  value,
+}) => {
   const { closeModal } = useLoginModal();
   const ref = useRef<HTMLDivElement>(null); // HTMLDivElement에 대한 Ref 생성
   useOutSideClick(ref, closeModal);
   const [showPW, setShowPW] = useState<boolean>(false);
+
+  const PostLogin = async () => {
+    try {
+      // const response = await instance.post("/user/login", {
+      //   id: value.id,
+      //   pwd: value.pw,
+      // });
+      // console.log(response.data);
+      console.log(value);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Column gap={8} justifyContent="center" alignItems="center">
@@ -25,10 +44,19 @@ const LoginModalPage: React.FC<ChildProps> = ({ setState }) => {
         <S.ModalMainText>로그인</S.ModalMainText>
       </div>
       <Column gap={3}>
-        <S.InputText type="text" placeholder="아이디" />
+        <S.InputText
+          type="text"
+          placeholder="아이디"
+          onChange={(e) => {
+            inputState({ ...value, id: e.target.value });
+          }}
+        />
         <S.InputText
           type={showPW ? "text" : "password"}
           placeholder="비밀번호"
+          onChange={(e) => {
+            inputState({ ...value, pw: e.target.value });
+          }}
         />
         <S.Row>
           <div>
@@ -40,10 +68,8 @@ const LoginModalPage: React.FC<ChildProps> = ({ setState }) => {
               onChange={() => setShowPW(!showPW)}
             />
           </div>
-          <div></div>
         </S.Row>
       </Column>
-
       <S.Row>
         <S.CreateText
           onClick={() => {
@@ -52,7 +78,13 @@ const LoginModalPage: React.FC<ChildProps> = ({ setState }) => {
         >
           계정 만들기
         </S.CreateText>
-        <S.NextButton type="button" value={"다음"} />
+        <S.NextButton
+          type="button"
+          value={"다음"}
+          onClick={() => {
+            PostLogin();
+          }}
+        />
       </S.Row>
     </Column>
   );

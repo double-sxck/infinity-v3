@@ -24,13 +24,21 @@ const HeaderBar = () => {
           </S.SearchStick>
         </Row>
         <Row alignItems="center" justifyContent="center" gap={2.8}>
-          <S.UserProfileBox>
-            <PencilIcon />
-          </S.UserProfileBox>
-          <S.UserProfileBox>
-            <UserIcon />
-          </S.UserProfileBox>
-          {/* <div onClick={openModal}>로그인</div> */}
+          {!localStorage.getItem("refresh-token") ? (
+            <>
+              <S.UserProfileBox>
+                <PencilIcon />
+              </S.UserProfileBox>
+              <S.UserProfileBox>
+                <UserIcon />
+              </S.UserProfileBox>
+            </>
+          ) : (
+            <S.LoginButton onClick={openModal}>
+              <UserIcon width={2.4} height={2.4} />
+              <S.LoginText>로그인</S.LoginText>
+            </S.LoginButton>
+          )}
         </Row>
       </S.Header>
     </>

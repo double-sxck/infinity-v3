@@ -59,3 +59,23 @@ export const UserProfileBox = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const LoginButton = styled.div`
+  cursor: pointer;
+
+  width: 12.4rem;
+  height: 4.8rem;
+  border-radius: 2.4rem;
+  border: 0.1rem solid #d9d9d9;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+`;
+
+export const LoginText = styled.p`
+  color: #2c333e;
+  font-size: 2rem;
+  font-weight: 400;
+`;
