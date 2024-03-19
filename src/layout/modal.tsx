@@ -27,7 +27,11 @@ const LoginModal = () => {
         {join ? (
           <JoinInfinity setState={useJoin} inputState={setIdpw} value={idpw} />
         ) : (
-          <LoginModalPage setState={useJoin} inputState={setIdpw} />
+          <LoginModalPage
+            setState={useJoin}
+            inputState={setIdpw}
+            value={idpw}
+          />
         )}
       </Modal>
     </Page>

@@ -30,14 +30,7 @@ const JoinInfinity: React.FC<ChildProps> = ({
         pwd: value.pw,
         nickname: value.nickName,
       });
-      // const response = await axios.post(
-      //   "http://localhost:3001/api/v3/user/signup",
-      //   {
-      //     id: value.id,
-      //     pwd: value.pw,
-      //     nickname: value.nickName,
-      //   }
-      // );
+      inputState({ id: "", pw: "", nickName: "" });
       console.log(response.data);
       setState(false);
     } catch (e) {
@@ -98,6 +91,7 @@ const JoinInfinity: React.FC<ChildProps> = ({
       <S.Row>
         <S.CreateText
           onClick={() => {
+            inputState({ id: "", pw: "", nickName: "" });
             setState(false);
           }}
         >
