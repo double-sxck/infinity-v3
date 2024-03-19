@@ -91,6 +91,7 @@ const JoinInfinity: React.FC<ChildProps> = ({
       <S.Row>
         <S.CreateText
           onClick={() => {
+            inputState({ id: "", pw: "", nickName: "" });
             setState(false);
           }}
         >

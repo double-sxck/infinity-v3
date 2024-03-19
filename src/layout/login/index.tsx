@@ -23,16 +23,17 @@ const LoginModalPage: React.FC<ChildProps> = ({
   const ref = useRef<HTMLDivElement>(null); // HTMLDivElement에 대한 Ref 생성
   useOutSideClick(ref, closeModal);
   const [showPW, setShowPW] = useState<boolean>(false);
+  const [faild, setFaild] = useState<boolean>(false);
 
   const PostLogin = async () => {
     try {
-      // const response = await instance.post("/user/login", {
-      //   id: value.id,
-      //   pwd: value.pw,
-      // });
-      // console.log(response.data);
-      console.log(value);
+      const response = await instance.post("/user/login", {
+        id: value.id,
+        pwd: value.pw,
+      });
+      console.log(response.data);
     } catch (error) {
+      setFaild(true);
       console.error(error);
     }
   };
@@ -68,11 +69,13 @@ const LoginModalPage: React.FC<ChildProps> = ({
               onChange={() => setShowPW(!showPW)}
             />
           </div>
+          {faild && <S.FaildLogin>일치하지 않습니다</S.FaildLogin>}
         </S.Row>
       </Column>
       <S.Row>
         <S.CreateText
           onClick={() => {
+            inputState({ id: "", pw: "", nickName: "" });
             setState(true);
           }}
         >
