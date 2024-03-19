@@ -3,21 +3,31 @@ import styled from "styled-components";
 import { Column } from "../../../styles/ui";
 
 const LikeContents = () => {
+  const Content = () => {
+    return (
+      <Row>
+        <ImageBox />
+        <Column gap="2">
+          <NovelTitle>[강승훈의 은밀한생활]</NovelTitle>
+          <NovelContent>조회수 1004회</NovelContent>
+          <NovelContent>마현우 시치</NovelContent>
+          <NovelContent>
+            유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미
+            유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미
+            유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미
+            유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미
+          </NovelContent>
+        </Column>
+      </Row>
+    )}
+
   return (
     <>
-      <div className="ml-12 mt-16">
+      <div className="mt-16">
         <Column gap={4}>
-          <Row>
-            <ImageBox />
-            <Column gap="2">
-              <NovelTitle>[강승훈의 은밀한생활]</NovelTitle>
-              <NovelContent>조회수 1004회</NovelContent>
-              <NovelContent>마현우 시치</NovelContent>
-              <NovelContent>
-                유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미
-              </NovelContent>
-            </Column>
-          </Row>
+          <Content />
+          <Content />
+          <Content />
         </Column>
       </div>
     </>
@@ -39,7 +49,7 @@ const ImageBox = styled.div`
   border-radius: 2.4rem;
   flex-shrink: 0;
 
-  background-color: black;
+  background-color: lightgray;
 `;
 
 const NovelTitle = styled.p`
@@ -50,7 +60,7 @@ const NovelTitle = styled.p`
 
 const NovelContent = styled.p`
   width: auto;
-  max-width: 50%;
+  max-width: 115rem;
   height: auto;
   font-size: 1.8rem;
   font-weight: 400;

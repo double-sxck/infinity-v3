@@ -19,17 +19,21 @@ const ImageBox = styled.div`
   height: 30rem;
   border-radius: 2.4rem;
 
-  background-color: black;
+  background-color: lightgray;
+
+  margin-bottom: 1rem;
 `;
 
 const NovelTitle = styled.p`
   font-size: 2.4rem;
   font-weight: 400;
   color: #2c333e;
+  line-height: 3.6rem;
 `;
 
 const NovelContents = styled.p`
   font-size: 1.8rem;
   font-weight: 400;
   color: #2c333e;
+  line-height: 2.2rem;
 `;

@@ -16,7 +16,7 @@ const HeaderBar = () => {
   return (
     <>
       <S.Header>
-        <LogoTextIcon width={116} height={32} />
+        <LogoTextIcon width={94} height={28} />
         <Row gap={0}>
           <S.InputBox placeholder="검색"></S.InputBox>
           <S.SearchStick>
@@ -30,7 +30,7 @@ const HeaderBar = () => {
           <S.UserProfileBox>
             <UserIcon />
           </S.UserProfileBox>
-          <div onClick={openModal}>로그인</div>
+          {/* <div onClick={openModal}>로그인</div> */}
         </Row>
       </S.Header>
     </>

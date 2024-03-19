@@ -20,7 +20,7 @@ const UserPage = () => {
       <S.UserPageBox>
         <Row gap="8">
           <UserDefualtIcon />
-          <Column justifyContent="space-between">
+          <Column justifyContent="space-around">
             <S.NickNameText>마동현석우</S.NickNameText>
             <S.UserProfileText>소설 [n]개</S.UserProfileText>
             <S.UserProfileText>조회수 [n]회 ‧ 좋아요 [n]개</S.UserProfileText>
@@ -56,8 +56,8 @@ const UserPage = () => {
             </S.InfoItem>
           </Row>
         </div>
-        <S.HerfChildLine />
       </S.ChooseInfomation>
+      <S.HerfChildLine />
       {pageType[0] === true ? (
         <UserContents />
       ) : pageType[1] === true ? (

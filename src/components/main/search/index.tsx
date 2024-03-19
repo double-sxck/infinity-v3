@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { Column } from "../../../styles/ui";
 
 const NovelSearchBox = () => {
-  return (
-    <Column gap={4}>
+  const Content = () => {
+    return (
       <Row>
         <ImageBox />
         <Column gap="2">
@@ -13,9 +13,18 @@ const NovelSearchBox = () => {
           <NovelContent>마현우 시치</NovelContent>
           <NovelContent>
             유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미
+            유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미
+            유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미
+            유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미 유미
           </NovelContent>
         </Column>
       </Row>
+    )
+  }
+
+  return (
+    <Column gap={4}>
+      <Content />
     </Column>
   );
 };
@@ -35,7 +44,7 @@ const ImageBox = styled.div`
   border-radius: 2.4rem;
   flex-shrink: 0;
 
-  background-color: black;
+  background-color: lightgray;
 `;
 
 const NovelTitle = styled.p`
@@ -46,7 +55,7 @@ const NovelTitle = styled.p`
 
 const NovelContent = styled.p`
   width: auto;
-  max-width: 50%;
+  max-width: 115rem;
   height: auto;
   font-size: 1.8rem;
   font-weight: 400;

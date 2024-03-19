@@ -43,6 +43,7 @@ const Sidebar = () => {
             <S.SidebarText>홈</S.SidebarText>
           </ItemBox>
           <S.SidebarContour />
+          <S.Subtitle>나</S.Subtitle>
           {userIconComponents.map((item, index) => (
             <ItemBox key={index}>
               {item.icon}
@@ -50,6 +51,7 @@ const Sidebar = () => {
             </ItemBox>
           ))}
           <S.SidebarContour />
+          <S.Subtitle>탐색</S.Subtitle>
           {genreIconComponents.map((item, index) => (
             <ItemBox key={index}>
               {item.icon}
