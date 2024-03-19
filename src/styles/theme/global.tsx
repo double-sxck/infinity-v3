@@ -16,7 +16,7 @@ font-family: 'Pretendard';
   }
 
   html {
-    font-size: 10px;
+    font-size: 8px;
   }
 
   a {
