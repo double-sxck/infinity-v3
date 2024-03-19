@@ -5,7 +5,7 @@ interface SVGAttributeProps extends React.SVGAttributes<HTMLOrSVGElement> {
   height?: number;
 }
 
-const MagicStickIcon = ({ width = 24, height = 24 }: SVGAttributeProps) => {
+const MagicStickIcon = ({ width = 20, height = 20 }: SVGAttributeProps) => {
   return (
     <>
       <svg

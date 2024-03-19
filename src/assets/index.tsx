@@ -19,3 +19,4 @@ export { default as TrashIcon } from "./images/TrashIcon";
 export { default as TextInputIcon } from "./images/TextInputIcon";
 export { default as BrashIcon } from "./images/BrashIcon";
 export { default as ImageIcon } from "./images/Image";
+export { default as NextIcon } from "./images/NextIcon";
