@@ -60,7 +60,7 @@ const LoginModalPage: React.FC<ChildProps> = ({
   return (
     <Column gap={8} justifyContent="" alignItems="center">
       <div>
-        <LogoTextIcon width={200} height={66.45} />
+        <LogoTextIcon width={20} height={6.645} />
         <S.ModalMainText>
           {inputType === "id" ? "로그인" : "시작하기"}
         </S.ModalMainText>
