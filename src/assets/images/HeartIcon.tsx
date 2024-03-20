@@ -5,12 +5,12 @@ interface SVGAttributeProps extends React.SVGAttributes<HTMLOrSVGElement> {
   height?: number;
 }
 
-const HeartIcon = ({ width = 20, height = 20 }: SVGAttributeProps) => {
+const HeartIcon = ({ width = 2.0, height = 2.0 }: SVGAttributeProps) => {
   return (
     <>
       <svg
-        width={width}
-        height={height}
+        width={`${width}rem`}
+        height={`${height}rem`}
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
