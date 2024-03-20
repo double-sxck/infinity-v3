@@ -10,7 +10,7 @@ import {
 } from "./components";
 import NovelSearchBox from "./components/main/search/index";
 import { useLoginModal } from "./hooks/useLoginMdal";
-import LoginModal from "./layout/LoginModal/modal";
+import LoginModal from "./layout/modal";
 
 function App() {
   const { modalState } = useLoginModal();
