@@ -58,7 +58,7 @@ const JoinInfinity: React.FC<ChildProps> = ({
   return (
     <Column gap={7} justifyContent="center" alignItems="center">
       <div>
-        <LogoTextIcon width={200} height={66.45} />
+        <LogoTextIcon width={20} height={6.645} />
         <S.ModalMainText>
           {inputType === "id" ? "계정 만들기" : "닉네임 설정"}
         </S.ModalMainText>
