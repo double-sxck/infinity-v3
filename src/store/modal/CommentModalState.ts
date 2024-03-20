@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
 export const CommentModalStateAtom = atom({
-  key: "loginModalStateAtom",
+  key: "CommentModalStateAtom",
   default: {
     show: false,
     animationState: false,

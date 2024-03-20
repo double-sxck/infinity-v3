@@ -1,19 +1,19 @@
 import { useRecoilState } from "recoil";
 import { CommentModalStateAtom } from "../store/modal/CommentModalState";
 
-export const useLoginModal = () => {
-  const [modalState, setModalState] = useRecoilState(CommentModalStateAtom);
+export const useCommentModal = () => {
+  const [modalCState, setModalState] = useRecoilState(CommentModalStateAtom);
 
-  const openModal = () => {
+  const openCommentModal = () => {
     setModalState({ show: true, animationState: true });
   };
 
-  const closeModal = () => {
-    setModalState({ ...modalState, animationState: false });
+  const closeCommentModal = () => {
+    setModalState({ ...modalCState, animationState: false });
     setTimeout(() => {
-      setModalState({ ...modalState, show: false });
+      setModalState({ ...modalCState, show: false });
     }, 175);
   };
 
-  return { openModal, closeModal, modalState };
+  return { openCommentModal, closeCommentModal, modalCState };
 };
