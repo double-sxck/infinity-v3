@@ -20,7 +20,7 @@ export const InputText = styled.input`
   display: flex;
   align-items: center;
 
-  padding: 1rem;
+  padding: 1rem 2rem;
   font-size: 3rem;
 
   &::placeholder {
@@ -48,12 +48,16 @@ export const NextButton = styled.input`
 `;
 
 export const Row = styled.div`
-  width: 90%;
+  width: 100%;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
+
+export const Row2 = styled(Row)`
+  height: 1rem;
+`
 
 export const ShowPW = styled.label`
   font-size: 2rem;
@@ -67,4 +71,6 @@ export const FaildLogin = styled.p`
   color: #2c333e;
   font-size: 2rem;
   font-weight: 400;
+
+  margin: 0 0 0 auto;
 `;
