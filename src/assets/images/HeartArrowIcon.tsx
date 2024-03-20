@@ -5,7 +5,7 @@ interface SVGAttributeProps extends React.SVGAttributes<HTMLOrSVGElement> {
   height?: number;
 }
 
-const HeartArrowIcon = ({ width = 20, height = 20 }: SVGAttributeProps) => {
+const HeartArrowIcon = ({ width = 2.0, height = 2.0 }: SVGAttributeProps) => {
   return (
     <>
       <svg
