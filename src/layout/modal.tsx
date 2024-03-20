@@ -53,9 +53,9 @@ const Page = styled.div`
 
 const Modal = styled.div`
   width: 80rem;
-  height: 60rem;
+  padding: 5rem 0;
   background-color: white;
-  border-radius: 0.4rem;
+  border-radius: 2rem;
 
   display: flex;
   justify-content: center;
