@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import * as S from "./style";
-import { useOutSideClick } from "../../hooks/useOutsideClick";
-import { useLoginModal } from "../../hooks/useLoginMdal";
-import { Column } from "../../styles/ui";
-import { LogoTextIcon } from "../../assets";
-import { instance } from "../../apis/instance";
+import { useOutSideClick } from "../../../hooks/useOutsideClick";
+import { useLoginModal } from "../../../hooks/useLoginMdal";
+import { Column } from "../../../styles/ui";
+import { LogoTextIcon } from "../../../assets";
+import { instance } from "../../../apis/instance";
 
 interface ChildProps {
   setState: React.Dispatch<React.SetStateAction<boolean>>;

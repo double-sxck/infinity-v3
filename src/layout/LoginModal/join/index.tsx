@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import * as S from "./style";
-import { Column } from "../../styles/ui";
-import { LogoTextIcon } from "../../assets";
-import CustomAxios from "../../axios/customAxios";
-import { instance } from "../../apis/instance";
+import { Column } from "../../../styles/ui";
+import { LogoTextIcon } from "../../../assets";
+import CustomAxios from "../../../axios/customAxios";
+import { instance } from "../../../apis/instance";
 
 interface ChildProps {
   setState: React.Dispatch<React.SetStateAction<boolean>>;
