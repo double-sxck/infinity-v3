@@ -24,6 +24,24 @@ const LoginModalPage: React.FC<ChildProps> = ({
   useOutSideClick(ref, closeModal);
   const [showPW, setShowPW] = useState<boolean>(false);
   const [faild, setFaild] = useState<boolean>(false);
+  const [inputType, setInputType] = useState<string>("id");
+
+  const NextButtonClickHandler = () => {
+    if (inputType === "id") {
+      if (value.id !== "") {
+        setInputType("pw");
+        setFaild(false);
+      } else {
+        setFaild(true);
+      }
+    } else {
+      if (value.pw !== "") {
+        PostLogin();
+      } else {
+        setFaild(true);
+      }
+    }
+  };
 
   const PostLogin = async () => {
     try {
@@ -40,56 +58,97 @@ const LoginModalPage: React.FC<ChildProps> = ({
   };
 
   return (
-    <Column gap={8} justifyContent="center" alignItems="center">
+    <Column gap={8} justifyContent="" alignItems="center">
       <div>
-        <LogoTextIcon color="#000000" width={240} height={66.45} />
-        <S.ModalMainText>로그인</S.ModalMainText>
+        <LogoTextIcon width={200} height={66.45} />
+        <S.ModalMainText>{inputType === 'id' ? "로그인" : "시작하기"}</S.ModalMainText>
       </div>
       <Column gap={3}>
-        <S.InputText
-          type="text"
-          placeholder="아이디"
-          onChange={(e) => {
-            inputState({ ...value, id: e.target.value });
-          }}
-        />
-        <S.InputText
-          type={showPW ? "text" : "password"}
-          placeholder="비밀번호"
-          onChange={(e) => {
-            inputState({ ...value, pw: e.target.value });
-          }}
-        />
-        <S.Row>
-          <div>
-            <S.ShowPW htmlFor="pwCheckBox">비밀번호 표시</S.ShowPW>
-            <input
-              type="checkbox"
-              id="pwCheckBox"
-              checked={showPW}
-              onChange={() => setShowPW(!showPW)}
-            />
-          </div>
+        {
+          inputType === 'id' ?
+          <S.InputText
+            type="text"
+            placeholder="아이디"
+            value={value.id}
+            onChange={(e) => {
+              inputState({ ...value, id: e.target.value });
+            }}
+          /> :
+          <S.InputText
+            type={showPW ? "text" : "password"}
+            placeholder="비밀번호"
+            value={value.pw}
+            onChange={(e) => {
+              inputState({ ...value, pw: e.target.value });
+            }}
+          />
+        }
+        <S.Row2>
+          {
+            inputType === 'pw' && 
+            <div style={{
+              display: "flex",
+              justifyContent: "center"
+            }}>
+              <input
+                type="checkbox"
+                id="pwCheckBox"
+                checked={showPW}
+                onChange={() => setShowPW(!showPW)}
+                style={{
+                  width: "2rem",
+                  height: "2rem",
+                  margin: "0 2rem 0 0"
+                }}
+              />
+              <S.ShowPW htmlFor="pwCheckBox">비밀번호 표시</S.ShowPW>
+            </div>
+          }
           {faild && <S.FaildLogin>일치하지 않습니다</S.FaildLogin>}
+        </S.Row2>
+        <S.Row>
+          {
+            inputType === 'id' ?
+            <>
+              <S.CreateText
+                onClick={() => {
+                  inputState({ id: "", pw: "", nickName: "" });
+                  setState(true);
+                }}
+              >
+                계정 만들기
+              </S.CreateText>
+              <S.NextButton
+                type="button"
+                value={"다음"}
+                onClick={() => {
+                  NextButtonClickHandler();
+                }}
+              >
+              </S.NextButton>
+            </> :
+            <>
+              <S.NextButton
+                type="button"
+                value={"이전"}
+                onClick={() => {
+                  inputState({ id: "", pw: "", nickName: "" });
+                  setInputType(() => 'id');
+                  setFaild(() => false);
+                }}
+              />
+              <S.NextButton
+                type="button"
+                value={"다음"}
+                onClick={() => {
+                  NextButtonClickHandler();
+                }}
+              />
+            </>
+          }
         </S.Row>
       </Column>
-      <S.Row>
-        <S.CreateText
-          onClick={() => {
-            inputState({ id: "", pw: "", nickName: "" });
-            setState(true);
-          }}
-        >
-          계정 만들기
-        </S.CreateText>
-        <S.NextButton
-          type="button"
-          value={"다음"}
-          onClick={() => {
-            PostLogin();
-          }}
-        />
-      </S.Row>
+      <div></div>
     </Column>
   );
 };

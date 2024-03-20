@@ -20,7 +20,7 @@ export const InputText = styled.input`
   display: flex;
   align-items: center;
 
-  padding: 1rem;
+  padding: 1rem 2rem;
   font-size: 3rem;
 
   &::placeholder {
@@ -48,7 +48,7 @@ export const NextButton = styled.input`
 `;
 
 export const Row = styled.div`
-  width: 90%;
+  width: 100%;
 
   display: flex;
   justify-content: space-between;
@@ -56,11 +56,15 @@ export const Row = styled.div`
 `;
 
 export const ErrorMsg = styled.p`
+  line-height: 1rem;
+
   color: #2c333e;
   font-size: 2rem;
   font-weight: 400;
 
-  text-align: end;
-
-  margin-top: 2.8rem;
+  margin: 0 0 0 auto;
 `;
+
+export const Empty = styled.div`
+  height: 1rem;
+`

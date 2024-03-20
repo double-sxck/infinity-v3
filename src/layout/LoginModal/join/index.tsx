@@ -40,71 +40,84 @@ const JoinInfinity: React.FC<ChildProps> = ({
 
   const NextButtonClickHandler = () => {
     if (inputType === "id") {
-      if (value.id !== "") {
-        setInputType("pw");
-      } else {
-        setErr(true);
-      }
-    } else if (inputType === "pw") {
-      if (value.pw !== "") {
+      if (value.id !== "" && value.pw !== "") {
         setInputType("nick");
+        setErr(false);
       } else {
         setErr(true);
       }
     } else {
-      PostLogin();
+      if (value.nickName !== "") {
+        PostLogin();
+      } else {
+        setErr(true);
+      }
     }
   };
 
   return (
     <Column gap={7} justifyContent="center" alignItems="center">
       <div>
-        <LogoTextIcon color="#000000" width={240} height={66.45} />
-        <S.ModalMainText>회원가입</S.ModalMainText>
+        <LogoTextIcon width={200} height={66.45} />
+        <S.ModalMainText>{inputType === 'id' ? "계정 만들기" : "닉네임 설정"}</S.ModalMainText>
       </div>
-      <div>
-        {inputType === "id" ? (
-          <S.InputText
-            type="email"
-            placeholder="아이디"
-            value={value.id}
-            onChange={(e) => inputState({ ...value, id: e.target.value })}
+      <Column gap={3}>
+        <Column gap={7}>
+          {inputType === "id" ? (
+            <>
+              <S.InputText
+                type="email"
+                placeholder="아이디"
+                value={value.id}
+                onChange={(e) => inputState({ ...value, id: e.target.value })}
+              />
+              <S.InputText
+                type="password"
+                placeholder="비밀번호"
+                value={value.pw}
+                onChange={(e) => inputState({ ...value, pw: e.target.value })}
+              />
+            </>
+          ) : (
+            <S.InputText
+              type="email"
+              placeholder="닉네임"
+              value={value.nickName}
+              onChange={(e) => inputState({ ...value, nickName: e.target.value })}
+            />
+          )}
+        </Column>
+        {err ? <S.ErrorMsg>모든 입력란에 작성해주세요</S.ErrorMsg> : <S.Empty />}
+        <S.Row>
+          {
+            inputType === 'id' ?
+            <S.CreateText
+              onClick={() => {
+                inputState({ id: "", pw: "", nickName: "" });
+                setState(false);
+              }}
+            >
+              로그인하기
+            </S.CreateText> :
+            <S.CreateText
+              onClick={() => {
+                inputState({ id: "", pw: "", nickName: "" });
+                setInputType(() => 'id')
+                setErr(false)
+              }}
+            >
+              돌아가기
+            </S.CreateText>
+          }
+          <S.NextButton
+            type="button"
+            value={"다음"}
+            onClick={() => {
+              NextButtonClickHandler();
+            }}
           />
-        ) : inputType === "pw" ? (
-          <S.InputText
-            type="password"
-            placeholder="비밀번호"
-            value={value.pw}
-            onChange={(e) => inputState({ ...value, pw: e.target.value })}
-          />
-        ) : (
-          <S.InputText
-            type="email"
-            placeholder="닉네임"
-            value={value.nickName}
-            onChange={(e) => inputState({ ...value, nickName: e.target.value })}
-          />
-        )}
-
-        {err && <S.ErrorMsg>모든 입력란에 작성해주세요</S.ErrorMsg>}
-      </div>
-      <S.Row>
-        <S.CreateText
-          onClick={() => {
-            inputState({ id: "", pw: "", nickName: "" });
-            setState(false);
-          }}
-        >
-          로그인
-        </S.CreateText>
-        <S.NextButton
-          type="button"
-          value={"다음"}
-          onClick={() => {
-            NextButtonClickHandler();
-          }}
-        />
-      </S.Row>
+        </S.Row>
+      </Column>
     </Column>
   );
 };
