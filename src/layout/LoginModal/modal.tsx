@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import { useLoginModal } from "../hooks/useLoginMdal";
-import { useOutSideClick } from "../hooks/useOutsideClick";
-import LoginModalPage from "./login";
+import { useLoginModal } from "../../hooks/useLoginMdal";
+import { useOutSideClick } from "../../hooks/useOutsideClick";
 import JoinInfinity from "./join";
+import LoginModalPage from "./login";
 
 const LoginModal = () => {
   const { closeModal } = useLoginModal();

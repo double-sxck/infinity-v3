@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import * as S from "./style";
-import { Column } from "../../styles/ui";
-import { LogoTextIcon } from "../../assets";
-import CustomAxios from "../../axios/customAxios";
-import { instance } from "../../apis/instance";
+import { Column } from "../../../styles/ui";
+import { LogoTextIcon } from "../../../assets";
+import CustomAxios from "../../../axios/customAxios";
+import { instance } from "../../../apis/instance";
 
 interface ChildProps {
   setState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -59,7 +59,9 @@ const JoinInfinity: React.FC<ChildProps> = ({
     <Column gap={7} justifyContent="center" alignItems="center">
       <div>
         <LogoTextIcon width={200} height={66.45} />
-        <S.ModalMainText>{inputType === 'id' ? "계정 만들기" : "닉네임 설정"}</S.ModalMainText>
+        <S.ModalMainText>
+          {inputType === "id" ? "계정 만들기" : "닉네임 설정"}
+        </S.ModalMainText>
       </div>
       <Column gap={3}>
         <Column gap={7}>
@@ -83,14 +85,19 @@ const JoinInfinity: React.FC<ChildProps> = ({
               type="email"
               placeholder="닉네임"
               value={value.nickName}
-              onChange={(e) => inputState({ ...value, nickName: e.target.value })}
+              onChange={(e) =>
+                inputState({ ...value, nickName: e.target.value })
+              }
             />
           )}
         </Column>
-        {err ? <S.ErrorMsg>모든 입력란에 작성해주세요</S.ErrorMsg> : <S.Empty />}
+        {err ? (
+          <S.ErrorMsg>모든 입력란에 작성해주세요</S.ErrorMsg>
+        ) : (
+          <S.Empty />
+        )}
         <S.Row>
-          {
-            inputType === 'id' ?
+          {inputType === "id" ? (
             <S.CreateText
               onClick={() => {
                 inputState({ id: "", pw: "", nickName: "" });
@@ -98,17 +105,18 @@ const JoinInfinity: React.FC<ChildProps> = ({
               }}
             >
               로그인하기
-            </S.CreateText> :
+            </S.CreateText>
+          ) : (
             <S.CreateText
               onClick={() => {
                 inputState({ id: "", pw: "", nickName: "" });
-                setInputType(() => 'id')
-                setErr(false)
+                setInputType(() => "id");
+                setErr(false);
               }}
             >
               돌아가기
             </S.CreateText>
-          }
+          )}
           <S.NextButton
             type="button"
             value={"다음"}

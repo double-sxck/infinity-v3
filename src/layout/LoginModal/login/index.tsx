@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import * as S from "./style";
-import { useOutSideClick } from "../../hooks/useOutsideClick";
-import { useLoginModal } from "../../hooks/useLoginMdal";
-import { Column } from "../../styles/ui";
-import { LogoTextIcon } from "../../assets";
-import { instance } from "../../apis/instance";
+import { useOutSideClick } from "../../../hooks/useOutsideClick";
+import { useLoginModal } from "../../../hooks/useLoginMdal";
+import { Column } from "../../../styles/ui";
+import { LogoTextIcon } from "../../../assets";
+import { instance } from "../../../apis/instance";
 
 interface ChildProps {
   setState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -61,11 +61,12 @@ const LoginModalPage: React.FC<ChildProps> = ({
     <Column gap={8} justifyContent="" alignItems="center">
       <div>
         <LogoTextIcon width={200} height={66.45} />
-        <S.ModalMainText>{inputType === 'id' ? "로그인" : "시작하기"}</S.ModalMainText>
+        <S.ModalMainText>
+          {inputType === "id" ? "로그인" : "시작하기"}
+        </S.ModalMainText>
       </div>
       <Column gap={3}>
-        {
-          inputType === 'id' ?
+        {inputType === "id" ? (
           <S.InputText
             type="text"
             placeholder="아이디"
@@ -73,7 +74,8 @@ const LoginModalPage: React.FC<ChildProps> = ({
             onChange={(e) => {
               inputState({ ...value, id: e.target.value });
             }}
-          /> :
+          />
+        ) : (
           <S.InputText
             type={showPW ? "text" : "password"}
             placeholder="비밀번호"
@@ -82,14 +84,15 @@ const LoginModalPage: React.FC<ChildProps> = ({
               inputState({ ...value, pw: e.target.value });
             }}
           />
-        }
+        )}
         <S.Row2>
-          {
-            inputType === 'pw' && 
-            <div style={{
-              display: "flex",
-              justifyContent: "center"
-            }}>
+          {inputType === "pw" && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
               <input
                 type="checkbox"
                 id="pwCheckBox"
@@ -98,17 +101,16 @@ const LoginModalPage: React.FC<ChildProps> = ({
                 style={{
                   width: "2rem",
                   height: "2rem",
-                  margin: "0 2rem 0 0"
+                  margin: "0 2rem 0 0",
                 }}
               />
               <S.ShowPW htmlFor="pwCheckBox">비밀번호 표시</S.ShowPW>
             </div>
-          }
+          )}
           {faild && <S.FaildLogin>일치하지 않습니다</S.FaildLogin>}
         </S.Row2>
         <S.Row>
-          {
-            inputType === 'id' ?
+          {inputType === "id" ? (
             <>
               <S.CreateText
                 onClick={() => {
@@ -124,16 +126,16 @@ const LoginModalPage: React.FC<ChildProps> = ({
                 onClick={() => {
                   NextButtonClickHandler();
                 }}
-              >
-              </S.NextButton>
-            </> :
+              ></S.NextButton>
+            </>
+          ) : (
             <>
               <S.NextButton
                 type="button"
                 value={"이전"}
                 onClick={() => {
                   inputState({ id: "", pw: "", nickName: "" });
-                  setInputType(() => 'id');
+                  setInputType(() => "id");
                   setFaild(() => false);
                 }}
               />
@@ -145,7 +147,7 @@ const LoginModalPage: React.FC<ChildProps> = ({
                 }}
               />
             </>
-          }
+          )}
         </S.Row>
       </Column>
       <div></div>
