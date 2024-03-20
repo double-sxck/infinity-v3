@@ -7,15 +7,15 @@ interface SVGAttributeProps extends React.SVGAttributes<HTMLOrSVGElement> {
 }
 
 const TextLogoIcon = ({
-  width = 116,
-  height = 32,
+  width = 11.6,
+  height = 3.2,
   color = "#2C333E",
 }: SVGAttributeProps) => {
   return (
     <>
       <svg
-        width={width}
-        height={height}
+        width={`${width}rem`}
+        height={`${height}rem`}
         viewBox="0 0 116 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

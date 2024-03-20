@@ -5,11 +5,11 @@ interface SVGAttributeProps extends React.SVGAttributes<HTMLOrSVGElement> {
   height?: number;
 }
 
-const ShopIcon = ({ width = 40, height = 40 }: SVGAttributeProps) => {
+const ShopIcon = ({ width = 4.0, height = 4.0 }: SVGAttributeProps) => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={`${width}rem`}
+      height={`${height}rem`}
       viewBox="0 0 40 40"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

@@ -8,8 +8,8 @@ interface SVGAttributeProps extends React.SVGAttributes<HTMLOrSVGElement> {
 const BrashIcon = ({ width = 24, height = 24 }: SVGAttributeProps) => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={`${width}rem`}
+      height={`${height}rem`}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
