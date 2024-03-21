@@ -23,7 +23,7 @@ export const queryClient = new QueryClient({
 
 function App() {
   const { modalState } = useLoginModal();
-  const { modalCState } = useCommentModal();
+  const { modalCState } = useCommentModal(0);
   return (
     <QueryClientProvider client={queryClient}>
       {modalCState.show && <CommentModal />}
