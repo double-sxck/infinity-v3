@@ -26,3 +26,5 @@ export { default as BlackMagicStickIcon } from "./images/BlackMagicStickIcon";
 export { default as BlackHeartArrowIcon } from "./images/BlackHeartArrowIcon";
 export { default as BlackCopyIcon } from "./images/BlackCopyIcon";
 export { default as BlackCoffeeIcon } from "./images/BlackCoffeeIcon";
+export { default as LikeIcon } from "./images/LikeIcon";
+export { default as CommentIcon } from "./images/CommentIcon";
