@@ -29,10 +29,10 @@ const HeaderBar = () => {
           {localStorage.getItem("refresh-token") ? (
             <>
               <S.UserProfileBox>
-                <PencilIcon />
+                <PencilIcon width={2.4} height={2.4} />
               </S.UserProfileBox>
               <S.UserProfileBox>
-                <UserIcon />
+                <UserIcon width={2.4} height={2.4} />
               </S.UserProfileBox>
             </>
           ) : (
