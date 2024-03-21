@@ -34,7 +34,7 @@ const CommentModal = () => {
   const ref = useRef<HTMLDivElement>(null);
   useOutSideClick(ref, () => {
     console.log(id, "열렸다잉");
-    // getComment();
+    postLike();
     closeCommentModal();
   });
 
@@ -66,6 +66,7 @@ const CommentModal = () => {
       ],
     },
   ]);
+  const [sendMessageState, setSendMessageState] = useState("");
   // query key를 지정하여 새로고침 없이 실행시킬 react query
   const { data } = useGetListQuery(id) as { data: any };
   useLayoutEffect(() => {
@@ -74,7 +75,31 @@ const CommentModal = () => {
 
   useLayoutEffect(() => {
     getComment();
+    if (isClickable()) {
+      getUser();
+    }
   }, []);
+
+  const getUser = async () => {
+    try {
+      console.log(Authorization());
+      const response = await instance.get("/user/onlyuser", Authorization());
+      console.log(response.data.userInfo.uid);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const postLike = async () => {
+    console.log(comment[0].novelResult[0].like);
+    try {
+      if (localStorage.getItem("refresh-token")) {
+        await instance.post("/novel/like/" + id, Authorization());
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const getComment = async () => {
     console.log("실행");
@@ -89,10 +114,51 @@ const CommentModal = () => {
     }
   };
 
-  const sendMessage = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "enter") {
+  // 클릭 가능 여부를 확인하는 함수
+  const isClickable = () => {
+    return localStorage.getItem("refresh-token") !== null;
+  };
+
+  // 클릭 시 실행되는 함수
+  const handleLikeClick = () => {
+    // refresh-token이 없으면 클릭 불가능하므로 함수 종료
+    if (!isClickable()) return;
+
+    setComment((prevComment) => {
+      const newNovelResult = prevComment[0].novelResult.map((novel) => {
+        const newLike = !novel.like; // 이전 값의 반대로 설정
+        const likeCountDiff = newLike ? 1 : -1; // likeCount의 증가 또는 감소 값
+        return {
+          ...novel,
+          like: newLike,
+          likeCount: novel.likeCount + likeCountDiff, // likeCount 업데이트
+        };
+      });
+      return [
+        {
+          ...prevComment[0],
+          novelResult: newNovelResult,
+        },
+      ];
+    });
+  };
+
+  const sendMessage = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" || event.key === "Return") {
       // Enter 키를 눌렀는지 확인
-      queryClient.invalidateQueries({ queryKey: ["getList", id - 1] });
+      console.log("enter"); // sendMessageState 출력
+      try {
+        const response = await instance.post(
+          "/comment/" + id,
+          {
+            novel_uid: 1, // user id 가지고 와야함
+            review: "와정말재밌어요.",
+          },
+          Authorization()
+        );
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
@@ -127,16 +193,21 @@ const CommentModal = () => {
                 <S.NovelContent>
                   조회수 {comment[0].novelResult[0].views}
                 </S.NovelContent>
-                <Row>
-                  {comment[0].novelResult[0].like ? (
-                    <LikeIcon color={"#ff0000"} />
-                  ) : (
-                    <LikeIcon />
-                  )}
-                  <S.NovelContent>
-                    {comment[0].novelResult[0].uid}
-                  </S.NovelContent>
-                </Row>
+                <div
+                  onClick={handleLikeClick}
+                  style={{ cursor: isClickable() ? "pointer" : "not-allowed" }}
+                >
+                  <Row>
+                    {comment[0].novelResult[0].like ? (
+                      <LikeIcon color={"#ff0000"} />
+                    ) : (
+                      <LikeIcon />
+                    )}
+                    <S.NovelContent>
+                      {comment[0].novelResult[0].likeCount}
+                    </S.NovelContent>
+                  </Row>
+                </div>
               </Column>
             </Row>
           </div>
@@ -161,7 +232,9 @@ const CommentModal = () => {
             <div className="mb-20">
               <S.MessageInput
                 placeholder="감상평 남기기..."
-                onChange={(e) => {}}
+                onChange={(e) => {
+                  setSendMessageState(e.target.value);
+                }}
                 onKeyDown={(e) => sendMessage(e)}
               />
             </div>
