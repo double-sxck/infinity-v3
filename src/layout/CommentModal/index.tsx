@@ -83,8 +83,14 @@ const CommentModal = () => {
   const getUser = async () => {
     try {
       console.log(Authorization());
+      // const response = await instance.get("/user/onlyuser", {
+      //   headers: {
+      //     Authorization: `Bearer ${localStorage.getItem("refresh-token")}`, // Replace 'yourAccessToken' with the actual access token
+      //     // Add other headers if needed
+      //   },
+      // });
       const response = await instance.get("/user/onlyuser", Authorization());
-      console.log(response.data.userInfo.uid);
+      console.log(response.data.uid);
     } catch (e) {
       console.error(e);
     }
