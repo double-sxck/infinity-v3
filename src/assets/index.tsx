@@ -20,3 +20,5 @@ export { default as TextInputIcon } from "./images/TextInputIcon";
 export { default as BrashIcon } from "./images/BrashIcon";
 export { default as ImageIcon } from "./images/Image";
 export { default as NextIcon } from "./images/NextIcon";
+export { default as LikeIcon } from "./images/LikeIcon";
+export { default as CommentIcon } from "./images/CommentIcon";

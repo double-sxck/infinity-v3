@@ -10,12 +10,16 @@ import {
 } from "./components";
 import NovelSearchBox from "./components/main/search/index";
 import { useLoginModal } from "./hooks/useLoginMdal";
+import { useCommentModal } from "./hooks/useCommentModal";
 import LoginModal from "./layout/LoginModal/modal";
+import CommentModal from "./layout/CommentModal";
 
 function App() {
   const { modalState } = useLoginModal();
+  const { modalCState } = useCommentModal();
   return (
     <>
+      {modalCState.show && <CommentModal />}
       {modalState.show && <LoginModal />}
       <HeaderBar />
       <Sidebar />
