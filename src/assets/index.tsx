@@ -28,3 +28,4 @@ export { default as BlackCopyIcon } from "./images/BlackCopyIcon";
 export { default as BlackCoffeeIcon } from "./images/BlackCoffeeIcon";
 export { default as LikeIcon } from "./images/LikeIcon";
 export { default as CommentIcon } from "./images/CommentIcon";
+export { default as UploadIcon } from "./images/UploadIcon";
