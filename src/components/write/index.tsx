@@ -71,7 +71,7 @@ const WritePage = () => {
           </S.ContentBox>
         </Column>
         <S.WriteButton>
-          <PencilIcon width={32} height={32} />
+          <PencilIcon width={4} height={4} />
         </S.WriteButton>
         <Column>
           <S.ContentText>소설 미리 보기</S.ContentText>
@@ -84,7 +84,7 @@ const WritePage = () => {
           </S.ContentBox>
         </Column>
         <S.WriteButton>
-          <NextIcon width={32} height={32} />
+          <NextIcon width={4} height={4} />
         </S.WriteButton>
       </Row>
     </>
