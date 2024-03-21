@@ -15,7 +15,7 @@ const HeaderBar = () => {
   return (
     <>
       <S.Header>
-        <LogoTextIcon width={9.4} height={2.8} />
+        <LogoTextIcon width={12} height={4} />
         <Row gap={0}>
           <S.InputBox placeholder="검색"></S.InputBox>
           <S.SearchStick>
