@@ -1,30 +1,44 @@
 import React from "react";
 import styled from "styled-components";
 
-const NovelBox = () => {
+const NovelBox = ({ uid, thumbnail, title, user, views }: { uid: number, thumbnail: String, title: String, user: String, views: number }) => {
   return (
-    <div>
-      <ImageBox />
-      <NovelTitle>[소설 제목]</NovelTitle>
-      <NovelContents>[쓴 사람]</NovelContents>
-      <NovelContents>조회수 N회</NovelContents>
+    <div id={uid.toString()}>
+      <ImageBox $url={thumbnail} />
+      <NovelTitle>{title}</NovelTitle>
+      <NovelContents>{user}</NovelContents>
+      <NovelContents>조회수 {new Intl.NumberFormat('ko-KR', {
+                            notation: 'compact',
+                            maximumFractionDigits: 1,
+                          }).format(views)}회</NovelContents>
     </div>
   );
 };
 
 export default NovelBox;
 
-const ImageBox = styled.div`
+interface ImageBoxProps {
+  $url: String;
+}
+
+const ImageBox = styled.div<ImageBoxProps>`
   width: 30rem;
   height: 30rem;
   border-radius: 2.4rem;
 
-  background-color: lightgray;
+  background-color: #f5f5f5;
+  background-image: ${props => `url(${props.$url})`};
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 
   margin-bottom: 1rem;
 `;
 
 const NovelTitle = styled.p`
+  max-height: 7.2rem;
+  overflow: hidden;
+
   font-size: 2.4rem;
   font-weight: 400;
   color: #2c333e;
