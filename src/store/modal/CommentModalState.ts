@@ -5,5 +5,6 @@ export const CommentModalStateAtom = atom({
   default: {
     show: false,
     animationState: false,
+    id: 0,
   },
 });

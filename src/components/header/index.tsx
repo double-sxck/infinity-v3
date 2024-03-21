@@ -12,13 +12,11 @@ import { useCommentModal } from "../../hooks/useCommentModal";
 
 const HeaderBar = () => {
   const { openModal } = useLoginModal(); // useLoginModal 호출 위치 변경
-  const { openCommentModal } = useCommentModal(); // useLoginModal
 
   return (
     <>
       <S.Header>
         <LogoTextIcon width={12} height={4} />
-        <div onClick={openCommentModal}>임시버튼</div>
         <Row gap={0}>
           <S.InputBox placeholder="검색"></S.InputBox>
           <S.SearchStick>

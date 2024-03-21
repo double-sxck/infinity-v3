@@ -11,7 +11,7 @@ import { Authorization } from "../../apis/authorization";
 
 var id = 1;
 const CommentModal = () => {
-  const { closeCommentModal } = useCommentModal();
+  const { closeCommentModal, modalCState } = useCommentModal(id);
   const ref = useRef<HTMLDivElement>(null);
   useOutSideClick(ref, closeCommentModal);
 
@@ -29,6 +29,8 @@ const CommentModal = () => {
 
   const getComment = async () => {
     try {
+      id = modalCState.id;
+      console.log("아이디" + id);
       const response = await instance.get("/novel/" + id, Authorization());
       setComment(response.data);
       console.log(response.data);
