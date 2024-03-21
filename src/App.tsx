@@ -32,6 +32,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/search" element={<MainPage />} />
+          <Route path="/category/:category" element={<MainPage />} />
           <Route path="/profile" element={<UserPage />} />
           <Route path="/write" element={<WritePage />} />
           <Route path="/view" element={<ViewPage />} />
