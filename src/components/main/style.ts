@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const ListBox = styled.div`
+interface ListBoxProps {
+  $selected: boolean;
+}
+
+export const ListBox = styled.div<ListBoxProps>`
   width: 10rem;
   height: 4rem;
 
@@ -8,7 +12,8 @@ export const ListBox = styled.div`
   align-items: center;
   justify-content: center;
 
-  background-color: #f1f1f1;
+  background-color: ${props => props.$selected ? '#2c333e' : '#f1f1f1'};
+  color: ${props => props.$selected ? 'white' : 'black'};
 
   border-radius: 0.8rem;
 
@@ -19,6 +24,8 @@ export const ListBox = styled.div`
     background-color: #2c333e;
     color: #ffffff;
   }
+
+  
 `;
 
 export const ContentsArea = styled.div`
@@ -39,4 +46,8 @@ export const SearchContentsArea = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4rem
+`;
+
+export const Category = styled.div`
+  font-size: 4rem;
 `
