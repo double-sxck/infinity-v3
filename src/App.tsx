@@ -13,12 +13,19 @@ import { useLoginModal } from "./hooks/useLoginMdal";
 import { useCommentModal } from "./hooks/useCommentModal";
 import LoginModal from "./layout/LoginModal/modal";
 import CommentModal from "./layout/CommentModal";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { refetchOnWindowFocus: false },
+  },
+});
 
 function App() {
   const { modalState } = useLoginModal();
   const { modalCState } = useCommentModal();
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       {modalCState.show && <CommentModal />}
       {modalState.show && <LoginModal />}
       <HeaderBar />
@@ -41,7 +48,7 @@ function App() {
           <Route path="/view" element={<ViewPage />} />
         </Routes>
       </div>
-    </>
+    </QueryClientProvider>
   );
 }
 
