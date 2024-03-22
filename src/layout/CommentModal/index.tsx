@@ -20,8 +20,8 @@ const CommentModal = () => {
   const [likeCount, setLikeCount] = useState<number>(0);
   const ref = useRef<HTMLDivElement>(null);
   useOutSideClick(ref, async () => {
+    postLike();
     closeCommentModal();
-    // postLike();
   });
 
   const [message, setMessage] = useState<MessageItem[]>([]);
@@ -44,7 +44,6 @@ const CommentModal = () => {
     try {
       console.log(Authorization());
       const response = await instance.get("/user/onlyuser", Authorization());
-      console.log("유저" + response.data.uid);
       uid = response.data.uid;
     } catch (e) {
       console.error(e);
@@ -52,31 +51,20 @@ const CommentModal = () => {
   };
 
   const postLike = async () => {
-    console.log("실행 좋아요");
-    try {
-      const requestBody = { user_uid: uid }; // user_uid를 포함한 객체 생성
-      const response = await instance.post(
-        `/novel/like/${id}`,
-        requestBody,
-        Authorization()
-      );
-      if (
-        (comment?.novelResult[0].like && like) ||
-        (!comment?.novelResult[0].like && like)
-      ) {
-        setLikeCount(likeCount - 1);
-      } else {
-        setLikeCount(likeCount + 1);
+    if (comment?.novelResult[0].like !== like) {
+      try {
+        const requestBody = { user_uid: uid }; // user_uid를 포함한 객체 생성
+        await instance.post(`/novel/like/${id}`, requestBody, Authorization());
+        console.log("실행 좋아요");
+      } catch (err) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
     }
   };
 
   const getComment = async () => {
     try {
       const response = await instance.get("/comment/" + id, Authorization());
-      console.log(response.data);
       setMessage(response.data);
     } catch (err) {
       console.error(err);
@@ -91,11 +79,13 @@ const CommentModal = () => {
           "/novel/loggedin/" + id,
           Authorization()
         );
+        console.log(response.data.novelResult[0]?.likeCount);
         setLike(response.data.novelResult[0]?.like);
         setLikeCount(response.data.novelResult[0]?.likeCount);
         setComment(response.data);
       } else {
         const response = await instance.get("/novel/" + id, Authorization());
+        setLikeCount(response.data.novelResult[0]?.likeCount);
         setComment(response.data);
       }
     } catch (error) {
@@ -112,9 +102,18 @@ const CommentModal = () => {
   const handleLikeClick = () => {
     // refresh-token이 없으면 클릭 불가능하므로 함수 종료
     if (!isClickable()) return;
+    console.log(likeCount);
 
     setLike(!like);
-    postLike();
+    if (
+      (comment?.novelResult[0].like && like) ||
+      (!comment?.novelResult[0].like && like)
+    ) {
+      setLikeCount(likeCount - 1);
+    } else {
+      setLikeCount(likeCount + 1);
+    }
+    // postLike();
   };
 
   const sendMessage = async (event: React.KeyboardEvent<HTMLInputElement>) => {
