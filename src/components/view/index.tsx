@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from "react";
 import * as S from "./style";
 import { Column, Row } from "../../styles/ui";
-import { BrashIcon, CoffeeIcon, CopyIcon, HeartArrowIcon, ImageIcon, MagicStickIcon, MakingThumbnail, MoreIcon, ScaryFaceIcon, TextInputIcon, UploadIcon } from "../../assets";
+import {
+  BrashIcon,
+  CoffeeIcon,
+  CopyIcon,
+  HeartArrowIcon,
+  ImageIcon,
+  MagicStickIcon,
+  MakingThumbnail,
+  MoreIcon,
+  ScaryFaceIcon,
+  TextInputIcon,
+  UploadIcon,
+} from "../../assets";
 import ShopIcon from "../../assets/images/ShopIcon";
 import { instance } from "../../apis/instance";
 
@@ -13,9 +25,9 @@ const ViewPage = () => {
   }
 
   const [keywords, setKeywords] = useState<Keywords>({
-      characters: '',
-      events: '',
-      backgrounds: ''
+    characters: "",
+    events: "",
+    backgrounds: "",
   });
 
   const [tag, setTag] = useState(1);
@@ -27,32 +39,34 @@ const ViewPage = () => {
 
   useEffect(() => {
     const k = localStorage.getItem("keywords");
-    if(k !== null) setKeywords(JSON.parse(k));
+    if (k !== null) setKeywords(JSON.parse(k));
     const n = localStorage.getItem("novel");
-    if(n) setNovel(n);
+    if (n) setNovel(n);
   }, []);
 
   useEffect(() => {
-    if(novel !== "") {
-      setPrompt(() => (
-        `please draw novel's thumbnail with this keywords: characters/${keywords.characters} events/${keywords.events} backgrounds/${keywords.backgrounds}`
-      ));
+    if (novel !== "") {
+      setPrompt(
+        () =>
+          `please draw novel's thumbnail with this keywords: characters/${keywords.characters} events/${keywords.events} backgrounds/${keywords.backgrounds}`
+      );
     }
   }, [keywords, novel]);
 
   useEffect(() => {
-    if(novel !== "") DALL_E(prompt)
-  }, [novel, prompt])
+    if (novel !== "") DALL_E(prompt);
+  }, [novel, prompt]);
 
   const drawThumbnail = () => {
-    if(userPrompt !== "") DALL_E(userPrompt);
+    if (userPrompt !== "") DALL_E(userPrompt);
   };
 
   const DALL_E = async (prompt: string) => {
     try {
       setThumbnail(() => "");
       const token = localStorage.getItem("refresh-token");
-      const response = await instance.post("/image", 
+      const response = await instance.post(
+        "/image",
         {
           prompt: prompt,
         },
@@ -67,7 +81,7 @@ const ViewPage = () => {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const categories = [
     "ROMANCE",
@@ -79,23 +93,29 @@ const ViewPage = () => {
   ];
 
   const postNovel = () => {
-    if(title === "") {
-      alert('제목을 작성해주세요')
-      return
+    if (title === "") {
+      alert("제목을 작성해주세요");
+      return;
     }
     const dto = {
       thumbnail: thumbnail,
       title: title,
-      category: categories[tag-1],
+      category: categories[tag - 1],
       content: novel,
-    }
+    };
     post(dto);
   };
 
-  const post = async (dto: {thumbnail: string, title: string, category: string, content: string}) => {
+  const post = async (dto: {
+    thumbnail: string;
+    title: string;
+    category: string;
+    content: string;
+  }) => {
     try {
       const token = localStorage.getItem("refresh-token");
-      const response = await instance.post("/novel", 
+      const response = await instance.post(
+        "/novel",
         {
           thumbnail: `http://localhost:3001${dto.thumbnail}`,
           title: dto.title,
@@ -108,7 +128,7 @@ const ViewPage = () => {
           },
         }
       );
-      window.location.href = '/';
+      window.location.href = "/";
     } catch (error) {
       console.error(error);
     }
@@ -121,11 +141,11 @@ const ViewPage = () => {
         <S.ContentBox>
           <Column gap={4} alignItems="center">
             <S.Empty />
-            {
-              thumbnail === "" ?
-              <MakingThumbnail width={400} height={400} /> :
+            {thumbnail === "" ? (
+              <MakingThumbnail width={400} height={400} />
+            ) : (
               <S.Thumbnail $url={thumbnail} />
-            }
+            )}
             <Row justifyContent="center" alignItems="center">
               <ImageIcon />
               <S.RowText>썸네일</S.RowText>
@@ -134,9 +154,7 @@ const ViewPage = () => {
                 value={userPrompt}
                 onChange={(e: any) => setUserPrompt(e.target.value)}
               />
-              <S.DrawButton
-                onClick={() => drawThumbnail()}
-              >
+              <S.DrawButton onClick={() => drawThumbnail()}>
                 <BrashIcon />
               </S.DrawButton>
             </Row>
@@ -159,46 +177,33 @@ const ViewPage = () => {
               <S.ContentText>태그</S.ContentText>
             </Row>
             <Column gap={2.4}>
-              <S.Keyword
-                onClick={() => setTag(1)}
-              >
+              <S.Keyword onClick={() => setTag(1)}>
                 <HeartArrowIcon width={3} height={3} />
                 로맨스 / 감성
                 {tag === 1 && <S.Selected />}
               </S.Keyword>
-              <S.Keyword
-                onClick={() => setTag(2)}
-              >
+              <S.Keyword onClick={() => setTag(2)}>
                 <MagicStickIcon width={3} height={3} />
                 판타지 / 이세계
                 {tag === 2 && <S.Selected />}
               </S.Keyword>
-              <S.Keyword
-                onClick={() => setTag(3)}
-              >
+              <S.Keyword onClick={() => setTag(3)}>
                 <CoffeeIcon width={3} height={3} />
                 일상 / 코미디
                 {tag === 3 && <S.Selected />}
               </S.Keyword>
-              <S.Keyword
-                onClick={() => setTag(4)}
-              >
+              <S.Keyword onClick={() => setTag(4)}>
                 <ScaryFaceIcon width={3} height={3} />
                 스릴러 / 호러
                 {tag === 4 && <S.Selected />}
               </S.Keyword>
-              <S.Keyword
-                onClick={() => setTag(5)}
-              >
+              <S.Keyword onClick={() => setTag(5)}>
                 <CopyIcon width={3} height={3} />
                 장편 / 시리즈
                 {tag === 5 && <S.Selected />}
               </S.Keyword>
-              <S.Keyword
-                onClick={() => setTag(6)}
-              >
-                <MoreIcon width={3} height={3} />
-                그 외
+              <S.Keyword onClick={() => setTag(6)}>
+                <MoreIcon width={3} height={3} />그 외
                 {tag === 6 && <S.Selected />}
               </S.Keyword>
             </Column>
