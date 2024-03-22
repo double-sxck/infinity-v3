@@ -16,10 +16,12 @@ var id = 1;
 var uid = 1;
 const CommentModal = () => {
   const { closeCommentModal, modalCState } = useCommentModal(id);
+  const [like, setLike] = useState<boolean>();
+  const [likeCount, setLikeCount] = useState<number>(0);
   const ref = useRef<HTMLDivElement>(null);
-  useOutSideClick(ref, () => {
-    postLike();
+  useOutSideClick(ref, async () => {
     closeCommentModal();
+    // postLike();
   });
 
   const [message, setMessage] = useState<MessageItem[]>([]);
@@ -32,6 +34,7 @@ const CommentModal = () => {
 
   useLayoutEffect(() => {
     getNovel();
+    getComment();
     if (isClickable()) {
       getUser();
     }
@@ -49,13 +52,21 @@ const CommentModal = () => {
   };
 
   const postLike = async () => {
-    console.log(comment?.novelResult[0].like);
+    console.log("실행 좋아요");
     try {
-      if (localStorage.getItem("refresh-token")) {
-        const responst = await instance.post(
-          "/novel/like/" + id,
-          Authorization()
-        );
+      const requestBody = { user_uid: uid }; // user_uid를 포함한 객체 생성
+      const response = await instance.post(
+        `/novel/like/${id}`,
+        requestBody,
+        Authorization()
+      );
+      if (
+        (comment?.novelResult[0].like && like) ||
+        (!comment?.novelResult[0].like && like)
+      ) {
+        setLikeCount(likeCount - 1);
+      } else {
+        setLikeCount(likeCount + 1);
       }
     } catch (err) {
       console.error(err);
@@ -75,8 +86,18 @@ const CommentModal = () => {
   const getNovel = async () => {
     try {
       id = modalCState.id;
-      const response = await instance.get("/novel/" + id, Authorization());
-      setComment(response.data);
+      if (localStorage.getItem("refresh-token")) {
+        const response = await instance.get(
+          "/novel/loggedin/" + id,
+          Authorization()
+        );
+        setLike(response.data.novelResult[0]?.like);
+        setLikeCount(response.data.novelResult[0]?.likeCount);
+        setComment(response.data);
+      } else {
+        const response = await instance.get("/novel/" + id, Authorization());
+        setComment(response.data);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -92,22 +113,8 @@ const CommentModal = () => {
     // refresh-token이 없으면 클릭 불가능하므로 함수 종료
     if (!isClickable()) return;
 
-    setComment((prevComment) => {
-      if (!prevComment) return prevComment; // 이전 상태가 없으면 그대로 반환
-      const newNovelResult = prevComment.novelResult.map((novel) => {
-        const newLike = !novel.like; // 이전 값의 반대로 설정
-        const likeCountDiff = newLike ? 1 : -1; // likeCount의 증가 또는 감소 값
-        return {
-          ...novel,
-          like: newLike,
-          likeCount: novel.likeCount + likeCountDiff, // likeCount 업데이트
-        };
-      });
-      return {
-        ...prevComment,
-        novelResult: newNovelResult,
-      };
-    });
+    setLike(!like);
+    postLike();
   };
 
   const sendMessage = async (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -140,16 +147,26 @@ const CommentModal = () => {
         <Column gap={10} justifyContent="center" alignItems="center">
           <div style={{ alignSelf: "flex-start" }}>
             <Row gap={8.6}>
-              <S.ImageBox img={comment?.novelResult[0].thumbnail || ""} />
+              {comment?.novelResult && comment.novelResult[0] && (
+                <S.ImageBox
+                  img={
+                    (comment?.novelResult &&
+                      comment.novelResult[0]?.thumbnail) ||
+                    ""
+                  }
+                />
+              )}
               <Column gap={4}>
-                <S.NovelTitle>{comment?.novelResult[0].title}</S.NovelTitle>
-                <S.NovelContent>{comment?.userResult.nickname}</S.NovelContent>
+                <S.NovelTitle>
+                  {comment?.novelResult && comment.novelResult[0]?.title}
+                </S.NovelTitle>
+                <S.NovelContent>{comment?.userResult?.nickname}</S.NovelContent>
                 <Row gap={3}>
-                  {comment?.novelResult[0].category ? (
+                  {comment?.novelResult && comment.novelResult[0]?.category ? (
                     <>
-                      {NovelType[comment.novelResult[0].category].icon}
+                      {NovelType[comment.novelResult[0]?.category]?.icon}
                       <S.NovelContent>
-                        {NovelType[comment.novelResult[0].category].label}
+                        {NovelType[comment.novelResult[0]?.category]?.label}
                       </S.NovelContent>
                     </>
                   ) : (
@@ -159,23 +176,16 @@ const CommentModal = () => {
                     </>
                   )}
                 </Row>
-
                 <S.NovelContent>
-                  조회수 {comment?.novelResult[0].views}
+                  조회수 {comment?.novelResult && comment.novelResult[0]?.views}
                 </S.NovelContent>
                 <div
                   onClick={handleLikeClick}
                   style={{ cursor: isClickable() ? "pointer" : "not-allowed" }}
                 >
                   <Row>
-                    {comment?.novelResult[0].like ? (
-                      <LikeIcon color={"#ff0000"} />
-                    ) : (
-                      <LikeIcon />
-                    )}
-                    <S.NovelContent>
-                      {comment?.novelResult[0].likeCount}
-                    </S.NovelContent>
+                    {like ? <LikeIcon color={"#ff0000"} /> : <LikeIcon />}
+                    <S.NovelContent>{likeCount}</S.NovelContent>
                   </Row>
                 </div>
               </Column>
@@ -183,7 +193,7 @@ const CommentModal = () => {
           </div>
           <S.HelfLine />
 
-          <S.NovelContent>{comment?.novelResult[0].content}</S.NovelContent>
+          <S.NovelContent>{comment?.novelResult[0]?.content}</S.NovelContent>
           <S.HelfLine />
           <div
             style={{

@@ -23,10 +23,11 @@ const NovelBox = ({
       <NovelContents>{user}</NovelContents>
       <NovelContents>
         조회수{" "}
-        {new Intl.NumberFormat("ko-KR", {
-          notation: "compact",
-          maximumFractionDigits: 1,
-        }).format(views)}
+        {views &&
+          new Intl.NumberFormat("ko-KR", {
+            notation: "compact",
+            maximumFractionDigits: 1,
+          }).format(views)}
         회
       </NovelContents>
     </div>
