@@ -60,6 +60,7 @@ export const MessageBox = styled.div<{ isMy: boolean }>`
   width: auto;
   max-width: 50rem;
   height: auto;
+  margin-top: 2rem;
 
   padding: 1.6rem 2.4rem;
 

@@ -9,48 +9,29 @@ import { instance } from "../../apis/instance";
 import { Authorization } from "../../apis/authorization";
 import NovelType from "./NovelCategory";
 import { CommentIcon, LikeIcon } from "../../assets";
-
-interface CommentType {
-  userResult: {
-    nickname: string;
-  };
-  novelResult: {
-    uid: number;
-    user_uid: number;
-    title: string;
-    content: string;
-    thumbnail: string;
-    category: string;
-    views: number;
-    novel_likes: { user_uid: number; novel_uid: number }[];
-    like?: boolean;
-    likeCount: number;
-  }[];
-}
+import { CommentType } from "../../types/layoutType/CommentType";
+import { MessageItem } from "../../types/layoutType/MessageItemType";
 
 var id = 1;
+var uid = 1;
 const CommentModal = () => {
   const { closeCommentModal, modalCState } = useCommentModal(id);
   const ref = useRef<HTMLDivElement>(null);
   useOutSideClick(ref, () => {
-    console.log(id, "열렸다잉");
     postLike();
     closeCommentModal();
   });
 
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState<MessageItem[]>([]);
 
   //feed list 받아온 값을 저장하는 state
   const [comment, setComment] = useState<CommentType>();
   const [sendMessageState, setSendMessageState] = useState("");
   // query key를 지정하여 새로고침 없이 실행시킬 react query
   const { data } = useGetListQuery(id) as { data: any };
-  useLayoutEffect(() => {
-    setMessage(data);
-  }, [data]);
 
   useLayoutEffect(() => {
-    getComment();
+    getNovel();
     if (isClickable()) {
       getUser();
     }
@@ -61,6 +42,7 @@ const CommentModal = () => {
       console.log(Authorization());
       const response = await instance.get("/user/onlyuser", Authorization());
       console.log("유저" + response.data.uid);
+      uid = response.data.uid;
     } catch (e) {
       console.error(e);
     }
@@ -70,7 +52,10 @@ const CommentModal = () => {
     console.log(comment?.novelResult[0].like);
     try {
       if (localStorage.getItem("refresh-token")) {
-        await instance.post("/novel/like/" + id, Authorization());
+        const responst = await instance.post(
+          "/novel/like/" + id,
+          Authorization()
+        );
       }
     } catch (err) {
       console.error(err);
@@ -78,13 +63,20 @@ const CommentModal = () => {
   };
 
   const getComment = async () => {
-    console.log("실행");
+    try {
+      const response = await instance.get("/comment/" + id, Authorization());
+      console.log(response.data);
+      setMessage(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const getNovel = async () => {
     try {
       id = modalCState.id;
-      console.log("아이디" + id);
       const response = await instance.get("/novel/" + id, Authorization());
       setComment(response.data);
-      console.log("힝구리" + response.data.novelResult[0]);
     } catch (error) {
       console.error(error);
     }
@@ -123,14 +115,19 @@ const CommentModal = () => {
       // Enter 키를 눌렀는지 확인
       console.log("enter"); // sendMessageState 출력
       try {
-        const response = await instance.post(
-          "/comment/" + id,
+        console.log("메시지");
+        await instance.post(
+          "/comment",
           {
-            novel_uid: 1, // user id 가지고 와야함
-            review: "와정말재밌어요.",
+            novel_uid: modalCState.id, // user id 가지고 와야함
+            review: sendMessageState,
           },
           Authorization()
         );
+        getComment();
+        // query key값이 바뀔때 다시 api get 요청을 보내 새로고침 없이 개시물을 볼수 있게해주는 코드
+        // queryClient.invalidateQueries({ queryKey: ["getCommentList", id - 1] });
+        console.log("실행");
       } catch (err) {
         console.error(err);
       }
@@ -211,8 +208,12 @@ const CommentModal = () => {
                 onKeyDown={(e) => sendMessage(e)}
               />
             </div>
-            <S.MessageBox isMy={true}>힝구리핑퐁</S.MessageBox>
-            <S.MessageBox isMy={false}>퐁퐁남</S.MessageBox>
+            {message &&
+              message.map((prev) => (
+                <S.MessageBox key={prev.uid} isMy={!(uid === prev.user.uid)}>
+                  {prev.review}
+                </S.MessageBox>
+              ))}
           </div>
           <div style={{ height: "10rem" }}></div>
         </Column>
