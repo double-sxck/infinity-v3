@@ -21,13 +21,21 @@ export const ContentBox = styled.div`
   align-items: center;
 `;
 
-export const Thumbnail = styled.div`
+interface ThumbnailProps {
+  $url: String;
+}
+
+export const Thumbnail = styled.div<ThumbnailProps>`
   width: 50rem;
   height: 50rem;
 
   border-radius: 2rem;
 
   background-color: #f5f5f5;
+  background-image: ${(props) => `url(http://localhost:3001${props.$url})`};
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 `
 
 export const ContentText = styled.p`
