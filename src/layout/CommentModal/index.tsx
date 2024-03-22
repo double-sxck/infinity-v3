@@ -143,7 +143,7 @@ const CommentModal = () => {
         <Column gap={10} justifyContent="center" alignItems="center">
           <div style={{ alignSelf: "flex-start" }}>
             <Row gap={8.6}>
-              <S.ImageBox />
+              <S.ImageBox img={comment?.novelResult[0].thumbnail || ""} />
               <Column gap={4}>
                 <S.NovelTitle>{comment?.novelResult[0].title}</S.NovelTitle>
                 <S.NovelContent>{comment?.userResult.nickname}</S.NovelContent>

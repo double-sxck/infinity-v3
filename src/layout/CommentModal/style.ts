@@ -27,14 +27,13 @@ export const Modal = styled.div`
   overflow-y: auto;
 `;
 
-export const ImageBox = styled.div`
+export const ImageBox = styled.div<{ img: string }>`
   width: 34rem;
   height: 34rem;
-
   margin-left: 8.6rem;
-
   background-color: black;
-
+  background-image: url(${(props) => props.img || "none"});
+  background-size: cover;
   border-radius: 2.4rem;
 `;
 
