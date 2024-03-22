@@ -55,10 +55,13 @@ export const HelfLine = styled.div`
 `;
 
 export const AddContentText = styled.p`
+  width: 30rem;
+  text-align: left;
+  line-height: 2.4rem;
+
   font-size: 2.4rem;
   font-weight: 400;
   color: #2c333e;
-  text-align: center;
 
   margin-left: 2rem;
 `;

@@ -1,11 +1,118 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./style";
 import { Column, Row } from "../../styles/ui";
-import { BrashIcon, CoffeeIcon, CopyIcon, HeartArrowIcon, ImageIcon, MagicStickIcon, MoreIcon, ScaryFaceIcon, TextInputIcon, UploadIcon } from "../../assets";
+import { BrashIcon, CoffeeIcon, CopyIcon, HeartArrowIcon, ImageIcon, MagicStickIcon, MakingThumbnail, MoreIcon, ScaryFaceIcon, TextInputIcon, UploadIcon } from "../../assets";
 import ShopIcon from "../../assets/images/ShopIcon";
+import { instance } from "../../apis/instance";
 
 const ViewPage = () => {
+  interface Keywords {
+    characters: string;
+    events: string;
+    backgrounds: string;
+  }
+
+  const [keywords, setKeywords] = useState<Keywords>({
+      characters: '',
+      events: '',
+      backgrounds: ''
+  });
+
   const [tag, setTag] = useState(1);
+  const [novel, setNovel] = useState("");
+  const [prompt, setPrompt] = useState("");
+  const [userPrompt, setUserPrompt] = useState("");
+  const [thumbnail, setThumbnail] = useState("");
+  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    const k = localStorage.getItem("keywords");
+    if(k !== null) setKeywords(JSON.parse(k));
+    const n = localStorage.getItem("novel");
+    if(n) setNovel(n);
+  }, []);
+
+  useEffect(() => {
+    if(novel !== "") {
+      setPrompt(() => (
+        `please draw novel's thumbnail with this keywords: characters/${keywords.characters} events/${keywords.events} backgrounds/${keywords.backgrounds}`
+      ));
+    }
+  }, [keywords, novel]);
+
+  useEffect(() => {
+    if(novel !== "") DALL_E(prompt)
+  }, [novel, prompt])
+
+  const drawThumbnail = () => {
+    if(userPrompt !== "") DALL_E(userPrompt);
+  };
+
+  const DALL_E = async (prompt: string) => {
+    try {
+      setThumbnail(() => "");
+      const token = localStorage.getItem("refresh-token");
+      const response = await instance.post("/image", 
+        {
+          prompt: prompt,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setThumbnail(response.data);
+      setUserPrompt("");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const categories = [
+    "ROMANCE",
+    "FANTASY",
+    "DAILY",
+    "THRILLER",
+    "FEATURE",
+    "ETC",
+  ];
+
+  const postNovel = () => {
+    if(title === "") {
+      alert('제목을 작성해주세요')
+      return
+    }
+    const dto = {
+      thumbnail: thumbnail,
+      title: title,
+      category: categories[tag-1],
+      content: novel,
+    }
+    post(dto);
+  };
+
+  const post = async (dto: {thumbnail: string, title: string, category: string, content: string}) => {
+    try {
+      const token = localStorage.getItem("refresh-token");
+      const response = await instance.post("/novel", 
+        {
+          thumbnail: `http://localhost:3001${dto.thumbnail}`,
+          title: dto.title,
+          category: dto.category,
+          content: dto.content,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      window.location.href = '/';
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -14,14 +121,22 @@ const ViewPage = () => {
         <S.ContentBox>
           <Column gap={4} alignItems="center">
             <S.Empty />
-            <S.Thumbnail />
+            {
+              thumbnail === "" ?
+              <MakingThumbnail width={400} height={400} /> :
+              <S.Thumbnail $url={thumbnail} />
+            }
             <Row justifyContent="center" alignItems="center">
               <ImageIcon />
               <S.RowText>썸네일</S.RowText>
               <S.ContentInputBox
                 placeholder="썸네일 직접 지정..."
+                value={userPrompt}
+                onChange={(e: any) => setUserPrompt(e.target.value)}
               />
-              <S.DrawButton>
+              <S.DrawButton
+                onClick={() => drawThumbnail()}
+              >
                 <BrashIcon />
               </S.DrawButton>
             </Row>
@@ -35,6 +150,8 @@ const ViewPage = () => {
             </Row>
             <S.LargeContentInputBox
               placeholder="제목 작성..."
+              value={title}
+              onChange={(e: any) => setTitle(e.target.value)}
             />
             <S.Horizontal />
             <Row gap={3.6}>
@@ -87,7 +204,7 @@ const ViewPage = () => {
             </Column>
           </Column>
         </S.ContentBox>
-        <S.WriteButton>
+        <S.WriteButton onClick={() => postNovel()}>
           <UploadIcon width={4} height={4} />
         </S.WriteButton>
       </Row>
