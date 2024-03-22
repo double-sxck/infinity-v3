@@ -29,7 +29,7 @@ interface Novel {
   views: number;
   novel_likes: any;
   conmment: any;
-};
+}
 
 const MainPage = () => {
   const path = useLocation().pathname;
@@ -91,7 +91,7 @@ const MainPage = () => {
           viewType: sort,
         },
       });
-      console.log(response)
+      console.log(response);
       setNovels(response.data);
     } catch (error) {
       console.log(error);
@@ -131,7 +131,7 @@ const MainPage = () => {
 
   return (
     <>
-      {path === "/" || path === "/search" ? 
+      {path === "/" || path === "/search" ? (
         <Row gap={2.4}>
           <S.ListBox
             onClick={() => setSort("LATEST")}
@@ -142,8 +142,11 @@ const MainPage = () => {
           <S.ListBox
             onClick={() => setSort("POPULAR")}
             $selected={sort === "POPULAR"}
-          >인기</S.ListBox>
-        </Row> :
+          >
+            인기
+          </S.ListBox>
+        </Row>
+      ) : (
         <Row gap={2.4} alignItems="center">
           {category === "romance" && categories["romance"]}
           {category === "fantasy" && categories["fantasy"]}
@@ -152,39 +155,35 @@ const MainPage = () => {
           {category === "feature" && categories["feature"]}
           {category === "etc" && categories["etc"]}
         </Row>
-      }
-      {
-        path === "/" ?
+      )}
+      {path === "/" ? (
         <S.ContentsArea>
-          {
-            novels.data.map((novel: Novel, index: number) => (
-              <NovelBox
-                key={index}
-                uid={novel.uid}
-                thumbnail={novel.thumbnail}
-                title={novel.title}
-                user={novel.user}
-                views={novel.views}
-              />
-            ))
-          }
-        </S.ContentsArea> :
+          {novels.data.map((novel: Novel, index: number) => (
+            <NovelBox
+              key={index}
+              uid={novel.uid}
+              thumbnail={novel.thumbnail}
+              title={novel.title}
+              user={novel.user}
+              views={novel.views}
+            />
+          ))}
+        </S.ContentsArea>
+      ) : (
         <S.SearchContentsArea>
-          {
-            novels.data.map((novel: Novel, index: number) => (
-              <NovelSearchBox
-                key={index}
-                uid={novel.uid}
-                thumbnail={novel.thumbnail}
-                title={novel.title}
-                user={novel.user}
-                views={novel.views}
-                content={novel.content}
-              />
-            ))
-          }
+          {novels.data.map((novel: Novel, index: number) => (
+            <NovelSearchBox
+              key={index}
+              uid={novel.uid}
+              thumbnail={novel.thumbnail}
+              title={novel.title}
+              user={novel.user}
+              views={novel.views}
+              content={novel.content}
+            />
+          ))}
         </S.SearchContentsArea>
-      }
+      )}
     </>
   );
 };

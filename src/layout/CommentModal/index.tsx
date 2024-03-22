@@ -41,31 +41,7 @@ const CommentModal = () => {
   const [message, setMessage] = useState();
 
   //feed list 받아온 값을 저장하는 state
-  const [comment, setComment] = useState<CommentType[]>([
-    {
-      userResult: {
-        nickname: "aaaa",
-      },
-      novelResult: [
-        {
-          uid: 1,
-          user_uid: 4,
-          title: "새로운 포스트 제목",
-          content: "포스트 내용",
-          thumbnail: "이미지 URL 또는 경로",
-          category: "ETC",
-          views: 1034,
-          novel_likes: [
-            {
-              user_uid: 4,
-              novel_uid: 1,
-            },
-          ],
-          likeCount: 1,
-        },
-      ],
-    },
-  ]);
+  const [comment, setComment] = useState<CommentType>();
   const [sendMessageState, setSendMessageState] = useState("");
   // query key를 지정하여 새로고침 없이 실행시킬 react query
   const { data } = useGetListQuery(id) as { data: any };
@@ -83,21 +59,15 @@ const CommentModal = () => {
   const getUser = async () => {
     try {
       console.log(Authorization());
-      // const response = await instance.get("/user/onlyuser", {
-      //   headers: {
-      //     Authorization: `Bearer ${localStorage.getItem("refresh-token")}`, // Replace 'yourAccessToken' with the actual access token
-      //     // Add other headers if needed
-      //   },
-      // });
       const response = await instance.get("/user/onlyuser", Authorization());
-      console.log(response.data.uid);
+      console.log("유저" + response.data.uid);
     } catch (e) {
       console.error(e);
     }
   };
 
   const postLike = async () => {
-    console.log(comment[0].novelResult[0].like);
+    console.log(comment?.novelResult[0].like);
     try {
       if (localStorage.getItem("refresh-token")) {
         await instance.post("/novel/like/" + id, Authorization());
@@ -114,7 +84,7 @@ const CommentModal = () => {
       console.log("아이디" + id);
       const response = await instance.get("/novel/" + id, Authorization());
       setComment(response.data);
-      console.log(response.data);
+      console.log("힝구리" + response.data.novelResult[0]);
     } catch (error) {
       console.error(error);
     }
@@ -131,7 +101,8 @@ const CommentModal = () => {
     if (!isClickable()) return;
 
     setComment((prevComment) => {
-      const newNovelResult = prevComment[0].novelResult.map((novel) => {
+      if (!prevComment) return prevComment; // 이전 상태가 없으면 그대로 반환
+      const newNovelResult = prevComment.novelResult.map((novel) => {
         const newLike = !novel.like; // 이전 값의 반대로 설정
         const likeCountDiff = newLike ? 1 : -1; // likeCount의 증가 또는 감소 값
         return {
@@ -140,12 +111,10 @@ const CommentModal = () => {
           likeCount: novel.likeCount + likeCountDiff, // likeCount 업데이트
         };
       });
-      return [
-        {
-          ...prevComment[0],
-          novelResult: newNovelResult,
-        },
-      ];
+      return {
+        ...prevComment,
+        novelResult: newNovelResult,
+      };
     });
   };
 
@@ -176,16 +145,14 @@ const CommentModal = () => {
             <Row gap={8.6}>
               <S.ImageBox />
               <Column gap={4}>
-                <S.NovelTitle>{comment[0].novelResult[0].title}</S.NovelTitle>
-                <S.NovelContent>
-                  {comment[0].userResult.nickname}
-                </S.NovelContent>
+                <S.NovelTitle>{comment?.novelResult[0].title}</S.NovelTitle>
+                <S.NovelContent>{comment?.userResult.nickname}</S.NovelContent>
                 <Row gap={3}>
-                  {comment[0]?.novelResult[0].category ? (
+                  {comment?.novelResult[0].category ? (
                     <>
-                      {NovelType[comment[0].novelResult[0].category].icon}
+                      {NovelType[comment.novelResult[0].category].icon}
                       <S.NovelContent>
-                        {NovelType[comment[0].novelResult[0].category].label}
+                        {NovelType[comment.novelResult[0].category].label}
                       </S.NovelContent>
                     </>
                   ) : (
@@ -197,20 +164,20 @@ const CommentModal = () => {
                 </Row>
 
                 <S.NovelContent>
-                  조회수 {comment[0].novelResult[0].views}
+                  조회수 {comment?.novelResult[0].views}
                 </S.NovelContent>
                 <div
                   onClick={handleLikeClick}
                   style={{ cursor: isClickable() ? "pointer" : "not-allowed" }}
                 >
                   <Row>
-                    {comment[0].novelResult[0].like ? (
+                    {comment?.novelResult[0].like ? (
                       <LikeIcon color={"#ff0000"} />
                     ) : (
                       <LikeIcon />
                     )}
                     <S.NovelContent>
-                      {comment[0].novelResult[0].likeCount}
+                      {comment?.novelResult[0].likeCount}
                     </S.NovelContent>
                   </Row>
                 </div>
@@ -219,7 +186,7 @@ const CommentModal = () => {
           </div>
           <S.HelfLine />
 
-          <S.NovelContent>{comment[0].novelResult[0].content}</S.NovelContent>
+          <S.NovelContent>{comment?.novelResult[0].content}</S.NovelContent>
           <S.HelfLine />
           <div
             style={{
