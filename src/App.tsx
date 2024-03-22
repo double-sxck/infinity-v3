@@ -12,8 +12,8 @@ import NovelSearchBox from "./components/main/search/index";
 import { useLoginModal } from "./hooks/useLoginMdal";
 import { useCommentModal } from "./hooks/useCommentModal";
 import LoginModal from "./layout/LoginModal/modal";
-import CommentModal from "./layout/CommentModal";
 import { QueryClient, QueryClientProvider } from "react-query";
+import CommentModal from "./layout/CommentModal/index";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
