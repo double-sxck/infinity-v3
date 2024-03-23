@@ -2,7 +2,23 @@ import axios from "axios";
 
 export const instance = axios.create({
   baseURL: "http://localhost:3001/api/v3",
+  headers: { "Content-Type": "application/json" },
 });
+
+instance.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+      config.headers.Authorization = accessToken;
+    }
+
+    return config;
+  },
+  (error) => {
+    return error;
+  },
+);
 
 instance.interceptors.response.use(
   async (res) => {
@@ -34,5 +50,5 @@ instance.interceptors.response.use(
     //       } catch (e) {}
     //     }
     //     return Promise.reject(error);
-  }
+  },
 );

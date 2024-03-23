@@ -11,22 +11,39 @@ import { Column, Row } from "../../styles/ui";
 import { useLoginModal } from "../../hooks/useLoginMdal"; // useLoginModal 임포트 위치 변경
 import { useCommentModal } from "../../hooks/useCommentModal";
 import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import searchQueryState from "../../store/search/SearchQueryState";
 
 const HeaderBar = () => {
   const { openModal } = useLoginModal(); // useLoginModal 호출 위치 변경
   const [profile, setProfile] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const setSearchQueryState = useSetRecoilState(searchQueryState);
 
   return (
     <>
-      <S.Header type={profile}>
+      <S.Header id="씨발" type={profile}>
         <Link to="/">
           <LogoTextIcon width={12} height={4} />
         </Link>
         <Row gap={0}>
-          <S.InputBox placeholder="검색"></S.InputBox>
-          <S.SearchStick>
-            <ReadingGlassIcon />
-          </S.SearchStick>
+          <S.InputBox
+            placeholder="검색"
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.currentTarget.value);
+            }}
+          ></S.InputBox>
+          <Link
+            to="/search"
+            onClick={() => {
+              setSearchQueryState(searchValue);
+            }}
+          >
+            <S.SearchStick>
+              <ReadingGlassIcon />
+            </S.SearchStick>
+          </Link>
         </Row>
         <Row alignItems="center" justifyContent="center" gap={2.8}>
           {localStorage.getItem("refresh-token") ? (
