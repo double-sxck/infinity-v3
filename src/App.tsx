@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import {
+  FindPage,
   HeaderBar,
   MainPage,
   Sidebar,
@@ -48,6 +49,7 @@ function App() {
           <Route path="/profile" element={<UserPage />} />
           <Route path="/write" element={<WritePage />} />
           <Route path="/view" element={<ViewPage />} />
+          <Route path="/find/:type" element={<FindPage />} />
         </Routes>
       </div>
     </QueryClientProvider>
