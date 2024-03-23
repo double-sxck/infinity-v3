@@ -69,12 +69,19 @@ const Sidebar = () => {
           )}
           <S.SidebarContour />
           <S.Subtitle>탐색</S.Subtitle>
-          {GenreIconComponents.map((item, index) => (
-            <ItemBox key={index}>
-              {item.icon}
-              <S.SidebarText>{item.text}</S.SidebarText>
-            </ItemBox>
-          ))}
+          {GenreIconComponents.map((item, index) => {
+            localStorage.setItem("findType", item.type);
+            return (
+              // Sidebar 컴포넌트의 코드
+
+              <Link to={`/find/${item.type}`} key={index}>
+                <ItemBox>
+                  {item.icon}
+                  <S.SidebarText>{item.text}</S.SidebarText>
+                </ItemBox>
+              </Link>
+            );
+          })}
         </Column>
         <Row gap={2} justifyContent="center" alignItems="center">
           <SmartLogoIcon />

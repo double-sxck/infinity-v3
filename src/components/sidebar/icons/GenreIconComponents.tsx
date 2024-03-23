@@ -12,12 +12,12 @@ import {
 } from "../../../assets";
 
 export const GenreIconComponents = [
-  { icon: <HeartArrowIcon />, text: "로맨스 / 감성" },
-  { icon: <MagicStickIcon />, text: "판타지 / 이세계" },
-  { icon: <CoffeeIcon />, text: "일상 / 코미디" },
-  { icon: <ScaryFaceIcon />, text: "스릴러 / 호러" },
-  { icon: <CopyIcon />, text: "장편 / 시리즈" },
-  { icon: <MoreIcon />, text: "그 외" },
+  { icon: <HeartArrowIcon />, text: "로맨스 / 감성", type: "ROMANCE" },
+  { icon: <MagicStickIcon />, text: "판타지 / 이세계", type: "FANTASY" },
+  { icon: <CoffeeIcon />, text: "일상 / 코미디", type: "DAILY" },
+  { icon: <ScaryFaceIcon />, text: "스릴러 / 호러", type: "THRILLER" },
+  { icon: <CopyIcon />, text: "장편 / 시리즈", type: "FEATURE" },
+  { icon: <MoreIcon />, text: "그 외", type: "ETC" },
 ];
 
 export const UserIconComponents = [
