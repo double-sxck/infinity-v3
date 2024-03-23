@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   BookIcon,
   CoffeeIcon,
@@ -39,8 +40,10 @@ const Sidebar = () => {
       <S.Between>
         <Column gap={2.6}>
           <ItemBox>
-            <HomeIcon />
-            <S.SidebarText>홈</S.SidebarText>
+            <Link to="/">
+              <HomeIcon />
+              <S.SidebarText>홈</S.SidebarText>
+            </Link>
           </ItemBox>
           <S.SidebarContour />
           <S.Subtitle>나</S.Subtitle>
