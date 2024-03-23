@@ -22,13 +22,13 @@ interface Novel {
   uid: number;
   user: any;
   user_uid: number;
-  title: String;
-  content: String;
-  thumbnail: String;
+  title: string;
+  content: string;
+  thumbnail: string;
   category: any;
   views: number;
   novel_likes: any;
-  conmment: any;
+  comment: any; // Fix typo here
 }
 
 const MainPage = () => {
@@ -75,7 +75,11 @@ const MainPage = () => {
 
   const [sort, setSort] = useState("LATEST");
 
-  const [novels, setNovels] = useState({ data: [], meta: {} });
+  const [novels, setNovels] = useState<{ data: Novel[]; meta: any }>({
+    data: [],
+    meta: {},
+  });
+
   useEffect(() => {
     if (path === "/") getNovels();
     else if (path === "/search") getSearchedNovels();
@@ -91,7 +95,6 @@ const MainPage = () => {
           viewType: sort,
         },
       });
-      console.log(response);
       setNovels(response.data);
     } catch (error) {
       console.log(error);
@@ -114,7 +117,7 @@ const MainPage = () => {
     }
   };
 
-  const getCategoryNovels = async (category: String) => {
+  const getCategoryNovels = async (category: string) => {
     try {
       const response = await instance.get("/novel/category", {
         params: {

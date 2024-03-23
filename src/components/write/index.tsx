@@ -19,7 +19,9 @@ interface KeywordProps {
 }
 
 const WritePage = () => {
-  const [keywords, setKeywords] = useState<{ id: number, type: string; word: string; }[]>([]);
+  const [keywords, setKeywords] = useState<
+    { id: number; type: string; word: string }[]
+  >([]);
   const [person, setPerson] = useState("");
   const [event, setEvent] = useState("");
   const [background, setBackground] = useState("");
@@ -28,17 +30,17 @@ const WritePage = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-      scrollToBottom();
+    scrollToBottom();
   }, [sseData]);
 
   const scrollToBottom = () => {
-      if (scrollRef.current) {
-          scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-      }
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   };
 
   const addKeyword = (id: number, type: string, word: string) => {
-    setKeywords((bf) => [...bf, {id: id, type: type, word: word}])
+    setKeywords((bf) => [...bf, { id: id, type: type, word: word }]);
   };
 
   const keywordId = useRef(0);
@@ -47,14 +49,14 @@ const WritePage = () => {
     return (
       <div>
         <Row alignItems="center" justifyContent="space-between">
-          <div style={{ display: "flex", alignItems:"center" }}>
-            {
-              type === 'P' ?
-              <UserIcon width={2.4} height={2.4} /> :
-              type === 'E' ?
-              <PlayButtonIcon width={2.4} height={2.4} /> :
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {type === "P" ? (
+              <UserIcon width={2.4} height={2.4} />
+            ) : type === "E" ? (
+              <PlayButtonIcon width={2.4} height={2.4} />
+            ) : (
               <ImagesIcon width={2.4} height={2.4} />
-            }
+            )}
             <S.AddContentText>{word}</S.AddContentText>
           </div>
           <div onClick={() => remove(id)}>
@@ -62,24 +64,24 @@ const WritePage = () => {
           </div>
         </Row>
       </div>
-    )
-  }
+    );
+  };
 
   const remove = (id: number) => {
     const newKeywords = keywords.filter((it) => it.id !== id);
     setKeywords(newKeywords);
   };
 
-  const makeDto = (keywords: {type: string, word: string}[]) => {
+  const makeDto = (keywords: { type: string; word: string }[]) => {
     let characters = "";
     let events = "";
     let backgrounds = "";
-    
-    keywords.forEach(keyword => {
+
+    keywords.forEach((keyword) => {
       if (keyword && keyword.type && keyword.word) {
-        if(keyword.type === 'P') characters += keyword.word + ', ';
-        else if(keyword.type === 'E') events += keyword.word + ', ';
-        else if(keyword.type === 'B') backgrounds += keyword.word + ', ';
+        if (keyword.type === "P") characters += keyword.word + ", ";
+        else if (keyword.type === "E") events += keyword.word + ", ";
+        else if (keyword.type === "B") backgrounds += keyword.word + ", ";
       }
     });
     const dto = {
@@ -89,63 +91,66 @@ const WritePage = () => {
     };
 
     return dto;
-  }
+  };
 
-  const writeNovel = (keywords: {type: string, word: string}[]) => {
-    const dto = makeDto(keywords)
+  const writeNovel = (keywords: { type: string; word: string }[]) => {
+    const dto = makeDto(keywords);
     fetchSSE(dto);
-  }
+  };
 
-  const fetchSSE = (dto: {characters: string, events: string, backgrounds: string}) => {
-    setSseData('');
+  const fetchSSE = (dto: {
+    characters: string;
+    events: string;
+    backgrounds: string;
+  }) => {
+    setSseData("");
 
-    fetch('http://localhost:3001/api/v3/ai', {
-      method: 'POST',
+    fetch("http://localhost:3001/api/v3/ai", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         keyword: dto,
       }),
     })
-    .then((response) => {
-      if(!response.body) {
-        throw new Error('Null');
-      }
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-
-      const readChunk = (): any => {
-        return reader.read().then(appendChunks);
-      };
-
-      const appendChunks = (result: any) => {
-        const chunk = decoder.decode(result.value || new Uint8Array(), {
-          stream: !result.done,
-        });
-        setSseData((prevString) => prevString + chunk);
-
-        if (!result.done) {
-          return readChunk();
+      .then((response) => {
+        if (!response.body) {
+          throw new Error("Null");
         }
-      };
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
 
-      return readChunk();
-    })
-    .catch((e) => {
-      console.log(e)
-    });
+        const readChunk = (): any => {
+          return reader.read().then(appendChunks);
+        };
+
+        const appendChunks = (result: any) => {
+          const chunk = decoder.decode(result.value || new Uint8Array(), {
+            stream: !result.done,
+          });
+          setSseData((prevString) => prevString + chunk);
+
+          if (!result.done) {
+            return readChunk();
+          }
+        };
+
+        return readChunk();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   const nextStep = () => {
-    if(sseData === '') alert('소설을 작성해주세요!');
+    if (sseData === "") alert("소설을 작성해주세요!");
     else {
       localStorage.setItem("keywords", JSON.stringify(makeDto(keywords)));
       localStorage.setItem("novel", sseData);
-      window.location.href = '/view';
+      window.location.href = "/view";
     }
   };
-
 
   return (
     <>
@@ -169,11 +174,13 @@ const WritePage = () => {
                     placeholder="인물 추가..."
                     type="text"
                     value={person}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setPerson(e.target.value)
+                    }
                     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      if(e.key === "Enter") {
+                      if (e.key === "Enter") {
                         addKeyword(keywordId.current++, "P", person);
-                        setPerson("")
+                        setPerson("");
                       }
                     }}
                   />
@@ -185,11 +192,13 @@ const WritePage = () => {
                     placeholder="사건 추가..."
                     type="text"
                     value={event}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEvent(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setEvent(e.target.value)
+                    }
                     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      if(e.key === "Enter") {
+                      if (e.key === "Enter") {
                         addKeyword(keywordId.current++, "E", event);
-                        setEvent("")
+                        setEvent("");
                       }
                     }}
                   />
@@ -201,11 +210,13 @@ const WritePage = () => {
                     placeholder="배경 추가..."
                     type="text"
                     value={background}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBackground(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setBackground(e.target.value)
+                    }
                     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      if(e.key === "Enter") {
+                      if (e.key === "Enter") {
                         addKeyword(keywordId.current++, "B", background);
-                        setBackground("")
+                        setBackground("");
                       }
                     }}
                   />
@@ -221,36 +232,28 @@ const WritePage = () => {
               }}
             >
               <S.KeywordBox>
-                {
-                  keywords.map((keyword, index) => (
-                    <Keyword
-                      key={index}
-                      id={keyword.id}
-                      type={keyword.type}
-                      word={keyword.word}
-                    />
-                  ))
-                }
+                {keywords.map((keyword, index) => (
+                  <Keyword
+                    key={index}
+                    id={keyword.id}
+                    type={keyword.type}
+                    word={keyword.word}
+                  />
+                ))}
               </S.KeywordBox>
             </div>
           </S.ContentBox>
         </Column>
-        <S.WriteButton
-          onClick={() => (
-            writeNovel(keywords)
-          )}
-        >
+        <S.WriteButton onClick={() => writeNovel(keywords)}>
           <PencilIcon width={4} height={4} />
         </S.WriteButton>
         <Column>
           <S.ContentText>소설 미리 보기</S.ContentText>
           <S.ContentBox>
             <S.VeiwNovel ref={scrollRef}>
-              {
-                sseData !== '' ?
-                sseData :
-                '키워드를 입력하고 소설을 생성해보세요.'
-              }
+              {sseData !== ""
+                ? sseData
+                : "키워드를 입력하고 소설을 생성해보세요."}
             </S.VeiwNovel>
           </S.ContentBox>
         </Column>
