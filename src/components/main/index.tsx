@@ -17,6 +17,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { instance } from "../../apis/instance";
 import { useCommentModal } from "../../hooks/useCommentModal";
+import { useRecoilValue } from "recoil";
+import searchQueryState from "../../store/search/SearchQueryState";
 
 interface Novel {
   uid: number;
@@ -80,11 +82,13 @@ const MainPage = () => {
     meta: {},
   });
 
+  const searchQueryValue = useRecoilValue(searchQueryState);
+
   useEffect(() => {
     if (path === "/") getNovels();
     else if (path === "/search") getSearchedNovels();
     else if (path.includes("/category")) getCategoryNovels(category || "");
-  }, [sort]);
+  }, [sort, searchQueryValue]);
 
   const getNovels = async () => {
     try {
@@ -103,14 +107,16 @@ const MainPage = () => {
 
   const getSearchedNovels = async () => {
     try {
+      console.log(searchQueryValue);
       const response = await instance.get("/novel/search", {
         params: {
-          query: "test",
+          query: searchQueryValue,
           size: 10,
           index: 1,
           viewType: sort,
         },
       });
+      console.log(response.data);
       setNovels(response.data);
     } catch (error) {
       console.log(error);
@@ -136,16 +142,10 @@ const MainPage = () => {
     <>
       {path === "/" || path === "/search" ? (
         <Row gap={2.4}>
-          <S.ListBox
-            onClick={() => setSort("LATEST")}
-            $selected={sort === "LATEST"}
-          >
+          <S.ListBox onClick={() => setSort("LATEST")} $selected={sort === "LATEST"}>
             최신
           </S.ListBox>
-          <S.ListBox
-            onClick={() => setSort("POPULAR")}
-            $selected={sort === "POPULAR"}
-          >
+          <S.ListBox onClick={() => setSort("POPULAR")} $selected={sort === "POPULAR"}>
             인기
           </S.ListBox>
         </Row>
@@ -174,16 +174,8 @@ const MainPage = () => {
         </S.ContentsArea>
       ) : (
         <S.SearchContentsArea>
-          {novels.data.map((novel: Novel, index: number) => (
-            <NovelSearchBox
-              key={index}
-              uid={novel.uid}
-              thumbnail={novel.thumbnail}
-              title={novel.title}
-              user={novel.user}
-              views={novel.views}
-              content={novel.content}
-            />
+          {novels.data.map((novel: Novel) => (
+            <NovelSearchBox key={novel.uid} {...novel} />
           ))}
         </S.SearchContentsArea>
       )}

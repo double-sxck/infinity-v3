@@ -47,8 +47,8 @@ const ViewPage = () => {
   useEffect(() => {
     if (novel !== "") {
       setPrompt(
-        () =>
-          `please draw novel's thumbnail with this keywords: characters/${keywords.characters} events/${keywords.events} backgrounds/${keywords.backgrounds}`
+        () => `thumbnail of ${keywords.events} in ${keywords.backgrounds}`,
+        // `please draw novel's thumbnail with this keywords: [characters: ${keywords.characters}] [events: ${keywords.events}] [backgrounds: ${keywords.backgrounds}]`
       );
     }
   }, [keywords, novel]);
@@ -65,32 +65,27 @@ const ViewPage = () => {
     try {
       setThumbnail(() => "");
       const token = localStorage.getItem("refresh-token");
-      const response = await instance.post(
-        "/image",
-        {
-          prompt: prompt,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      if (prompt) {
+        const response = await instance.post(
+          "/image",
+          {
+            prompt: prompt,
           },
-        }
-      );
-      setThumbnail(response.data);
-      setUserPrompt("");
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        setThumbnail(response.data);
+        setUserPrompt("");
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const categories = [
-    "ROMANCE",
-    "FANTASY",
-    "DAILY",
-    "THRILLER",
-    "FEATURE",
-    "ETC",
-  ];
+  const categories = ["ROMANCE", "FANTASY", "DAILY", "THRILLER", "FEATURE", "ETC"];
 
   const postNovel = () => {
     if (title === "") {
@@ -114,6 +109,8 @@ const ViewPage = () => {
   }) => {
     try {
       const token = localStorage.getItem("refresh-token");
+      console.log(dto);
+      console.log("dto");
       const response = await instance.post(
         "/novel",
         {
@@ -126,7 +123,7 @@ const ViewPage = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       window.location.href = "/";
     } catch (error) {
@@ -203,8 +200,7 @@ const ViewPage = () => {
                 {tag === 5 && <S.Selected />}
               </S.Keyword>
               <S.Keyword onClick={() => setTag(6)}>
-                <MoreIcon width={3} height={3} />그 외
-                {tag === 6 && <S.Selected />}
+                <MoreIcon width={3} height={3} />그 외{tag === 6 && <S.Selected />}
               </S.Keyword>
             </Column>
           </Column>
