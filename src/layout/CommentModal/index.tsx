@@ -42,7 +42,6 @@ const CommentModal = () => {
 
   const getUser = async () => {
     try {
-      console.log(Authorization());
       const response = await instance.get("/user/onlyuser", Authorization());
       uid = response.data.uid;
     } catch (e) {
@@ -51,6 +50,7 @@ const CommentModal = () => {
   };
 
   const postLike = async () => {
+    console.log("user" + uid);
     if (comment?.novelResult[0].like !== like) {
       try {
         const requestBody = { user_uid: uid }; // user_uid를 포함한 객체 생성
@@ -65,6 +65,7 @@ const CommentModal = () => {
   const getComment = async () => {
     try {
       const response = await instance.get("/comment/" + id, Authorization());
+
       setMessage(response.data);
     } catch (err) {
       console.error(err);
@@ -222,11 +223,14 @@ const CommentModal = () => {
               />
             </div>
             {message &&
-              message.map((prev) => (
-                <S.MessageBox key={prev.uid} isMy={!(uid === prev.user.uid)}>
-                  {prev.review}
-                </S.MessageBox>
-              ))}
+              message
+                .slice()
+                .reverse()
+                .map((prev) => (
+                  <S.MessageBox key={prev.uid} isMy={!(uid === prev.user.uid)}>
+                    {prev.review}
+                  </S.MessageBox>
+                ))}
           </div>
           <div style={{ height: "10rem" }}></div>
         </Column>

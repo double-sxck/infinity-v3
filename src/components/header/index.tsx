@@ -47,7 +47,6 @@ const HeaderBar = () => {
                 {profile && (
                   <S.ProfileClickBox>
                     <Link to="/profile">
-                      {" "}
                       {/* Link 컴포넌트로 감싸서 클릭 시 /profile 로 이동하도록 함 */}
                       <Row justifyContent="center " alignItems="center">
                         <UserIcon />
