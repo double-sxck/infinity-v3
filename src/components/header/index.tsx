@@ -31,9 +31,11 @@ const HeaderBar = () => {
         <Row alignItems="center" justifyContent="center" gap={2.8}>
           {localStorage.getItem("refresh-token") ? (
             <>
-              <S.UserProfileBox>
-                <PencilIcon />
-              </S.UserProfileBox>
+              <Link to="/write">
+                <S.UserProfileBox>
+                  <PencilIcon />
+                </S.UserProfileBox>
+              </Link>
               <Column justifyContent="center" alignItems="center">
                 <S.UserProfileBox
                   onClick={() => {
