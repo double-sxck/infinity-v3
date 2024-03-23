@@ -79,7 +79,7 @@ const CommentModal = () => {
           "/novel/loggedin/" + id,
           Authorization()
         );
-        console.log(response.data.novelResult[0]?.likeCount);
+        console.log(response.data.novelResult[0]);
         setLike(response.data.novelResult[0]?.like);
         setLikeCount(response.data.novelResult[0]?.likeCount);
         setComment(response.data);
@@ -192,7 +192,11 @@ const CommentModal = () => {
           </div>
           <S.HelfLine />
 
-          <S.NovelContent>{comment?.novelResult[0]?.content}</S.NovelContent>
+          <S.NovelContent>
+            <pre style={{ whiteSpace: "pre-wrap" }}>
+              {comment?.novelResult[0]?.content}
+            </pre>
+          </S.NovelContent>
           <S.HelfLine />
           <div
             style={{
