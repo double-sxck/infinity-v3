@@ -35,9 +35,10 @@ function App() {
           width: "calc(100vw - 24rem)",
           height: "calc(100vh - 8rem)",
           position: "fixed",
+          top: "16.5rem",
           left: "24rem",
           overflow: "auto",
-          padding: "4.5rem 12rem",
+          padding: "0rem 12rem",
         }}
       >
         <Routes>

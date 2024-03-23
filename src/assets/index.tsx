@@ -30,3 +30,4 @@ export { default as LikeIcon } from "./images/LikeIcon";
 export { default as CommentIcon } from "./images/CommentIcon";
 export { default as UploadIcon } from "./images/UploadIcon";
 export { default as MakingThumbnail } from "./images/MakingThumbnail";
+export { default as LogoutButtonIcon } from "./images/LogoutButtonIcon";

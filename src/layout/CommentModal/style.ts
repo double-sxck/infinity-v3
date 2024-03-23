@@ -43,7 +43,7 @@ export const NovelTitle = styled.p`
 `;
 
 export const NovelContent = styled.p`
-  width: 90%;
+  width: auto;
   max-width: 86rem;
   font-size: 2.4rem;
   font-weight: 400;
