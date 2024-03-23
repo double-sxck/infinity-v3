@@ -23,6 +23,7 @@ interface Novel {
 
 const UserPage = () => {
   const [pageType, usePageType] = useState<boolean[]>([true, false, false]);
+<<<<<<< HEAD
   const [userInfo, setUserInfo] = useState({
     totalLikes: 0,
     totalNovels: 0,
@@ -31,6 +32,11 @@ const UserPage = () => {
   });
   const [novels, setNovels] = useState({ data: [], meta: [] });
   const [flag, setFlag] = useState(0);
+=======
+  const [userInfo, setUserInfo] = useState({totalLikes: 0, totalNovels: 0, userInfo: {uid: 0, id: "아이디", nickname: "닉네임"}, views: 0});
+  const [novels, setNovels] = useState({data: [], meta: []})
+  const [flag, setFlag] = useState(0)
+>>>>>>> 450b6de9f54140270447377d42dbef7abc08964f
 
   const PageNation = (id: number) => {
     let newPageType = [false, false, false];
@@ -45,6 +51,7 @@ const UserPage = () => {
   useEffect(() => {
     if (!pageType[0]) {
       if (pageType[1] && flag !== 1) {
+<<<<<<< HEAD
         getNovels();
         setFlag(1);
       } else if (pageType[2] && flag !== 2) {
@@ -66,11 +73,36 @@ const UserPage = () => {
       console.log(userInfo);
     } catch (error) {
       console.log(error);
+=======
+        getNovels()
+        setFlag(1)
+      }
+      else if (pageType[2] && flag !== 2) {
+        getNovels()
+        setFlag(2)
+      } 
+    }
+  }, [pageType])
+
+  const getUserInfo = async () => {
+    try {
+        const token = localStorage.getItem('refresh-token');
+        const response = await instance.get("/user", {
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserInfo(response.data)
+        console.log(userInfo)
+    } catch (error) {
+        console.log(error);
+>>>>>>> 450b6de9f54140270447377d42dbef7abc08964f
     }
   };
 
   const getNovels = async () => {
     try {
+<<<<<<< HEAD
       const response = await instance.get(
         "/novel/user/" + userInfo.userInfo.uid,
         {
@@ -84,6 +116,18 @@ const UserPage = () => {
       setNovels(response.data);
     } catch (error) {
       console.log(error);
+=======
+        const response = await instance.get("/novel/user/"+userInfo.userInfo.uid, {
+          params: {
+              size: 10,
+              index: 1,
+              userFeedType: pageType[1] ? "FEED" : "USER_LIKED"
+          },
+        });
+        setNovels(response.data)
+    } catch (error) {
+        console.log(error);
+>>>>>>> 450b6de9f54140270447377d42dbef7abc08964f
     }
   };
 
@@ -95,10 +139,14 @@ const UserPage = () => {
           <Column justifyContent="space-around">
             <S.NickNameText>{userInfo.userInfo.nickname}</S.NickNameText>
             <S.UserProfileText>소설 {userInfo.totalNovels}개</S.UserProfileText>
+<<<<<<< HEAD
             <S.UserProfileText>
               조회수 {userInfo.views ? userInfo.views : 0}회 ‧ 좋아요{" "}
               {userInfo.totalLikes}개
             </S.UserProfileText>
+=======
+            <S.UserProfileText>조회수 {userInfo.views ? userInfo.views : 0}회 ‧ 좋아요 {userInfo.totalLikes}개</S.UserProfileText>
+>>>>>>> 450b6de9f54140270447377d42dbef7abc08964f
           </Column>
         </Row>
       </S.UserPageBox>
@@ -134,11 +182,16 @@ const UserPage = () => {
       </S.ChooseInfomation>
       <S.HerfChildLine />
       {pageType[0] === true ? (
+<<<<<<< HEAD
         <UserContents
           userid={userInfo.userInfo.id}
           nickname={userInfo.userInfo.nickname}
         />
       ) : (
+=======
+        <UserContents userid={userInfo.userInfo.id} nickname={userInfo.userInfo.nickname} />
+      ) : 
+>>>>>>> 450b6de9f54140270447377d42dbef7abc08964f
         novels.data.map((novel: Novel, index: number) => (
           <NovelContents
             key={index}
@@ -150,7 +203,11 @@ const UserPage = () => {
             content={novel.data.content}
           />
         ))
+<<<<<<< HEAD
       )}
+=======
+      }
+>>>>>>> 450b6de9f54140270447377d42dbef7abc08964f
     </>
   );
 };

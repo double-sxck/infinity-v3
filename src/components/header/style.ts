@@ -1,18 +1,20 @@
 import styled from "styled-components";
 
-export const Header = styled.header`
+export const Header = styled.header<{ type: boolean }>`
   position: sticky;
   top: 0px;
 
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
 
-  padding: 0rem 6.8rem;
-  overflow-x: hidden;
+  padding: 2rem calc(6.8rem - 20px) 2rem 6.8rem; /* 오른쪽 패딩 수정 */
+  margin-bottom: 20px; /* 아래 여백 추가 */
 
   width: 100vw;
-  height: 8rem;
+  height: 16rem; /* 오른쪽 20px만 높이를 100px로 설정 */
+
+  /* background-color: yellow; */
 
   box-sizing: border-box;
 `;
@@ -49,6 +51,8 @@ export const SearchStick = styled.div`
 `;
 
 export const UserProfileBox = styled.div`
+  position: relative;
+
   width: 4.8rem;
   height: 4.8rem;
 
@@ -58,6 +62,24 @@ export const UserProfileBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const ProfileClickBox = styled.div`
+  position: absolute;
+  top: 7.5rem; /*원하는 간격 조절 가능*/
+  z-index: 10;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+
+  width: 12rem;
+  height: 9rem;
+
+  border: 0.1rem solid #d9d9d9;
+  border-radius: 0.8rem;
 `;
 
 export const LoginButton = styled.div`
@@ -78,4 +100,15 @@ export const LoginText = styled.p`
   color: #2c333e;
   font-size: 2rem;
   font-weight: 400;
+`;
+
+export const ProfileBoxText = styled.p`
+  font-size: 1.9rem;
+  font-weight: 400;
+  color: #2c333e;
+`;
+
+export const ProfileLine = styled.div`
+  border-top: 0.1rem solid #d9d9d9;
+  width: 100%;
 `;

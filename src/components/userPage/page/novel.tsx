@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Column } from "../../../styles/ui";
 
+<<<<<<< HEAD
 const NovelContents = ({
   uid,
   thumbnail,
@@ -17,12 +18,16 @@ const NovelContents = ({
   views: number;
   content: String;
 }) => {
+=======
+const NovelContents = ({ uid, thumbnail, title, user, views, content }: { uid: number, thumbnail: String, title: String, user: String, views: number, content: String }) => {
+>>>>>>> 450b6de9f54140270447377d42dbef7abc08964f
   return (
     <div id={uid.toString()} className="mt-16">
       <Row>
         <ImageBox $url={thumbnail} />
         <Column gap="2">
           <NovelTitle>{title}</NovelTitle>
+<<<<<<< HEAD
           <NovelContent>
             조회수{" "}
             {new Intl.NumberFormat("ko-KR", {
@@ -30,6 +35,15 @@ const NovelContents = ({
               maximumFractionDigits: 1,
             }).format(views)}
             회
+=======
+          <NovelContent>조회수 {new Intl.NumberFormat('ko-KR', {
+                                notation: 'compact',
+                                maximumFractionDigits: 1,
+                              }).format(views)}회</NovelContent>
+          <NovelContent>{user}</NovelContent>
+          <NovelContent>
+            {content}
+>>>>>>> 450b6de9f54140270447377d42dbef7abc08964f
           </NovelContent>
           <NovelContent>{user}</NovelContent>
           <NovelContent>{content}</NovelContent>
@@ -59,7 +73,11 @@ const ImageBox = styled.div<ImageBoxProps>`
   flex-shrink: 0;
 
   background-color: #f5f5f5;
+<<<<<<< HEAD
   background-image: ${(props) => `url(${props.$url})`};
+=======
+  background-image: ${props => `url(${props.$url})`};
+>>>>>>> 450b6de9f54140270447377d42dbef7abc08964f
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

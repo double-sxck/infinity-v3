@@ -17,28 +17,20 @@ import {
 import { ItemBox, Row, Column } from "../../styles/ui";
 import * as S from "./style";
 import React from "react";
-
-const userIconComponents = [
-  { icon: <UserIcon />, text: "내 정보" },
-  { icon: <BookIcon />, text: "내 소설" },
-  { icon: <HeartIcon />, text: "좋아요한 소설" },
-  { icon: <PencilIcon />, text: "새 소설 쓰기" },
-];
-
-const genreIconComponents = [
-  { icon: <HeartArrowIcon />, text: "로맨스 / 감성" },
-  { icon: <MagicStickIcon />, text: "판타지 / 이세계" },
-  { icon: <CoffeeIcon />, text: "일상 / 코미디" },
-  { icon: <ScaryFaceIcon />, text: "스릴러 / 호러" },
-  { icon: <CopyIcon />, text: "장편 / 시리즈" },
-  { icon: <MoreIcon />, text: "그 외" },
-];
+import { useLoginModal } from "../../hooks/useLoginMdal";
+import {
+  GenreIconComponents,
+  UserIconComponents,
+} from "./icons/GenreIconComponents";
 
 const Sidebar = () => {
+  const { openModal } = useLoginModal();
+
   return (
     <S.SidebarBox>
       <S.Between>
         <Column gap={2.6}>
+<<<<<<< HEAD
           <ItemBox>
             <Link to="/">
               <HomeIcon />
@@ -51,11 +43,48 @@ const Sidebar = () => {
             <ItemBox key={index}>
               {item.icon}
               <S.SidebarText>{item.text}</S.SidebarText>
+=======
+          <Link to="/">
+            <ItemBox>
+              <HomeIcon />
+              <S.SidebarText>홈</S.SidebarText>
+>>>>>>> 450b6de9f54140270447377d42dbef7abc08964f
             </ItemBox>
-          ))}
+          </Link>
+          <S.SidebarContour />
+          {localStorage.getItem("refresh-token") ? (
+            <>
+              <S.Subtitle>나</S.Subtitle>
+              {UserIconComponents.map((item, index) => (
+                <Link to={item.function}>
+                  <ItemBox key={index}>
+                    {item.icon}
+                    <S.SidebarText>{item.text}</S.SidebarText>
+                  </ItemBox>
+                </Link>
+              ))}
+            </>
+          ) : (
+            <>
+              <p
+                style={{
+                  color: "#2c333e",
+                  fontSize: "1.6rem",
+                  fontWeight: 400,
+                }}
+              >
+                로그인하면 소설을 작성하거나 다른 사람의 소설에 반응을 남길 수
+                있습니다.
+              </p>
+              <S.LoginButton onClick={openModal}>
+                <UserIcon width={2.4} height={2.4} />
+                <S.LoginText>로그인</S.LoginText>
+              </S.LoginButton>
+            </>
+          )}
           <S.SidebarContour />
           <S.Subtitle>탐색</S.Subtitle>
-          {genreIconComponents.map((item, index) => (
+          {GenreIconComponents.map((item, index) => (
             <ItemBox key={index}>
               {item.icon}
               <S.SidebarText>{item.text}</S.SidebarText>
