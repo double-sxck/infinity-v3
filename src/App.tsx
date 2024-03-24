@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import {
+  FindPage,
   HeaderBar,
   MainPage,
   Sidebar,
@@ -12,13 +13,20 @@ import NovelSearchBox from "./components/main/search/index";
 import { useLoginModal } from "./hooks/useLoginMdal";
 import { useCommentModal } from "./hooks/useCommentModal";
 import LoginModal from "./layout/LoginModal/modal";
-import CommentModal from "./layout/CommentModal";
+import { QueryClient, QueryClientProvider } from "react-query";
+import CommentModal from "./layout/CommentModal/index";
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { refetchOnWindowFocus: false },
+  },
+});
 
 function App() {
   const { modalState } = useLoginModal();
-  const { modalCState } = useCommentModal();
+  const { modalCState } = useCommentModal(0);
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       {modalCState.show && <CommentModal />}
       {modalState.show && <LoginModal />}
       <HeaderBar />
@@ -28,9 +36,10 @@ function App() {
           width: "calc(100vw - 24rem)",
           height: "calc(100vh - 8rem)",
           position: "fixed",
+          top: "16.5rem",
           left: "24rem",
           overflow: "auto",
-          padding: "4.5rem 12rem",
+          padding: "0rem 12rem",
         }}
       >
         <Routes>
@@ -40,9 +49,10 @@ function App() {
           <Route path="/profile" element={<UserPage />} />
           <Route path="/write" element={<WritePage />} />
           <Route path="/view" element={<ViewPage />} />
+          <Route path="/find/:type" element={<FindPage />} />
         </Routes>
       </div>
-    </>
+    </QueryClientProvider>
   );
 }
 

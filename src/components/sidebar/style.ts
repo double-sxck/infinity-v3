@@ -14,6 +14,7 @@ export const SidebarBox = styled.div`
 export const SidebarText = styled.p`
   font-size: 2rem;
   font-weight: 400;
+  color: #2c333e;
 `;
 
 export const SidebarContour = styled.div`
@@ -37,4 +38,24 @@ export const Between = styled.div`
 
 export const Subtitle = styled.p`
   font-size: 2.5rem;
-`
+`;
+
+export const LoginButton = styled.div`
+  cursor: pointer;
+
+  width: 12.4rem;
+  height: 4.8rem;
+  border-radius: 2.4rem;
+  border: 0.1rem solid #d9d9d9;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+`;
+
+export const LoginText = styled.p`
+  color: #2c333e;
+  font-size: 2rem;
+  font-weight: 400;
+`;

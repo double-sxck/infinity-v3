@@ -1,16 +1,35 @@
 import React from "react";
 import styled from "styled-components";
+import { useCommentModal } from "../../../hooks/useCommentModal";
 
-const NovelBox = ({ uid, thumbnail, title, user, views }: { uid: number, thumbnail: String, title: String, user: String, views: number }) => {
+const NovelBox = ({
+  uid,
+  thumbnail,
+  title,
+  user,
+  views,
+}: {
+  uid: number;
+  thumbnail: String;
+  title: String;
+  user: String;
+  views: number;
+}) => {
+  const { openCommentModal } = useCommentModal(uid);
   return (
-    <div id={uid.toString()}>
+    <div id={uid.toString()} onClick={openCommentModal}>
       <ImageBox $url={thumbnail} />
       <NovelTitle>{title}</NovelTitle>
       <NovelContents>{user}</NovelContents>
-      <NovelContents>조회수 {new Intl.NumberFormat('ko-KR', {
-                            notation: 'compact',
-                            maximumFractionDigits: 1,
-                          }).format(views)}회</NovelContents>
+      <NovelContents>
+        조회수{" "}
+        {views &&
+          new Intl.NumberFormat("ko-KR", {
+            notation: "compact",
+            maximumFractionDigits: 1,
+          }).format(views)}
+        회
+      </NovelContents>
     </div>
   );
 };
@@ -27,7 +46,7 @@ const ImageBox = styled.div<ImageBoxProps>`
   border-radius: 2.4rem;
 
   background-color: #f5f5f5;
-  background-image: ${props => `url(${props.$url})`};
+  background-image: ${(props) => `url(${props.$url})`};
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

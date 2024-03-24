@@ -23,7 +23,7 @@ interface Novel {
 
 const UserPage = () => {
   const [pageType, usePageType] = useState<boolean[]>([true, false, false]);
-  const [userInfo, setUserInfo] = useState({uid: 0, id: "아이디", nickname: "닉네임"});
+  const [userInfo, setUserInfo] = useState({totalLikes: 0, totalNovels: 0, userInfo: {uid: 0, id: "아이디", nickname: "닉네임"}, views: 0});
   const [novels, setNovels] = useState({data: [], meta: []})
   const [flag, setFlag] = useState(0)
 
@@ -59,6 +59,7 @@ const UserPage = () => {
           },
         });
         setUserInfo(response.data)
+        console.log(userInfo)
     } catch (error) {
         console.log(error);
     }
@@ -66,7 +67,7 @@ const UserPage = () => {
 
   const getNovels = async () => {
     try {
-        const response = await instance.get("/novel/user/"+userInfo.uid, {
+        const response = await instance.get("/novel/user/"+userInfo.userInfo.uid, {
           params: {
               size: 10,
               index: 1,
@@ -85,9 +86,9 @@ const UserPage = () => {
         <Row gap="8">
           <UserDefualtIcon />
           <Column justifyContent="space-around">
-            <S.NickNameText>{userInfo.nickname}</S.NickNameText>
-            <S.UserProfileText>소설 [n]개</S.UserProfileText>
-            <S.UserProfileText>조회수 [n]회 ‧ 좋아요 [n]개</S.UserProfileText>
+            <S.NickNameText>{userInfo.userInfo.nickname}</S.NickNameText>
+            <S.UserProfileText>소설 {userInfo.totalNovels}개</S.UserProfileText>
+            <S.UserProfileText>조회수 {userInfo.views ? userInfo.views : 0}회 ‧ 좋아요 {userInfo.totalLikes}개</S.UserProfileText>
           </Column>
         </Row>
       </S.UserPageBox>
@@ -123,7 +124,7 @@ const UserPage = () => {
       </S.ChooseInfomation>
       <S.HerfChildLine />
       {pageType[0] === true ? (
-        <UserContents userid={userInfo.id} nickname={userInfo.nickname} />
+        <UserContents userid={userInfo.userInfo.id} nickname={userInfo.userInfo.nickname} />
       ) : 
         novels.data.map((novel: Novel, index: number) => (
           <NovelContents

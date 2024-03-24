@@ -1,39 +1,97 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import * as S from "./style";
 import {
   LogoTextIcon,
+  LogoutButtonIcon,
   PencilIcon,
   ReadingGlassIcon,
   UserIcon,
 } from "../../assets";
-import { Row } from "../../styles/ui";
+import { Column, Row } from "../../styles/ui";
 import { useLoginModal } from "../../hooks/useLoginMdal"; // useLoginModal 임포트 위치 변경
 import { useCommentModal } from "../../hooks/useCommentModal";
+import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import searchQueryState from "../../store/search/SearchQueryState";
 
 const HeaderBar = () => {
   const { openModal } = useLoginModal(); // useLoginModal 호출 위치 변경
-  const { openCommentModal } = useCommentModal(); // useLoginModal
+  const [profile, setProfile] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const setSearchQueryState = useSetRecoilState(searchQueryState);
 
   return (
     <>
-      <S.Header>
-        <LogoTextIcon width={12} height={4} />
-        <div onClick={openCommentModal}>임시버튼</div>
+      <S.Header id="씨발" type={profile}>
+        <Link to="/">
+          <LogoTextIcon width={12} height={4} />
+        </Link>
         <Row gap={0}>
-          <S.InputBox placeholder="검색"></S.InputBox>
-          <S.SearchStick>
-            <ReadingGlassIcon />
-          </S.SearchStick>
+          <S.InputBox
+            placeholder="검색"
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.currentTarget.value);
+            }}
+          ></S.InputBox>
+          <Link
+            to="/search"
+            onClick={() => {
+              setSearchQueryState(searchValue);
+            }}
+          >
+            <S.SearchStick>
+              <ReadingGlassIcon />
+            </S.SearchStick>
+          </Link>
         </Row>
         <Row alignItems="center" justifyContent="center" gap={2.8}>
           {localStorage.getItem("refresh-token") ? (
             <>
-              <S.UserProfileBox>
-                <PencilIcon />
-              </S.UserProfileBox>
-              <S.UserProfileBox>
-                <UserIcon />
-              </S.UserProfileBox>
+              <Link to="/write">
+                <S.UserProfileBox>
+                  <PencilIcon />
+                </S.UserProfileBox>
+              </Link>
+              <Column justifyContent="center" alignItems="center">
+                <S.UserProfileBox
+                  onClick={() => {
+                    setProfile(!profile);
+                  }}
+                >
+                  <UserIcon />
+                </S.UserProfileBox>
+                {profile && (
+                  <S.ProfileClickBox>
+                    <Link to="/profile">
+                      {/* Link 컴포넌트로 감싸서 클릭 시 /profile 로 이동하도록 함 */}
+                      <Row justifyContent="center " alignItems="center">
+                        <UserIcon />
+                        <S.ProfileBoxText>내 정보</S.ProfileBoxText>
+                      </Row>
+                    </Link>
+                    <S.ProfileLine />
+                    <div
+                      onClick={() => {
+                        console.log("로그아웃");
+                        localStorage.removeItem("refresh-token");
+                        window.location.reload();
+                      }}
+                    >
+                      <Row>
+                        <LogoutButtonIcon
+                          onClick={() => {
+                            console.log("로그아웃");
+                            localStorage.removeItem("refresh-token");
+                            window.location.reload();
+                          }}
+                        />
+                        <S.ProfileBoxText>로그아웃</S.ProfileBoxText>
+                      </Row>
+                    </div>
+                  </S.ProfileClickBox>
+                )}
+              </Column>
             </>
           ) : (
             <S.LoginButton onClick={openModal}>
