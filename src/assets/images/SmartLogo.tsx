@@ -5,12 +5,12 @@ interface SVGAttributeProps extends React.SVGAttributes<HTMLOrSVGElement> {
   height?: number;
 }
 
-const SmartLogoIcon = ({ width = 80, height = 63.61 }: SVGAttributeProps) => {
+const SmartLogoIcon = ({ width = 6.2, height = 5.0 }: SVGAttributeProps) => {
   return (
     <>
       <svg
-        width={width}
-        height={height}
+        width={`${width}rem`}
+        height={`${height}rem`}
         viewBox="0 0 80 64"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
