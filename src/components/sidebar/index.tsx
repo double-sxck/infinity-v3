@@ -1,22 +1,12 @@
 import { Link } from "react-router-dom";
 import {
-  BookIcon,
-  CoffeeIcon,
-  CopyIcon,
-  HeartArrowIcon,
-  HeartIcon,
   HomeIcon,
   LogoIcon,
-  MagicStickIcon,
-  MoreIcon,
-  PencilIcon,
-  ScaryFaceIcon,
   SmartLogoIcon,
   UserIcon,
 } from "../../assets";
 import { ItemBox, Row, Column } from "../../styles/ui";
 import * as S from "./style";
-import React from "react";
 import { useLoginModal } from "../../hooks/useLoginMdal";
 import {
   GenreIconComponents,
