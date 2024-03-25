@@ -89,7 +89,8 @@ export const VeiwNovel = styled.div`
   color: #2c333e;
   font-size: 2.4rem;
   font-weight: 400;
-  line-height: 3rem;
+  line-height: 3.2rem;
+  letter-spacing: 0.1rem;
 
   overflow: auto;
   white-space: pre-wrap;
