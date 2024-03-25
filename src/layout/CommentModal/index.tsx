@@ -4,7 +4,6 @@ import { useCommentModal } from "../../hooks/useCommentModal";
 import { useOutSideClick } from "../../hooks/useOutsideClick";
 import { Column, Row } from "../../styles/ui";
 import { useGetListQuery } from "./api";
-import { queryClient } from "../../App";
 import { instance } from "../../apis/instance";
 import { Authorization } from "../../apis/authorization";
 import NovelType from "./NovelCategory";

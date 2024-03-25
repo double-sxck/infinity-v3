@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import { useState } from "react";
 import * as S from "./style";
 import {
   LogoTextIcon,
@@ -9,17 +9,12 @@ import {
 } from "../../assets";
 import { Column, Row } from "../../styles/ui";
 import { useLoginModal } from "../../hooks/useLoginMdal"; // useLoginModal 임포트 위치 변경
-import { useCommentModal } from "../../hooks/useCommentModal";
-import { Link, useLocation } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import searchQueryState from "../../store/search/SearchQueryState";
+import { Link } from "react-router-dom";
 
 const HeaderBar = () => {
   const { openModal } = useLoginModal(); // useLoginModal 호출 위치 변경
   const [profile, setProfile] = useState<string>('false');
   const [searchValue, setSearchValue] = useState<string>("");
-  const setSearchQueryState = useSetRecoilState(searchQueryState);
-  const path = useLocation().pathname;
 
   return (
     <>

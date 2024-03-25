@@ -9,8 +9,6 @@ import {
   TrashIcon,
   UserIcon,
 } from "../../assets";
-import { instance } from "../../apis/instance";
-import { Link } from "react-router-dom";
 
 interface KeywordProps {
   id: number;

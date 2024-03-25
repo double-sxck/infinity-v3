@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import { useLoginModal } from "../hooks/useLoginMdal";
 import { useOutSideClick } from "../hooks/useOutsideClick";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as S from "./style";
 import { Column, Row } from "../../styles/ui";
 import {
@@ -120,7 +120,7 @@ const ViewPage = () => {
       const token = localStorage.getItem("refresh-token");
       console.log(dto);
       console.log("dto");
-      const response = await instance.post(
+      await instance.post(
         "/novel",
         {
           thumbnail: `http://localhost:3001${dto.thumbnail}`,
