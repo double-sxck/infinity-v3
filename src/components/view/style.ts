@@ -44,11 +44,12 @@ export const ContentText = styled.p`
   color: #2c333e;
   text-align: center;
   line-height: 4rem;
+  cursor: default;
 `;
 
 export const ContentInputBox = styled.input`
-  width: 22rem;
-  height: 4.2rem;
+  width: 40rem;
+  height: 5rem;
   border: 0.2rem solid #2c333e;
   border-radius: 2.4rem 2.4rem 2.4rem 0rem;
   padding: 0.5rem 2rem;
@@ -116,6 +117,7 @@ export const DrawButton = styled.div`
   border-radius: 2.4rem;
 
   margin-left: 2rem;
+  cursor: pointer;
 `;
 
 export const VeiwNovel = styled.div`
@@ -168,6 +170,7 @@ export const Keyword = styled.div`
   font-size: 2.4rem;
 
   gap: 4rem;
+  cursor: pointer;
 `
 
 export const Selected = styled.div`
@@ -178,4 +181,23 @@ export const Selected = styled.div`
   margin: auto 0 auto auto;
 
   background-color: #2c333e;
+`
+
+export const ErrMsg = styled.div`
+  width: 20rem;
+  height: 0rem;
+  margin: 2rem -10rem -2rem;
+  font-size: 2rem;
+  text-align: center;
+  color: #9a9a9a;
+`
+
+export const ErrMsg2 = styled.div`
+  width: 50rem;
+  height: 0rem;
+  margin: -1.5rem auto -0.5rem;
+  font-size: 2rem;
+  text-align: center;
+  color: #9a9a9a;
+  text-align: right;
 `

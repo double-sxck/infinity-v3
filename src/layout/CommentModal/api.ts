@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 
 const GetList = async (id: number) => {
   const response = await instance.get("/comment/" + id, Authorization());
-  console.log(response.data);
+  // console.log(response.data);
   return response.data;
 };
 

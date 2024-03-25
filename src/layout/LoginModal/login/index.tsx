@@ -71,8 +71,11 @@ const LoginModalPage: React.FC<ChildProps> = ({
             type="text"
             placeholder="아이디"
             value={value.id}
-            onChange={(e) => {
+            onChange={(e: any) => {
               inputState({ ...value, id: e.target.value });
+            }}
+            onKeyDown={(e: any) => {
+              if(e.key === 'Enter') NextButtonClickHandler();
             }}
           />
         ) : (
@@ -80,8 +83,11 @@ const LoginModalPage: React.FC<ChildProps> = ({
             type={showPW ? "text" : "password"}
             placeholder="비밀번호"
             value={value.pw}
-            onChange={(e) => {
+            onChange={(e: any) => {
               inputState({ ...value, pw: e.target.value });
+            }}
+            onKeyDown={(e: any) => {
+              if(e.key === 'Enter') NextButtonClickHandler();
             }}
           />
         )}

@@ -71,13 +71,19 @@ const JoinInfinity: React.FC<ChildProps> = ({
                 type="email"
                 placeholder="아이디"
                 value={value.id}
-                onChange={(e) => inputState({ ...value, id: e.target.value })}
+                onChange={(e: any) => inputState({ ...value, id: e.target.value })}
+                onKeyDown={(e: any) => {
+                  if(e.key === 'Enter') NextButtonClickHandler();
+                }}
               />
               <S.InputText
                 type="password"
                 placeholder="비밀번호"
                 value={value.pw}
-                onChange={(e) => inputState({ ...value, pw: e.target.value })}
+                onChange={(e: any) => inputState({ ...value, pw: e.target.value })}
+                onKeyDown={(e: any) => {
+                  if(e.key === 'Enter') NextButtonClickHandler();
+                }}
               />
             </>
           ) : (
@@ -85,9 +91,12 @@ const JoinInfinity: React.FC<ChildProps> = ({
               type="email"
               placeholder="닉네임"
               value={value.nickName}
-              onChange={(e) =>
+              onChange={(e: any) =>
                 inputState({ ...value, nickName: e.target.value })
               }
+              onKeyDown={(e: any) => {
+                if(e.key === 'Enter') NextButtonClickHandler();
+              }}
             />
           )}
         </Column>

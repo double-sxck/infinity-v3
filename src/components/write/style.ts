@@ -46,6 +46,8 @@ export const RowText = styled.p`
 
   margin-left: 1.8rem;
   margin-right: 4rem;
+
+  cursor: default;
 `;
 
 export const HelfLine = styled.div`
@@ -102,4 +104,13 @@ export const KeywordBox = styled.div`
   gap: 2.5rem;
 
   overflow: auto;
+`
+
+export const ErrMsg = styled.div`
+  width: 20rem;
+  height: 0rem;
+  margin: 2rem -10rem -2rem;
+  font-size: 2rem;
+  text-align: center;
+  color: #9a9a9a;
 `

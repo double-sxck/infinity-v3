@@ -15,7 +15,7 @@ const CoffeeIcon = ({ width = 2.0, height = 2.0 }: SVGAttributeProps) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g clip-path="url(#clip0_90_297)">
+        <g clipPath="url(#clip0_90_297)">
           <path
             d="M2 14.0003C3.10457 14.0003 4 13.1049 4 12.0003C4 10.8957 3.10457 10.0003 2 10.0003C0.89543 10.0003 0 10.8957 0 12.0003C0 13.1049 0.89543 14.0003 2 14.0003Z"
             fill="#2C333E"

@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { useCommentModal } from "../../../hooks/useCommentModal";
 import { Column } from "../../../styles/ui";
 
-const NovelContents = ({ uid, thumbnail, title, user, views, content }: { uid: number, thumbnail: String, title: String, user: String, views: number, content: String }) => {
+const NovelContents = ({ uid, thumbnail, title, views, content }: { uid: number, thumbnail: String, title: String, views: number, content: String }) => {
+  const { openCommentModal } = useCommentModal(uid);
   return (
-    <div id={uid.toString()} className="mt-16">
+    <Box id={uid.toString()} onClick={openCommentModal}>
       <Row>
         <ImageBox $url={thumbnail} />
         <Column gap="2">
@@ -13,17 +15,21 @@ const NovelContents = ({ uid, thumbnail, title, user, views, content }: { uid: n
                                 notation: 'compact',
                                 maximumFractionDigits: 1,
                               }).format(views)}회</NovelContent>
-          <NovelContent>{user}</NovelContent>
           <NovelContent>
             {content}
           </NovelContent>
         </Column>
       </Row>
-    </div>
+    </Box>
   );
 };
 
 export default NovelContents;
+
+const Box = styled.div`
+  cursor: pointer;
+  margin-top: 4rem;
+`;
 
 const Row = styled.div`
   display: flex;

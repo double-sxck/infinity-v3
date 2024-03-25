@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Header = styled.header<{ type: boolean }>`
+export const Header = styled.header<{ type: string }>`
   position: sticky;
   top: 0px;
 
@@ -9,12 +9,8 @@ export const Header = styled.header<{ type: boolean }>`
   justify-content: space-between;
 
   padding: 2rem calc(6.8rem - 20px) 2rem 6.8rem; /* 오른쪽 패딩 수정 */
-  margin-bottom: 20px; /* 아래 여백 추가 */
 
   width: 100vw;
-  height: 16rem; /* 오른쪽 20px만 높이를 100px로 설정 */
-
-  /* background-color: yellow; */
 
   box-sizing: border-box;
 `;
@@ -62,24 +58,27 @@ export const UserProfileBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+
 `;
 
 export const ProfileClickBox = styled.div`
   position: absolute;
-  top: 7.5rem; /*원하는 간격 조절 가능*/
+  top: 7rem;
+  right: 4rem;
   z-index: 10;
 
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   gap: 1.5rem;
+  padding: 1.5rem;
 
-  width: 12rem;
-  height: 9rem;
+  width: 18rem;
 
-  border: 0.1rem solid #d9d9d9;
+  box-shadow: 0 0 1rem #00000044;
   border-radius: 0.8rem;
+  cursor: pointer;
+
 `;
 
 export const LoginButton = styled.div`
@@ -110,5 +109,6 @@ export const ProfileBoxText = styled.p`
 
 export const ProfileLine = styled.div`
   border-top: 0.1rem solid #d9d9d9;
-  width: 100%;
+  width: 18rem;
+  margin-left: -1.5rem;
 `;
