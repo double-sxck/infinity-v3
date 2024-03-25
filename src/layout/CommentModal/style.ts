@@ -49,6 +49,10 @@ export const NovelContent = styled.p`
   font-weight: 400;
 
   overflow-wrap: break-word;
+
+  text-align: justify;
+  letter-spacing: 0.1rem;
+  line-height: 3rem;
 `;
 
 export const HelfLine = styled.div`
@@ -70,6 +74,8 @@ export const MessageBox = styled.div<{ isMy: boolean }>`
   align-self: ${({ isMy }) => (isMy ? "flex-start" : "flex-end")};
 
   font-size: 2rem;
+  line-height: 2.2rem;
+  letter-spacing: 0.1rem;
 `;
 
 export const MessageUser = styled.div<{ isMy: boolean }>`
