@@ -21,8 +21,8 @@ export const GenreIconComponents = [
 ];
 
 export const UserIconComponents = [
-  { icon: <UserIcon />, text: "내 정보", function: "/profile" },
-  { icon: <BookIcon />, text: "내 소설", function: "/profile" },
-  { icon: <HeartIcon />, text: "좋아요한 소설", function: "/profile" },
+  { icon: <UserIcon width={2.0} height={2.0} />, text: "내 정보", function: "/profile/info" },
+  { icon: <BookIcon />, text: "내 소설", function: "/profile/novel" },
+  { icon: <HeartIcon />, text: "좋아요한 소설", function: "/profile/like" },
   { icon: <PencilIcon />, text: "새 소설 쓰기", function: "/write" },
 ];

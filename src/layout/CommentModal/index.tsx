@@ -12,8 +12,8 @@ import { CommentIcon, LikeIcon } from "../../assets";
 import { CommentType } from "../../types/layoutType/CommentType";
 import { MessageItem } from "../../types/layoutType/MessageItemType";
 
-var id = 1;
-var uid = 1;
+var id = 0;
+var uid = 0;
 const CommentModal = () => {
   const { closeCommentModal, modalCState } = useCommentModal(id);
   const [like, setLike] = useState<boolean>();
@@ -22,6 +22,7 @@ const CommentModal = () => {
   useOutSideClick(ref, async () => {
     postLike();
     closeCommentModal();
+    window.location.reload();
   });
 
   const [message, setMessage] = useState<MessageItem[]>([]);
@@ -55,7 +56,7 @@ const CommentModal = () => {
       try {
         const requestBody = { user_uid: uid }; // user_uid를 포함한 객체 생성
         await instance.post(`/novel/like/${id}`, requestBody, Authorization());
-        console.log("실행 좋아요");
+        // console.log("실행 좋아요");
       } catch (err) {
         console.error(err);
       }
@@ -65,7 +66,7 @@ const CommentModal = () => {
   const getComment = async () => {
     try {
       const response = await instance.get("/comment/" + id, Authorization());
-
+      // console.log(response.data)
       setMessage(response.data);
     } catch (err) {
       console.error(err);
@@ -80,7 +81,7 @@ const CommentModal = () => {
           "/novel/loggedin/" + id,
           Authorization()
         );
-        console.log(response.data.novelResult[0]);
+        // console.log(response.data.novelResult[0]);
         setLike(response.data.novelResult[0]?.like);
         setLikeCount(response.data.novelResult[0]?.likeCount);
         setComment(response.data);
@@ -103,26 +104,27 @@ const CommentModal = () => {
   const handleLikeClick = () => {
     // refresh-token이 없으면 클릭 불가능하므로 함수 종료
     if (!isClickable()) return;
-    console.log(likeCount);
+    // console.log(likeCount);
 
     setLike(!like);
     if (
       (comment?.novelResult[0].like && like) ||
       (!comment?.novelResult[0].like && like)
     ) {
-      setLikeCount(likeCount - 1);
+      setLikeCount(bf => bf - 1);
     } else {
-      setLikeCount(likeCount + 1);
+      setLikeCount(bf => bf + 1);
     }
-    // postLike();
+    postLike();
   };
 
   const sendMessage = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" || event.key === "Return") {
       // Enter 키를 눌렀는지 확인
-      console.log("enter"); // sendMessageState 출력
+      // console.log("enter"); // sendMessageState 출력
+      if (sendMessageState === "") return
       try {
-        console.log("메시지");
+        // console.log("메시지");
         await instance.post(
           "/comment",
           {
@@ -131,10 +133,14 @@ const CommentModal = () => {
           },
           Authorization()
         );
+        setSendMessageState("");
         getComment();
+        if (ref.current) {
+          ref.current.scrollTop = ref.current.scrollHeight;
+        }
         // query key값이 바뀔때 다시 api get 요청을 보내 새로고침 없이 개시물을 볼수 있게해주는 코드
         // queryClient.invalidateQueries({ queryKey: ["getCommentList", id - 1] });
-        console.log("실행");
+        // console.log("실행");
       } catch (err) {
         console.error(err);
       }
@@ -161,7 +167,7 @@ const CommentModal = () => {
                   {comment?.novelResult && comment.novelResult[0]?.title}
                 </S.NovelTitle>
                 <S.NovelContent>{comment?.userResult?.nickname}</S.NovelContent>
-                <Row gap={3}>
+                <Row gap={2}>
                   {comment?.novelResult && comment.novelResult[0]?.category ? (
                     <>
                       {NovelType[comment.novelResult[0]?.category]?.icon}
@@ -177,13 +183,13 @@ const CommentModal = () => {
                   )}
                 </Row>
                 <S.NovelContent>
-                  조회수 {comment?.novelResult && comment.novelResult[0]?.views}
+                  조회수 {comment?.novelResult && comment.novelResult[0]?.views}회
                 </S.NovelContent>
                 <div
                   onClick={handleLikeClick}
-                  style={{ cursor: isClickable() ? "pointer" : "not-allowed" }}
+                  style={{ cursor: isClickable() ? "pointer" : "default" }}
                 >
-                  <Row>
+                  <Row gap={2} alignItems="center">
                     {like ? <LikeIcon color={"#ff0000"} /> : <LikeIcon />}
                     <S.NovelContent>{likeCount}</S.NovelContent>
                   </Row>
@@ -207,32 +213,36 @@ const CommentModal = () => {
               padding: "0rem 8.6rem",
             }}
           >
-            <div className="mb-20">
-              <Row alignItems="center" gap={3}>
+            <div className="mb-16">
+              <Row alignItems="center" gap={2}>
                 <CommentIcon />
-                <p className="font-bold text-2xl text-gray-700">감상평 [n]개</p>
+                <S.Comment>감상평 {message.length}개</S.Comment>
               </Row>
             </div>
-            <div className="mb-20">
+            <div className="mb-12">
               <S.MessageInput
-                placeholder="감상평 남기기..."
-                onChange={(e) => {
+                placeholder={localStorage.getItem("refresh-token") !== null ? "감상평 남기기..." : "댓글을 남기려면 로그인해주세요"}
+                disabled={localStorage.getItem("refresh-token") === null}
+                value={sendMessageState}
+                onChange={(e: any) => {
                   setSendMessageState(e.target.value);
                 }}
-                onKeyDown={(e) => sendMessage(e)}
+                onKeyDown={(e: any) => sendMessage(e)}
               />
             </div>
             {message &&
               message
-                .slice()
-                .reverse()
                 .map((prev) => (
-                  <S.MessageBox key={prev.uid} isMy={!(uid === prev.user.uid)}>
-                    {prev.review}
-                  </S.MessageBox>
+                  <>
+                    <S.MessageUser key={prev.uid*prev.uid-1} isMy={!(uid === prev.user.uid)}>
+                      {prev.user.nickname}
+                    </S.MessageUser>
+                    <S.MessageBox key={prev.uid} isMy={!(uid === prev.user.uid)}>
+                      {prev.review}
+                    </S.MessageBox>
+                  </>
                 ))}
           </div>
-          <div style={{ height: "10rem" }}></div>
         </Column>
       </S.Modal>
     </S.Page>

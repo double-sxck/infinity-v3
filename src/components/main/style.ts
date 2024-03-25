@@ -25,13 +25,13 @@ export const ListBox = styled.div<ListBoxProps>`
     color: #ffffff;
   }
 
-  
+  cursor: pointer;
 `;
 
 export const ContentsArea = styled.div`
   width: 100%;
 
-  margin: 4rem auto;
+  margin: 4rem auto 16rem;
 
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -41,13 +41,13 @@ export const ContentsArea = styled.div`
 export const SearchContentsArea = styled.div`
   width: 100%;
 
-  margin: 4rem auto;
+  margin: 4rem auto 16rem;
 
   display: flex;
   flex-direction: column;
-  gap: 4rem
+  gap: 4rem;
 `;
 
-export const Category = styled.div`
-  font-size: 4rem;
+export const NoResult = styled.div`
+  font-size: 3rem;
 `

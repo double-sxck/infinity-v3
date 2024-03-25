@@ -29,6 +29,12 @@ const WritePage = () => {
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  const [err, setErr] = useState(0);
+
+  useEffect(() => {
+    setErr(0);
+  }, [keywords, sseData])
+
   useEffect(() => {
     scrollToBottom();
   }, [sseData]);
@@ -94,6 +100,10 @@ const WritePage = () => {
   };
 
   const writeNovel = (keywords: { type: string; word: string }[]) => {
+    if (keywords.length === 0) {
+      setErr(1);
+      return;
+    }
     const dto = makeDto(keywords);
     fetchSSE(dto);
   };
@@ -144,7 +154,10 @@ const WritePage = () => {
   };
 
   const nextStep = () => {
-    if (sseData === "") alert("소설을 작성해주세요!");
+    if (sseData === "") {
+      setErr(2);
+      return;
+    }
     else {
       localStorage.setItem("keywords", JSON.stringify(makeDto(keywords)));
       localStorage.setItem("novel", sseData);
@@ -178,7 +191,7 @@ const WritePage = () => {
                       setPerson(e.target.value)
                     }
                     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      if (e.key === "Enter") {
+                      if (e.key === "Enter" && person !== "") {
                         addKeyword(keywordId.current++, "P", person);
                         setPerson("");
                       }
@@ -196,7 +209,7 @@ const WritePage = () => {
                       setEvent(e.target.value)
                     }
                     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      if (e.key === "Enter") {
+                      if (e.key === "Enter" && event !== "") {
                         addKeyword(keywordId.current++, "E", event);
                         setEvent("");
                       }
@@ -214,7 +227,7 @@ const WritePage = () => {
                       setBackground(e.target.value)
                     }
                     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      if (e.key === "Enter") {
+                      if (e.key === "Enter" && background !== "") {
                         addKeyword(keywordId.current++, "B", background);
                         setBackground("");
                       }
@@ -244,9 +257,14 @@ const WritePage = () => {
             </div>
           </S.ContentBox>
         </Column>
-        <S.WriteButton onClick={() => writeNovel(keywords)}>
-          <PencilIcon width={4} height={4} />
-        </S.WriteButton>
+        <Column justifyContent="center" alignItems="center">
+          <S.WriteButton onClick={() => writeNovel(keywords)}>
+            <PencilIcon width={4} height={4} />
+          </S.WriteButton>
+          {
+            err === 1 && <S.ErrMsg>최소 한 가지의<br />키워드를 추가해주세요.</S.ErrMsg>
+          }
+        </Column>
         <Column>
           <S.ContentText>소설 미리 보기</S.ContentText>
           <S.ContentBox>
@@ -257,9 +275,14 @@ const WritePage = () => {
             </S.VeiwNovel>
           </S.ContentBox>
         </Column>
-        <S.WriteButton onClick={() => nextStep()}>
-          <NextIcon width={4} height={4} />
-        </S.WriteButton>
+        <Column justifyContent="center" alignItems="center">
+          <S.WriteButton onClick={() => nextStep()}>
+            <NextIcon width={4} height={4} />
+          </S.WriteButton>
+          {
+            err === 2 && <S.ErrMsg>글쓰기 버튼을 눌러<br />소설을 작성해주세요.</S.ErrMsg>
+          }
+        </Column>
       </Row>
     </>
   );

@@ -41,8 +41,8 @@ const Sidebar = () => {
             <>
               <S.Subtitle>나</S.Subtitle>
               {UserIconComponents.map((item, index) => (
-                <Link to={item.function}>
-                  <ItemBox key={index}>
+                <Link to={item.function} key={index}>
+                  <ItemBox>
                     {item.icon}
                     <S.SidebarText>{item.text}</S.SidebarText>
                   </ItemBox>
@@ -74,7 +74,7 @@ const Sidebar = () => {
             return (
               // Sidebar 컴포넌트의 코드
 
-              <Link to={`/find/${item.type}`} key={index}>
+              <Link to={`/find/${item.type}`} key={index+100}>
                 <ItemBox>
                   {item.icon}
                   <S.SidebarText>{item.text}</S.SidebarText>
