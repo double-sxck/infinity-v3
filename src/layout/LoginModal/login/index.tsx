@@ -108,6 +108,7 @@ const LoginModalPage: React.FC<ChildProps> = ({
                   width: "2rem",
                   height: "2rem",
                   margin: "0 2rem 0 0",
+                  cursor: "pointer",
                 }}
               />
               <S.ShowPW htmlFor="pwCheckBox">비밀번호 표시</S.ShowPW>
