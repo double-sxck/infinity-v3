@@ -68,7 +68,7 @@ export const AddContentText = styled.p`
   margin-left: 2rem;
 `;
 
-export const WriteButton = styled.div`
+export const WriteButton = styled.button`
   width: 8rem;
   height: 8rem;
 

@@ -24,6 +24,7 @@ const WritePage = () => {
   const [event, setEvent] = useState("");
   const [background, setBackground] = useState("");
   const [sseData, setSseData] = useState("");
+  const [flag, setFlag] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const scrollRef2 = useRef<HTMLDivElement>(null);
@@ -113,6 +114,8 @@ const WritePage = () => {
       setErr(1);
       return;
     }
+    if (flag) return;
+    setFlag(() => true);
     const dto = makeDto(keywords);
     fetchSSE(dto);
   };
@@ -153,6 +156,7 @@ const WritePage = () => {
           if (!result.done) {
             return readChunk();
           }
+          setFlag(() => false);
         };
 
         return readChunk();
@@ -267,7 +271,10 @@ const WritePage = () => {
           </S.ContentBox>
         </Column>
         <Column justifyContent="center" alignItems="center">
-          <S.WriteButton onClick={() => writeNovel(keywords)}>
+          <S.WriteButton
+            onClick={() => writeNovel(keywords)}
+            disabled={flag}
+          >
             <PencilIcon width={4} height={4} />
           </S.WriteButton>
           {
