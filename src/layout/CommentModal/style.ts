@@ -40,6 +40,7 @@ export const ImageBox = styled.div<{ img: string }>`
 export const NovelTitle = styled.p`
   font-size: 3.6rem;
   font-weight: 700;
+  max-width: 40rem;
 `;
 
 export const NovelContent = styled.p`

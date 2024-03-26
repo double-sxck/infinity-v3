@@ -8,6 +8,8 @@ export const ModalMainText = styled.p`
 
   margin-top: 2rem;
   text-align: center;
+
+  cursor: default;
 `;
 
 export const InputText = styled.input`
@@ -33,6 +35,7 @@ export const CreateText = styled.p`
   font-weight: 400;
   font-size: 2.4rem;
   color: #2c333e;
+  cursor: pointer;
 `;
 
 export const NextButton = styled.input`
@@ -45,6 +48,8 @@ export const NextButton = styled.input`
   font-size: 2.4rem;
   font-weight: 400;
   color: #ffffff;
+
+  cursor: pointer;
 `;
 
 export const Row = styled.div`
@@ -65,6 +70,7 @@ export const ShowPW = styled.label`
   color: #2c333e;
 
   margin-right: 0.2rem;
+  cursor: pointer;
 `;
 
 export const FaildLogin = styled.p`
@@ -73,4 +79,5 @@ export const FaildLogin = styled.p`
   font-weight: 400;
 
   margin: 0 0 0 auto;
+  cursor: default;
 `;

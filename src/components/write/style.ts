@@ -78,6 +78,8 @@ export const WriteButton = styled.div`
 
   border: 0.1rem solid #d9d9d9;
   border-radius: 2.4rem;
+
+  cursor: pointer;
 `;
 
 export const VeiwNovel = styled.div`
