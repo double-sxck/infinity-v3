@@ -117,3 +117,13 @@ export const ErrMsg = styled.div`
   text-align: center;
   color: #9a9a9a;
 `
+
+export const Desc = styled.div`
+  font-size: 2.4rem;
+  cursor: default;
+  color: #9a9a9a;
+`
+
+export const Delete = styled.div`
+  cursor: pointer;
+`
