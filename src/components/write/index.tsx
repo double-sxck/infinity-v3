@@ -26,6 +26,7 @@ const WritePage = () => {
   const [sseData, setSseData] = useState("");
 
   const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef2 = useRef<HTMLDivElement>(null);
 
   const [err, setErr] = useState(0);
 
@@ -40,6 +41,16 @@ const WritePage = () => {
   const scrollToBottom = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom2();
+  }, [keywords]);
+
+  const scrollToBottom2 = () => {
+    if (scrollRef2.current) {
+      scrollRef2.current.scrollTop = scrollRef2.current.scrollHeight;
     }
   };
 
@@ -242,7 +253,7 @@ const WritePage = () => {
                 boxSizing: "border-box",
               }}
             >
-              <S.KeywordBox>
+              <S.KeywordBox ref={scrollRef2}>
                 {keywords.map((keyword, index) => (
                   <Keyword
                     key={index}
