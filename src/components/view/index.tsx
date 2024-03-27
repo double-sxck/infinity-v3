@@ -118,8 +118,6 @@ const ViewPage = () => {
   }) => {
     try {
       const token = localStorage.getItem("refresh-token");
-      console.log(dto);
-      console.log("dto");
       await instance.post(
         "/novel",
         {
@@ -134,6 +132,8 @@ const ViewPage = () => {
           },
         },
       );
+      localStorage.removeItem("keywords");
+      localStorage.removeItem("novel");
       window.location.href = "/";
     } catch (error) {
       console.error(error);
