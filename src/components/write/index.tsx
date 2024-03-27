@@ -75,9 +75,9 @@ const WritePage = () => {
             )}
             <S.AddContentText>{word}</S.AddContentText>
           </div>
-          <div onClick={() => remove(id)}>
+          <S.Delete onClick={() => remove(id)}>
             <TrashIcon />
-          </div>
+          </S.Delete>
         </Row>
       </div>
     );
@@ -258,14 +258,18 @@ const WritePage = () => {
               }}
             >
               <S.KeywordBox ref={scrollRef2}>
-                {keywords.map((keyword, index) => (
-                  <Keyword
-                    key={index}
-                    id={keyword.id}
-                    type={keyword.type}
-                    word={keyword.word}
-                  />
-                ))}
+                {
+                  keywords.length > 0 ?
+                  keywords.map((keyword, index) => (
+                    <Keyword
+                      key={index}
+                      id={keyword.id}
+                      type={keyword.type}
+                      word={keyword.word}
+                    />
+                  )) :
+                  <S.Desc>엔터를 눌러 키워드를 추가해주세요</S.Desc>
+                }
               </S.KeywordBox>
             </div>
           </S.ContentBox>
