@@ -1,37 +1,34 @@
-import React from "react";
 import styled from "styled-components";
+import { useCommentModal } from "../../../hooks/useCommentModal";
 import { Column } from "../../../styles/ui";
 
 const NovelSearchBox = ({ uid, thumbnail, title, user, views, content }: { uid: number, thumbnail: String, title: String, user: String, views: number, content: String }) => {
-  const Content = () => {
-    return (
-      <div id={uid.toString()}>
-        <Row>
-          <ImageBox $url={thumbnail} />
-          <Column gap="2">
-            <NovelTitle>{title}</NovelTitle>
-            <NovelContent>조회수 {new Intl.NumberFormat('ko-KR', {
-                                  notation: 'compact',
-                                  maximumFractionDigits: 1,
-                                }).format(views)}회</NovelContent>
-            <NovelContent>{user}</NovelContent>
-            <NovelContent>
-              {content}
-            </NovelContent>
-          </Column>
-        </Row>
-      </div>
-    )
-  }
-
+  const { openCommentModal } = useCommentModal(uid);
   return (
-    <Column gap={4}>
-      <Content />
-    </Column>
+    <Box id={uid.toString()} onClick={openCommentModal}>
+      <Row>
+        <ImageBox $url={thumbnail} />
+        <Column gap="2">
+          <NovelTitle>{title}</NovelTitle>
+          <NovelContent>조회수 {new Intl.NumberFormat('ko-KR', {
+                                notation: 'compact',
+                                maximumFractionDigits: 1,
+                              }).format(views)}회</NovelContent>
+          <NovelContent>{user}</NovelContent>
+          <NovelContent>
+            {content}
+          </NovelContent>
+        </Column>
+      </Row>
+    </Box>
   );
 };
 
 export default NovelSearchBox;
+
+const Box = styled.div`
+  cursor: pointer;
+`
 
 const Row = styled.div`
   display: flex;

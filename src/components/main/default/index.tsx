@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { useCommentModal } from "../../../hooks/useCommentModal";
 
@@ -17,7 +16,7 @@ const NovelBox = ({
 }) => {
   const { openCommentModal } = useCommentModal(uid);
   return (
-    <div id={uid.toString()} onClick={openCommentModal}>
+    <Box id={uid.toString()} onClick={openCommentModal}>
       <ImageBox $url={thumbnail} />
       <NovelTitle>{title}</NovelTitle>
       <NovelContents>{user}</NovelContents>
@@ -30,11 +29,15 @@ const NovelBox = ({
           }).format(views)}
         회
       </NovelContents>
-    </div>
+    </Box>
   );
 };
 
 export default NovelBox;
+
+const Box = styled.div`
+  cursor: pointer;
+`
 
 interface ImageBoxProps {
   $url: String;

@@ -9,8 +9,6 @@ import {
   TrashIcon,
   UserIcon,
 } from "../../assets";
-import { instance } from "../../apis/instance";
-import { Link } from "react-router-dom";
 
 interface KeywordProps {
   id: number;
@@ -26,8 +24,16 @@ const WritePage = () => {
   const [event, setEvent] = useState("");
   const [background, setBackground] = useState("");
   const [sseData, setSseData] = useState("");
+  const [flag, setFlag] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef2 = useRef<HTMLDivElement>(null);
+
+  const [err, setErr] = useState(0);
+
+  useEffect(() => {
+    setErr(0);
+  }, [keywords, sseData])
 
   useEffect(() => {
     scrollToBottom();
@@ -36,6 +42,16 @@ const WritePage = () => {
   const scrollToBottom = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom2();
+  }, [keywords]);
+
+  const scrollToBottom2 = () => {
+    if (scrollRef2.current) {
+      scrollRef2.current.scrollTop = scrollRef2.current.scrollHeight;
     }
   };
 
@@ -59,9 +75,9 @@ const WritePage = () => {
             )}
             <S.AddContentText>{word}</S.AddContentText>
           </div>
-          <div onClick={() => remove(id)}>
+          <S.Delete onClick={() => remove(id)}>
             <TrashIcon />
-          </div>
+          </S.Delete>
         </Row>
       </div>
     );
@@ -94,6 +110,12 @@ const WritePage = () => {
   };
 
   const writeNovel = (keywords: { type: string; word: string }[]) => {
+    if (keywords.length === 0) {
+      setErr(1);
+      return;
+    }
+    if (flag) return;
+    setFlag(() => true);
     const dto = makeDto(keywords);
     fetchSSE(dto);
   };
@@ -134,6 +156,7 @@ const WritePage = () => {
           if (!result.done) {
             return readChunk();
           }
+          setFlag(() => false);
         };
 
         return readChunk();
@@ -144,7 +167,10 @@ const WritePage = () => {
   };
 
   const nextStep = () => {
-    if (sseData === "") alert("소설을 작성해주세요!");
+    if (sseData === "") {
+      setErr(2);
+      return;
+    }
     else {
       localStorage.setItem("keywords", JSON.stringify(makeDto(keywords)));
       localStorage.setItem("novel", sseData);
@@ -178,7 +204,7 @@ const WritePage = () => {
                       setPerson(e.target.value)
                     }
                     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      if (e.key === "Enter") {
+                      if (e.key === "Enter" && person !== "") {
                         addKeyword(keywordId.current++, "P", person);
                         setPerson("");
                       }
@@ -196,7 +222,7 @@ const WritePage = () => {
                       setEvent(e.target.value)
                     }
                     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      if (e.key === "Enter") {
+                      if (e.key === "Enter" && event !== "") {
                         addKeyword(keywordId.current++, "E", event);
                         setEvent("");
                       }
@@ -214,7 +240,7 @@ const WritePage = () => {
                       setBackground(e.target.value)
                     }
                     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      if (e.key === "Enter") {
+                      if (e.key === "Enter" && background !== "") {
                         addKeyword(keywordId.current++, "B", background);
                         setBackground("");
                       }
@@ -231,22 +257,34 @@ const WritePage = () => {
                 boxSizing: "border-box",
               }}
             >
-              <S.KeywordBox>
-                {keywords.map((keyword, index) => (
-                  <Keyword
-                    key={index}
-                    id={keyword.id}
-                    type={keyword.type}
-                    word={keyword.word}
-                  />
-                ))}
+              <S.KeywordBox ref={scrollRef2}>
+                {
+                  keywords.length > 0 ?
+                  keywords.map((keyword, index) => (
+                    <Keyword
+                      key={index}
+                      id={keyword.id}
+                      type={keyword.type}
+                      word={keyword.word}
+                    />
+                  )) :
+                  <S.Desc>엔터를 눌러 키워드를 추가해주세요</S.Desc>
+                }
               </S.KeywordBox>
             </div>
           </S.ContentBox>
         </Column>
-        <S.WriteButton onClick={() => writeNovel(keywords)}>
-          <PencilIcon width={4} height={4} />
-        </S.WriteButton>
+        <Column justifyContent="center" alignItems="center">
+          <S.WriteButton
+            onClick={() => writeNovel(keywords)}
+            disabled={flag}
+          >
+            <PencilIcon width={4} height={4} />
+          </S.WriteButton>
+          {
+            err === 1 && <S.ErrMsg>최소 한 가지의<br />키워드를 추가해주세요.</S.ErrMsg>
+          }
+        </Column>
         <Column>
           <S.ContentText>소설 미리 보기</S.ContentText>
           <S.ContentBox>
@@ -257,9 +295,14 @@ const WritePage = () => {
             </S.VeiwNovel>
           </S.ContentBox>
         </Column>
-        <S.WriteButton onClick={() => nextStep()}>
-          <NextIcon width={4} height={4} />
-        </S.WriteButton>
+        <Column justifyContent="center" alignItems="center">
+          <S.WriteButton onClick={() => nextStep()}>
+            <NextIcon width={4} height={4} />
+          </S.WriteButton>
+          {
+            err === 2 && <S.ErrMsg>글쓰기 버튼을 눌러<br />소설을 작성해주세요.</S.ErrMsg>
+          }
+        </Column>
       </Row>
     </>
   );

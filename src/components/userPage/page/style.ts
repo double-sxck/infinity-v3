@@ -19,6 +19,11 @@ export const MainContent = styled.p`
   font-size: 2.4rem;
   font-weight: 400;
   color: #2c333e;
+  cursor: default;
+`;
+
+export const MainContent2 = styled(MainContent)`
+  cursor: pointer;
 `;
 
 export const DeleteButton = styled.p`

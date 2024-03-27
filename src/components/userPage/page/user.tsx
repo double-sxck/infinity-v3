@@ -25,8 +25,13 @@ const UserContents: React.FC<UserContentsProps> = ({ userid, nickname }) => {
         <S.MainText>계정 관리</S.MainText>
         <div className="pl-8 mt-16">
           <Column gap={2.5}>
-            <S.MainContent>내 소설 모두 삭제</S.MainContent>
-            <S.MainContent>로그아웃</S.MainContent>
+            <S.MainContent2>내 소설 모두 삭제</S.MainContent2>
+            <S.MainContent2
+              onClick={() => {
+                localStorage.removeItem("refresh-token");
+                window.location.href="/";
+              }}
+            >로그아웃</S.MainContent2>
             <S.DeleteButton>회원 탈퇴</S.DeleteButton>
           </Column>
         </div>

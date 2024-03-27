@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as S from "./style";
 import { Column, Row } from "../../styles/ui";
 import {
@@ -36,6 +36,8 @@ const ViewPage = () => {
   const [userPrompt, setUserPrompt] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [title, setTitle] = useState("");
+  const [err, setErr] = useState(0);
+  const [flag, setFlag] = useState(false)
 
   useEffect(() => {
     const k = localStorage.getItem("keywords");
@@ -54,15 +56,24 @@ const ViewPage = () => {
   }, [keywords, novel]);
 
   useEffect(() => {
+    setErr(0);
+  }, [title, userPrompt])
+
+  useEffect(() => {
     if (novel !== "") DALL_E(prompt);
   }, [novel, prompt]);
 
   const drawThumbnail = () => {
-    if (userPrompt !== "") DALL_E(userPrompt);
+    if (userPrompt === "") {
+      setErr(1);
+      return;
+    }
+    DALL_E(userPrompt);
   };
 
   const DALL_E = async (prompt: string) => {
     try {
+      setFlag(() => true)
       setThumbnail(() => "");
       const token = localStorage.getItem("refresh-token");
       if (prompt) {
@@ -78,6 +89,7 @@ const ViewPage = () => {
           },
         );
         setThumbnail(response.data);
+        setFlag(() => false)
         setUserPrompt("");
       }
     } catch (error) {
@@ -89,7 +101,7 @@ const ViewPage = () => {
 
   const postNovel = () => {
     if (title === "") {
-      alert("제목을 작성해주세요");
+      setErr(2);
       return;
     }
     const dto = {
@@ -109,9 +121,7 @@ const ViewPage = () => {
   }) => {
     try {
       const token = localStorage.getItem("refresh-token");
-      console.log(dto);
-      console.log("dto");
-      const response = await instance.post(
+      await instance.post(
         "/novel",
         {
           thumbnail: `http://localhost:3001${dto.thumbnail}`,
@@ -125,6 +135,8 @@ const ViewPage = () => {
           },
         },
       );
+      localStorage.removeItem("keywords");
+      localStorage.removeItem("novel");
       window.location.href = "/";
     } catch (error) {
       console.error(error);
@@ -136,25 +148,33 @@ const ViewPage = () => {
       <S.Title>업로드 설정</S.Title>
       <Row alignItems="center" gap={8}>
         <S.ContentBox>
-          <Column gap={4} alignItems="center">
+          <Column gap={2} alignItems="center" justifyContent="center">
             <S.Empty />
+            <Row gap={3.6} alignItems="center" justifyContent="center">
+              <ImageIcon height={4} width={4} />
+              <S.ContentText>썸네일</S.ContentText>
+            </Row>
             {thumbnail === "" ? (
-              <MakingThumbnail width={400} height={400} />
+              <MakingThumbnail width={48} height={48} />
             ) : (
               <S.Thumbnail $url={thumbnail} />
             )}
             <Row justifyContent="center" alignItems="center">
-              <ImageIcon />
-              <S.RowText>썸네일</S.RowText>
               <S.ContentInputBox
-                placeholder="썸네일 직접 지정..."
+                placeholder="원하는 썸네일 직접 생성..."
                 value={userPrompt}
                 onChange={(e: any) => setUserPrompt(e.target.value)}
               />
-              <S.DrawButton onClick={() => drawThumbnail()}>
+              <S.DrawButton
+                onClick={() => drawThumbnail()}
+                disabled={flag}
+              >
                 <BrashIcon />
               </S.DrawButton>
             </Row>
+            {
+              err === 1 && <S.ErrMsg2>입력란을 채우고 버튼을 눌러주세요</S.ErrMsg2>
+            }
             <S.Empty />
           </Column>
           <S.Vertical />
@@ -205,9 +225,14 @@ const ViewPage = () => {
             </Column>
           </Column>
         </S.ContentBox>
-        <S.WriteButton onClick={() => postNovel()}>
-          <UploadIcon width={4} height={4} />
-        </S.WriteButton>
+        <Column justifyContent="center" alignItems="center">
+          <S.WriteButton onClick={() => postNovel()}>
+            <UploadIcon width={4} height={4} />
+          </S.WriteButton>
+          {
+            err === 2 && <S.ErrMsg>제목을 작성해주세요</S.ErrMsg>
+          }
+        </Column>
       </Row>
     </>
   );

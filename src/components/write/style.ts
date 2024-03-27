@@ -26,7 +26,7 @@ export const ContentText = styled.p`
 `;
 
 export const ContentInputBox = styled.input`
-  width: 22rem;
+  width: 27rem;
   height: 4.2rem;
   border: 0.2rem solid #2c333e;
   border-radius: 2.4rem 2.4rem 2.4rem 0rem;
@@ -46,6 +46,8 @@ export const RowText = styled.p`
 
   margin-left: 1.8rem;
   margin-right: 4rem;
+
+  cursor: default;
 `;
 
 export const HelfLine = styled.div`
@@ -66,7 +68,7 @@ export const AddContentText = styled.p`
   margin-left: 2rem;
 `;
 
-export const WriteButton = styled.div`
+export const WriteButton = styled.button`
   width: 8rem;
   height: 8rem;
 
@@ -76,6 +78,8 @@ export const WriteButton = styled.div`
 
   border: 0.1rem solid #d9d9d9;
   border-radius: 2.4rem;
+
+  cursor: pointer;
 `;
 
 export const VeiwNovel = styled.div`
@@ -87,7 +91,8 @@ export const VeiwNovel = styled.div`
   color: #2c333e;
   font-size: 2.4rem;
   font-weight: 400;
-  line-height: 3rem;
+  line-height: 3.2rem;
+  letter-spacing: 0.1rem;
 
   overflow: auto;
   white-space: pre-wrap;
@@ -102,4 +107,23 @@ export const KeywordBox = styled.div`
   gap: 2.5rem;
 
   overflow: auto;
+`
+
+export const ErrMsg = styled.div`
+  width: 20rem;
+  height: 0rem;
+  margin: 2rem -10rem -2rem;
+  font-size: 2rem;
+  text-align: center;
+  color: #9a9a9a;
+`
+
+export const Desc = styled.div`
+  font-size: 2.4rem;
+  cursor: default;
+  color: #9a9a9a;
+`
+
+export const Delete = styled.div`
+  cursor: pointer;
 `

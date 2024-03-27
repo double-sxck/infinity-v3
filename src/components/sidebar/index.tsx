@@ -1,22 +1,12 @@
 import { Link } from "react-router-dom";
 import {
-  BookIcon,
-  CoffeeIcon,
-  CopyIcon,
-  HeartArrowIcon,
-  HeartIcon,
   HomeIcon,
   LogoIcon,
-  MagicStickIcon,
-  MoreIcon,
-  PencilIcon,
-  ScaryFaceIcon,
   SmartLogoIcon,
   UserIcon,
 } from "../../assets";
 import { ItemBox, Row, Column } from "../../styles/ui";
 import * as S from "./style";
-import React from "react";
 import { useLoginModal } from "../../hooks/useLoginMdal";
 import {
   GenreIconComponents,
@@ -41,8 +31,8 @@ const Sidebar = () => {
             <>
               <S.Subtitle>나</S.Subtitle>
               {UserIconComponents.map((item, index) => (
-                <Link to={item.function}>
-                  <ItemBox key={index}>
+                <Link to={item.function} key={index}>
+                  <ItemBox>
                     {item.icon}
                     <S.SidebarText>{item.text}</S.SidebarText>
                   </ItemBox>
@@ -70,10 +60,7 @@ const Sidebar = () => {
           <S.SidebarContour />
           <S.Subtitle>탐색</S.Subtitle>
           {GenreIconComponents.map((item, index) => {
-            localStorage.setItem("findType", item.type);
             return (
-              // Sidebar 컴포넌트의 코드
-
               <Link to={`/find/${item.type}`} key={index}>
                 <ItemBox>
                   {item.icon}

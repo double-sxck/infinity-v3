@@ -15,10 +15,10 @@ export const Modal = styled.div`
   width: 102.4rem;
   height: 85rem;
   background-color: white;
-  border-radius: 0.4rem;
+  border-radius: 2.4rem;
   display: flex;
   flex-direction: column;
-  padding-top: 10rem;
+  padding: 10rem 0;
 
   color: #2c333e;
 
@@ -40,6 +40,7 @@ export const ImageBox = styled.div<{ img: string }>`
 export const NovelTitle = styled.p`
   font-size: 3.6rem;
   font-weight: 700;
+  max-width: 40rem;
 `;
 
 export const NovelContent = styled.p`
@@ -49,6 +50,10 @@ export const NovelContent = styled.p`
   font-weight: 400;
 
   overflow-wrap: break-word;
+
+  text-align: justify;
+  letter-spacing: 0.1rem;
+  line-height: 3rem;
 `;
 
 export const HelfLine = styled.div`
@@ -58,9 +63,9 @@ export const HelfLine = styled.div`
 
 export const MessageBox = styled.div<{ isMy: boolean }>`
   width: auto;
-  max-width: 50rem;
+  max-width: 70rem;
   height: auto;
-  margin-top: 2rem;
+  margin-top: 1rem;
 
   padding: 1.6rem 2.4rem;
 
@@ -68,6 +73,17 @@ export const MessageBox = styled.div<{ isMy: boolean }>`
   border-radius: ${({ isMy }) =>
     isMy ? "2.4rem 2.4rem 2.4rem 0" : "2.4rem 2.4rem 0 2.4rem"};
   align-self: ${({ isMy }) => (isMy ? "flex-start" : "flex-end")};
+
+  font-size: 2rem;
+  line-height: 2.2rem;
+  letter-spacing: 0.1rem;
+`;
+
+export const MessageUser = styled.div<{ isMy: boolean }>`
+  margin-top: 2rem;
+  align-self: ${({ isMy }) => (isMy ? "flex-start" : "flex-end")};
+
+  font-size: 1.8rem;
 `;
 
 export const MessageInput = styled.input`
@@ -86,3 +102,8 @@ export const MessageInput = styled.input`
     color: #d9d9d9;
   }
 `;
+
+export const Comment = styled.div`
+  font-size: 3rem;
+  font-weight: bold;
+`

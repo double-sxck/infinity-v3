@@ -5,20 +5,9 @@ import NovelBox from "./default";
 import NovelSearchBox from "./search";
 import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import {
-  BlackCoffeeIcon,
-  BlackCopyIcon,
-  BlackHeartArrowIcon,
-  BlackMagicStickIcon,
-  BlackMoreIcon,
-  BlackScaryFaceIcon,
-} from "../../assets";
 import { useState } from "react";
 import { useEffect } from "react";
 import { instance } from "../../apis/instance";
-import { useCommentModal } from "../../hooks/useCommentModal";
-import { useRecoilValue } from "recoil";
-import searchQueryState from "../../store/search/SearchQueryState";
 
 interface Novel {
   uid: number;
@@ -35,45 +24,6 @@ interface Novel {
 
 const MainPage = () => {
   const path = useLocation().pathname;
-  const { category } = useParams();
-  const categories = {
-    romance: (
-      <>
-        <BlackHeartArrowIcon width={80} height={80} />
-        <S.Category>로맨스/감성</S.Category>
-      </>
-    ),
-    fantasy: (
-      <>
-        <BlackMagicStickIcon width={80} height={80} />
-        <S.Category>판타지/이세계</S.Category>
-      </>
-    ),
-    daily: (
-      <>
-        <BlackCoffeeIcon width={80} height={80} />
-        <S.Category>일상/코미디</S.Category>
-      </>
-    ),
-    thriller: (
-      <>
-        <BlackScaryFaceIcon width={80} height={80} />
-        <S.Category>스릴러/호러</S.Category>
-      </>
-    ),
-    feature: (
-      <>
-        <BlackCopyIcon width={80} height={80} />
-        <S.Category>장편/시리즈</S.Category>
-      </>
-    ),
-    etc: (
-      <>
-        <BlackMoreIcon width={80} height={80} />
-        <S.Category>그 외</S.Category>
-      </>
-    ),
-  };
 
   const [sort, setSort] = useState("LATEST");
 
@@ -82,19 +32,18 @@ const MainPage = () => {
     meta: {},
   });
 
-  const searchQueryValue = useRecoilValue(searchQueryState);
+  const {value} = useParams<string>();
 
   useEffect(() => {
     if (path === "/") getNovels();
-    else if (path === "/search") getSearchedNovels();
-    else if (path.includes("/category")) getCategoryNovels(category || "");
-  }, [sort, searchQueryValue]);
+    else if (path.includes("/search")) getSearchedNovels();
+  }, [sort, value, path]);
 
   const getNovels = async () => {
     try {
       const response = await instance.get("/novel", {
         params: {
-          size: 10,
+          size: 50,
           index: 1,
           viewType: sort,
         },
@@ -107,31 +56,16 @@ const MainPage = () => {
 
   const getSearchedNovels = async () => {
     try {
-      console.log(searchQueryValue);
+      // console.log(searchQueryValue);
       const response = await instance.get("/novel/search", {
         params: {
-          query: searchQueryValue,
+          query: value,
           size: 10,
           index: 1,
           viewType: sort,
         },
       });
-      console.log(response.data);
-      setNovels(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getCategoryNovels = async (category: string) => {
-    try {
-      const response = await instance.get("/novel/category", {
-        params: {
-          size: 10,
-          index: 1,
-          category: category,
-        },
-      });
+      // console.log(response.data);
       setNovels(response.data);
     } catch (error) {
       console.log(error);
@@ -140,25 +74,14 @@ const MainPage = () => {
 
   return (
     <>
-      {path === "/" || path === "/search" ? (
-        <Row gap={2.4}>
-          <S.ListBox onClick={() => setSort("LATEST")} $selected={sort === "LATEST"}>
-            최신
-          </S.ListBox>
-          <S.ListBox onClick={() => setSort("POPULAR")} $selected={sort === "POPULAR"}>
-            인기
-          </S.ListBox>
-        </Row>
-      ) : (
-        <Row gap={2.4} alignItems="center">
-          {category === "romance" && categories["romance"]}
-          {category === "fantasy" && categories["fantasy"]}
-          {category === "daily" && categories["daily"]}
-          {category === "thriller" && categories["thriller"]}
-          {category === "feature" && categories["feature"]}
-          {category === "etc" && categories["etc"]}
-        </Row>
-      )}
+      <Row gap={2.4}>
+        <S.ListBox onClick={() => setSort("LATEST")} $selected={sort === "LATEST"}>
+          최신
+        </S.ListBox>
+        <S.ListBox onClick={() => setSort("POPULAR")} $selected={sort === "POPULAR"}>
+          인기
+        </S.ListBox>
+      </Row>
       {path === "/" ? (
         <S.ContentsArea>
           {novels.data.map((novel: Novel, index: number) => (
@@ -174,8 +97,19 @@ const MainPage = () => {
         </S.ContentsArea>
       ) : (
         <S.SearchContentsArea>
-          {novels.data.map((novel: Novel) => (
-            <NovelSearchBox key={novel.uid} {...novel} />
+          {
+            novels.data.length === 0 ?
+            <S.NoResult>검색어와 일치하는 결과가 없습니다.</S.NoResult> :
+            novels.data.map((novel: Novel, index: number) => (
+            <NovelSearchBox
+              key={index}
+              uid={novel.uid}
+              thumbnail={novel.thumbnail}
+              title={novel.title}
+              user={novel.user}
+              views={novel.views}
+              content={novel.content}
+            />
           ))}
         </S.SearchContentsArea>
       )}

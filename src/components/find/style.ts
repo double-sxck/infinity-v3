@@ -39,7 +39,7 @@ export const ContentsArea = styled.div`
 export const SearchContentsArea = styled.div`
   width: 100%;
 
-  margin: 4rem auto;
+  margin: auto;
 
   display: flex;
   flex-direction: column;
@@ -49,3 +49,7 @@ export const SearchContentsArea = styled.div`
 export const Category = styled.div`
   font-size: 4rem;
 `;
+
+export const NoResult = styled.div`
+  font-size: 3rem;
+`

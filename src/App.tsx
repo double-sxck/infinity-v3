@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import {
   FindPage,
@@ -9,7 +8,6 @@ import {
   ViewPage,
   WritePage,
 } from "./components";
-import NovelSearchBox from "./components/main/search/index";
 import { useLoginModal } from "./hooks/useLoginMdal";
 import { useCommentModal } from "./hooks/useCommentModal";
 import LoginModal from "./layout/LoginModal/modal";
@@ -36,17 +34,17 @@ function App() {
           width: "calc(100vw - 24rem)",
           height: "calc(100vh - 8rem)",
           position: "fixed",
-          top: "16.5rem",
+          top: "9rem",
           left: "24rem",
           overflow: "auto",
-          padding: "0rem 12rem",
+          padding: "2rem 12rem",
+          zIndex: "-1",
         }}
       >
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/search" element={<MainPage />} />
-          <Route path="/category/:category" element={<MainPage />} />
-          <Route path="/profile" element={<UserPage />} />
+          <Route path="/search/:value" element={<MainPage />} />
+          <Route path="/profile/:type" element={<UserPage />} />
           <Route path="/write" element={<WritePage />} />
           <Route path="/view" element={<ViewPage />} />
           <Route path="/find/:type" element={<FindPage />} />
