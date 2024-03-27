@@ -37,6 +37,7 @@ const ViewPage = () => {
   const [thumbnail, setThumbnail] = useState("");
   const [title, setTitle] = useState("");
   const [err, setErr] = useState(0);
+  const [flag, setFlag] = useState(false)
 
   useEffect(() => {
     const k = localStorage.getItem("keywords");
@@ -72,6 +73,7 @@ const ViewPage = () => {
 
   const DALL_E = async (prompt: string) => {
     try {
+      setFlag(() => true)
       setThumbnail(() => "");
       const token = localStorage.getItem("refresh-token");
       if (prompt) {
@@ -87,6 +89,7 @@ const ViewPage = () => {
           },
         );
         setThumbnail(response.data);
+        setFlag(() => false)
         setUserPrompt("");
       }
     } catch (error) {
@@ -152,7 +155,7 @@ const ViewPage = () => {
               <S.ContentText>썸네일</S.ContentText>
             </Row>
             {thumbnail === "" ? (
-              <MakingThumbnail width={380} height={380} />
+              <MakingThumbnail width={48} height={48} />
             ) : (
               <S.Thumbnail $url={thumbnail} />
             )}
@@ -162,7 +165,10 @@ const ViewPage = () => {
                 value={userPrompt}
                 onChange={(e: any) => setUserPrompt(e.target.value)}
               />
-              <S.DrawButton onClick={() => drawThumbnail()}>
+              <S.DrawButton
+                onClick={() => drawThumbnail()}
+                disabled={flag}
+              >
                 <BrashIcon />
               </S.DrawButton>
             </Row>

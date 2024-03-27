@@ -26,8 +26,8 @@ interface ThumbnailProps {
 }
 
 export const Thumbnail = styled.div<ThumbnailProps>`
-  width: 50rem;
-  height: 50rem;
+  width: 48rem;
+  height: 48rem;
 
   border-radius: 2rem;
 
@@ -107,7 +107,7 @@ export const WriteButton = styled.div`
   cursor: pointer;
 `;
 
-export const DrawButton = styled.div`
+export const DrawButton = styled.button`
   width: 4.2rem;
   height: 4.2rem;
 
