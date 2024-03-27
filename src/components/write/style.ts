@@ -26,7 +26,7 @@ export const ContentText = styled.p`
 `;
 
 export const ContentInputBox = styled.input`
-  width: 22rem;
+  width: 27rem;
   height: 4.2rem;
   border: 0.2rem solid #2c333e;
   border-radius: 2.4rem 2.4rem 2.4rem 0rem;
