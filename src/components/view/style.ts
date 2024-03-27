@@ -184,22 +184,3 @@ export const Selected = styled.div`
 
   background-color: #2c333e;
 `
-
-export const ErrMsg = styled.div`
-  width: 20rem;
-  height: 0rem;
-  margin: 2rem -10rem -2rem;
-  font-size: 2rem;
-  text-align: center;
-  color: #9a9a9a;
-`
-
-export const ErrMsg2 = styled.div`
-  width: 50rem;
-  height: 0rem;
-  margin: -1.5rem auto -0.5rem;
-  font-size: 2rem;
-  text-align: center;
-  color: #9a9a9a;
-  text-align: right;
-`

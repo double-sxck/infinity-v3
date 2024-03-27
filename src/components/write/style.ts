@@ -68,7 +68,7 @@ export const AddContentText = styled.p`
   margin-left: 2rem;
 `;
 
-export const WriteButton = styled.button`
+export const WriteButton = styled.div`
   width: 8rem;
   height: 8rem;
 
@@ -107,15 +107,6 @@ export const KeywordBox = styled.div`
   gap: 2.5rem;
 
   overflow: auto;
-`
-
-export const ErrMsg = styled.div`
-  width: 20rem;
-  height: 0rem;
-  margin: 2rem -10rem -2rem;
-  font-size: 2rem;
-  text-align: center;
-  color: #9a9a9a;
 `
 
 export const Desc = styled.div`

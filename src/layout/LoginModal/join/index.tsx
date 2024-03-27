@@ -3,6 +3,7 @@ import * as S from "./style";
 import { Column } from "../../../styles/ui";
 import { LogoTextIcon } from "../../../assets";
 import { instance } from "../../../apis/instance";
+import { customErrToast, customSucToast } from "../../../toasts/customToast";
 
 interface ChildProps {
   setState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,38 +19,42 @@ const JoinInfinity: React.FC<ChildProps> = ({
   value,
 }) => {
   const [inputType, setInputType] = useState<string>("id");
-  const [err, setErr] = useState<boolean>(false);
 
   const PostLogin = async () => {
     try {
-      console.log("회원가입");
-      console.log(value);
       const response = await instance.post("/user/signup", {
         id: value.id,
         pwd: value.pw,
         nickname: value.nickName,
       });
+      customSucToast("회원가입되었습니다.");
       inputState({ id: "", pw: "", nickName: "" });
-      console.log(response.data);
       setState(false);
     } catch (e) {
+      customErrToast("아이디 혹은 닉네임이 중복되었습니다.");
       console.error(e);
     }
   };
 
   const NextButtonClickHandler = () => {
     if (inputType === "id") {
-      if (value.id !== "" && value.pw !== "") {
-        setInputType("nick");
-        setErr(false);
+      if (value.id !== "" || value.pw !== "") {
+        if (value.id === "") {
+          customErrToast("아이디를 입력해주세요.");
+        } else if (value.pw === "") {
+          customErrToast("비밀번호를 입력해주세요.");
+        }
+        else if (value.id !== "" && value.pw !== "") {
+          setInputType("nick");
+        }
       } else {
-        setErr(true);
+        customErrToast("계정 정보를 입력해주세요.");
       }
     } else {
       if (value.nickName !== "") {
         PostLogin();
       } else {
-        setErr(true);
+        customErrToast("닉네임을 입력해주세요.");
       }
     }
   };
@@ -99,11 +104,7 @@ const JoinInfinity: React.FC<ChildProps> = ({
             />
           )}
         </Column>
-        {err ? (
-          <S.ErrorMsg>모든 입력란에 작성해주세요</S.ErrorMsg>
-        ) : (
-          <S.Empty />
-        )}
+        <S.Empty />
         <S.Row>
           {inputType === "id" ? (
             <S.CreateText
@@ -119,7 +120,6 @@ const JoinInfinity: React.FC<ChildProps> = ({
               onClick={() => {
                 inputState({ id: "", pw: "", nickName: "" });
                 setInputType(() => "id");
-                setErr(false);
               }}
             >
               돌아가기
