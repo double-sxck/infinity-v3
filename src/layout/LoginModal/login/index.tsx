@@ -5,6 +5,7 @@ import { useLoginModal } from "../../../hooks/useLoginMdal";
 import { Column } from "../../../styles/ui";
 import { LogoTextIcon } from "../../../assets";
 import { instance } from "../../../apis/instance";
+import { customErrToast, customSucToast } from "../../../toasts/customToast";
 
 interface ChildProps {
   setState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,22 +24,20 @@ const LoginModalPage: React.FC<ChildProps> = ({
   const ref = useRef<HTMLDivElement>(null); // HTMLDivElement에 대한 Ref 생성
   useOutSideClick(ref, closeModal);
   const [showPW, setShowPW] = useState<boolean>(false);
-  const [faild, setFaild] = useState<boolean>(false);
   const [inputType, setInputType] = useState<string>("id");
 
   const NextButtonClickHandler = () => {
     if (inputType === "id") {
       if (value.id !== "") {
         setInputType("pw");
-        setFaild(false);
       } else {
-        setFaild(true);
+        customErrToast("아이디를 입력해주세요.");
       }
     } else {
       if (value.pw !== "") {
         PostLogin();
       } else {
-        setFaild(true);
+        customErrToast("비밀번호를 입력해주세요.");
       }
     }
   };
@@ -49,10 +48,10 @@ const LoginModalPage: React.FC<ChildProps> = ({
         id: value.id,
         pwd: value.pw,
       });
+      customSucToast("로그인되었습니다.");
       localStorage.setItem("refresh-token", response.data.token);
       closeModal();
     } catch (error) {
-      setFaild(true);
       console.error(error);
     }
   };
@@ -114,7 +113,6 @@ const LoginModalPage: React.FC<ChildProps> = ({
               <S.ShowPW htmlFor="pwCheckBox">비밀번호 표시</S.ShowPW>
             </div>
           )}
-          {faild && <S.FaildLogin>일치하지 않습니다</S.FaildLogin>}
         </S.Row2>
         <S.Row>
           {inputType === "id" ? (
@@ -143,7 +141,6 @@ const LoginModalPage: React.FC<ChildProps> = ({
                 onClick={() => {
                   inputState({ id: "", pw: "", nickName: "" });
                   setInputType(() => "id");
-                  setFaild(() => false);
                 }}
               />
               <S.NextButton

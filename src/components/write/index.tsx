@@ -9,6 +9,7 @@ import {
   TrashIcon,
   UserIcon,
 } from "../../assets";
+import { customErrToast, customSucToast, customWaitToast } from "../../toasts/customToast";
 
 interface KeywordProps {
   id: number;
@@ -28,12 +29,6 @@ const WritePage = () => {
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const scrollRef2 = useRef<HTMLDivElement>(null);
-
-  const [err, setErr] = useState(0);
-
-  useEffect(() => {
-    setErr(0);
-  }, [keywords, sseData])
 
   useEffect(() => {
     scrollToBottom();
@@ -111,10 +106,13 @@ const WritePage = () => {
 
   const writeNovel = (keywords: { type: string; word: string }[]) => {
     if (keywords.length === 0) {
-      setErr(1);
+      customErrToast("키워드를 추가해주세요.");
       return;
     }
-    if (flag) return;
+    if (flag) {
+      customWaitToast("소설 생성 중입니다.");
+      return;
+    }
     setFlag(() => true);
     const dto = makeDto(keywords);
     fetchSSE(dto);
@@ -126,6 +124,7 @@ const WritePage = () => {
     backgrounds: string;
   }) => {
     setSseData("");
+    customWaitToast("소설 생성 중...");
 
     fetch("http://localhost:3001/api/v3/ai", {
       method: "POST",
@@ -156,6 +155,7 @@ const WritePage = () => {
           if (!result.done) {
             return readChunk();
           }
+          customSucToast("소설이 다 작성되었습니다.");
           setFlag(() => false);
         };
 
@@ -168,7 +168,7 @@ const WritePage = () => {
 
   const nextStep = () => {
     if (sseData === "") {
-      setErr(2);
+      customErrToast("소설을 작성해주세요.");
       return;
     }
     else {
@@ -274,17 +274,11 @@ const WritePage = () => {
             </div>
           </S.ContentBox>
         </Column>
-        <Column justifyContent="center" alignItems="center">
-          <S.WriteButton
-            onClick={() => writeNovel(keywords)}
-            disabled={flag}
-          >
-            <PencilIcon width={4} height={4} />
-          </S.WriteButton>
-          {
-            err === 1 && <S.ErrMsg>최소 한 가지의<br />키워드를 추가해주세요.</S.ErrMsg>
-          }
-        </Column>
+        <S.WriteButton
+          onClick={() => writeNovel(keywords)}
+        >
+          <PencilIcon width={4} height={4} />
+        </S.WriteButton>
         <Column>
           <S.ContentText>소설 미리 보기</S.ContentText>
           <S.ContentBox>
@@ -295,14 +289,9 @@ const WritePage = () => {
             </S.VeiwNovel>
           </S.ContentBox>
         </Column>
-        <Column justifyContent="center" alignItems="center">
-          <S.WriteButton onClick={() => nextStep()}>
-            <NextIcon width={4} height={4} />
-          </S.WriteButton>
-          {
-            err === 2 && <S.ErrMsg>글쓰기 버튼을 눌러<br />소설을 작성해주세요.</S.ErrMsg>
-          }
-        </Column>
+        <S.WriteButton onClick={() => nextStep()}>
+          <NextIcon width={4} height={4} />
+        </S.WriteButton>
       </Row>
     </>
   );

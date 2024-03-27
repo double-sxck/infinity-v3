@@ -16,6 +16,7 @@ import {
 } from "../../assets";
 import ShopIcon from "../../assets/images/ShopIcon";
 import { instance } from "../../apis/instance";
+import { customErrToast, customSucToast, customWaitToast } from "../../toasts/customToast";
 
 const ViewPage = () => {
   interface Keywords {
@@ -36,7 +37,6 @@ const ViewPage = () => {
   const [userPrompt, setUserPrompt] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [title, setTitle] = useState("");
-  const [err, setErr] = useState(0);
   const [flag, setFlag] = useState(false)
 
   useEffect(() => {
@@ -56,16 +56,16 @@ const ViewPage = () => {
   }, [keywords, novel]);
 
   useEffect(() => {
-    setErr(0);
-  }, [title, userPrompt])
-
-  useEffect(() => {
     if (novel !== "") DALL_E(prompt);
   }, [novel, prompt]);
 
   const drawThumbnail = () => {
     if (userPrompt === "") {
-      setErr(1);
+      customErrToast("프롬프트를 작성해주세요.");
+      return;
+    }
+    if (flag) {
+      customWaitToast("썸네일 생성 중입니다.");
       return;
     }
     DALL_E(userPrompt);
@@ -101,7 +101,7 @@ const ViewPage = () => {
 
   const postNovel = () => {
     if (title === "") {
-      setErr(2);
+      customErrToast("제목을 작성해주세요.");
       return;
     }
     const dto = {
@@ -135,6 +135,7 @@ const ViewPage = () => {
           },
         },
       );
+      customSucToast("소설이 게시되었습니다.");
       localStorage.removeItem("keywords");
       localStorage.removeItem("novel");
       window.location.href = "/";
@@ -167,14 +168,10 @@ const ViewPage = () => {
               />
               <S.DrawButton
                 onClick={() => drawThumbnail()}
-                disabled={flag}
               >
                 <BrashIcon />
               </S.DrawButton>
             </Row>
-            {
-              err === 1 && <S.ErrMsg2>입력란을 채우고 버튼을 눌러주세요</S.ErrMsg2>
-            }
             <S.Empty />
           </Column>
           <S.Vertical />
@@ -225,14 +222,9 @@ const ViewPage = () => {
             </Column>
           </Column>
         </S.ContentBox>
-        <Column justifyContent="center" alignItems="center">
-          <S.WriteButton onClick={() => postNovel()}>
-            <UploadIcon width={4} height={4} />
-          </S.WriteButton>
-          {
-            err === 2 && <S.ErrMsg>제목을 작성해주세요</S.ErrMsg>
-          }
-        </Column>
+        <S.WriteButton onClick={() => postNovel()}>
+          <UploadIcon width={4} height={4} />
+        </S.WriteButton>
       </Row>
     </>
   );
