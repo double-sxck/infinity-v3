@@ -32,12 +32,12 @@ const HeaderBar = () => {
             onKeyDown={(e: any) => {
               if (e.key === 'Enter') {
                 setProfile('false');
-                window.location.href = `/search/${searchValue}`;
+                if(searchValue !== "") window.location.href = `/search/${searchValue}`;
               }
             }}
           ></S.InputBox>
           <Link
-            to={`/search/${searchValue}`}
+            to={searchValue !== "" ? `/search/${searchValue}` : "/"}
             onClick={() => {
               setProfile('false');
             }}
