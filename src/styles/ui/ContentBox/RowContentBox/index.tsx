@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useCommentModal } from "../../../hooks/useCommentModal";
+import { useCommentModal } from "../../../../hooks/useCommentModal";
 
 const NovelBox = ({
   uid,

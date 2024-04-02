@@ -1,8 +1,8 @@
 import React from "react";
 import * as S from "./style";
 import { Row } from "../../styles/ui";
-import NovelBox from "./default";
-import NovelSearchBox from "./search";
+import NovelBox from "../../styles/ui/ContentBox/RowContentBox";
+import NovelSearchBox from "../../styles/ui/ContentBox/SquareContentBox";
 import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useState } from "react";

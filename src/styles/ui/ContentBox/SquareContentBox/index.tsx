@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useCommentModal } from "../../../hooks/useCommentModal";
-import { Column } from "../../../styles/ui";
+import { useCommentModal } from "../../../../hooks/useCommentModal";
+import { Column } from "../..";
 
 const NovelSearchBox = ({ uid, thumbnail, title, user, views, content }: { uid: number, thumbnail: String, title: String, user: String, views: number, content: String }) => {
   const { openCommentModal } = useCommentModal(uid);
