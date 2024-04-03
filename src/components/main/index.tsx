@@ -19,7 +19,7 @@ interface Novel {
   category: any;
   views: number;
   novel_likes: any;
-  comment: any; // Fix typo here
+  comment: any; 
 }
 
 const MainPage = () => {
@@ -56,7 +56,6 @@ const MainPage = () => {
 
   const getSearchedNovels = async () => {
     try {
-      // console.log(searchQueryValue);
       const response = await instance.get("/novel/search", {
         params: {
           query: value,
@@ -65,7 +64,6 @@ const MainPage = () => {
           viewType: sort,
         },
       });
-      // console.log(response.data);
       setNovels(response.data);
     } catch (error) {
       console.log(error);
