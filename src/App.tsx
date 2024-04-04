@@ -3,6 +3,7 @@ import {
   FindPage,
   HeaderBar,
   MainPage,
+  SearchPage,
   Sidebar,
   UserPage,
   ViewPage,
@@ -48,7 +49,7 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/search/:value" element={<MainPage />} />
+          <Route path="/search/:value" element={<SearchPage />} />
           <Route path="/profile/:type" element={<UserPage />} />
           <Route path="/write" element={<WritePage />} />
           <Route path="/view" element={<ViewPage />} />

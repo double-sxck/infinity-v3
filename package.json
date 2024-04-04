@@ -34,8 +34,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "plugin:react/recommended"
+      "react-app"
     ]
   },
   "browserslist": {
