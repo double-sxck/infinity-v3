@@ -1,8 +1,6 @@
 import React from "react";
 import * as S from "./style";
-import { Row } from "../../styles/ui";
-import NovelBox from "../../styles/ui/ContentBox/RowContentBox";
-import NovelSearchBox from "../../styles/ui/ContentBox/SquareContentBox";
+import { Row, NovelBox, NovelSearchBox } from "../../styles/ui";
 import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
@@ -90,6 +88,7 @@ const SearchPage = () => {
               title={novel.title}
               user={novel.user}
               views={novel.views}
+              content={novel.content}
             />
           ))}
         </S.ContentsArea>
