@@ -17,7 +17,7 @@ interface Novel {
   category: any;
   views: number;
   novel_likes: any;
-  comment: any; 
+  comment: any;
 }
 
 const MainPage = () => {
@@ -30,7 +30,7 @@ const MainPage = () => {
     meta: {},
   });
 
-  const {value} = useParams<string>();
+  const { value } = useParams<string>();
 
   useEffect(() => {
     if (path === "/") getNovels();
@@ -47,7 +47,10 @@ const MainPage = () => {
         },
       });
       setNovels(response.data);
-    } catch (error) {
+    } catch (error: any) {
+      window.alert(
+        `${error.response.status ?? "네트워크"}에러가 발생했습니다.`
+      );
       console.log(error);
     }
   };
@@ -71,10 +74,16 @@ const MainPage = () => {
   return (
     <>
       <Row gap={2.4}>
-        <S.ListBox onClick={() => setSort("LATEST")} $selected={sort === "LATEST"}>
+        <S.ListBox
+          onClick={() => setSort("LATEST")}
+          $selected={sort === "LATEST"}
+        >
           최신
         </S.ListBox>
-        <S.ListBox onClick={() => setSort("POPULAR")} $selected={sort === "POPULAR"}>
+        <S.ListBox
+          onClick={() => setSort("POPULAR")}
+          $selected={sort === "POPULAR"}
+        >
           인기
         </S.ListBox>
       </Row>
@@ -94,20 +103,21 @@ const MainPage = () => {
         </S.ContentsArea>
       ) : (
         <S.SearchContentsArea>
-          {
-            novels.data.length === 0 ?
-            <S.NoResult>검색어와 일치하는 결과가 없습니다.</S.NoResult> :
+          {novels.data.length === 0 ? (
+            <S.NoResult>검색어와 일치하는 결과가 없습니다.</S.NoResult>
+          ) : (
             novels.data.map((novel: Novel, index: number) => (
-            <NovelSearchBox
-              key={index}
-              uid={novel.uid}
-              thumbnail={novel.thumbnail}
-              title={novel.title}
-              user={novel.user}
-              views={novel.views}
-              content={novel.content}
-            />
-          ))}
+              <NovelSearchBox
+                key={index}
+                uid={novel.uid}
+                thumbnail={novel.thumbnail}
+                title={novel.title}
+                user={novel.user}
+                views={novel.views}
+                content={novel.content}
+              />
+            ))
+          )}
         </S.SearchContentsArea>
       )}
     </>
