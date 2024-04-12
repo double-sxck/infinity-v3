@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const customAxios = axios.create({
-  baseURL: "http://localhost:3001/api/v3",
+  baseURL: process.env.REACT_APP_API_KEY,
   //   headers: {
   //     Authorization: `Bearer ${localStorage.getItem("token")}`,
   //   },
