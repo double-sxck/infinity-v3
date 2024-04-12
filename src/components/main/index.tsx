@@ -1,4 +1,3 @@
-import React from "react";
 import * as S from "./style";
 import { NovelBox, NovelSearchBox, Row } from "../../styles/ui";
 import { useLocation } from "react-router-dom";
