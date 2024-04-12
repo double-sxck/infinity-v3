@@ -47,12 +47,15 @@ const MainPage = () => {
       });
       setNovels(response.data);
     } catch (error: any) {
-      window.alert(
-        `${error.response.status ?? "네트워크"}에러가 발생했습니다.`
-      );
+      if (error.response) {
+        window.alert(`${error.response.status}에러가 발생했습니다.`);
+      } else {
+        window.alert("네트워크 에러가 발생했습니다.");
+      }
       console.log(error);
     }
   };
+  
 
   const getSearchedNovels = async () => {
     try {
