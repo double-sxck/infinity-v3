@@ -19,26 +19,57 @@ interface Novel {
 
 const MainPage = () => {
   const [sort, setSort] = useState("LATEST");
-
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [getPage, setGetPage] = useState<number>(1);
   const [novels, setNovels] = useState<{ data: Novel[]; meta: any }>({
     data: [],
     meta: {},
   });
 
+  // Intersection observer 설정
+  const handleObserver = (entries: IntersectionObserverEntry[]) =>{
+    const target = entries[0];
+    if(target.isIntersecting && !isLoading){
+      setGetPage((prevPage) => prevPage + 1)
+    }
+  }
+  // handleObserver: 교차점이 발생했을 때 실행되는 콜백 함수.
+  // entries: 교차점 정보를 담는 배열
+  // isIntersection: 교차점(intersection)이 발생한 요소의 상태
+  // 교차점이 발생하면 getPage 1증가
+
+
   useEffect(() => {
-    getNovels();
+    const observer = new IntersectionObserver(handleObserver,{
+      threshold: 0, // intersection Observer의 옵션, 0일 때는 교차점이 한번말 발생하도록 실행
+    });
+    // 최하단 요소를 관찰 대상으로 지정함
+    const observerTarget = document.getElementById("observer");
+    // 관찰 시작
+    if (observerTarget){
+      observer.observe(observerTarget);
+    }
   }, []);
 
+  useEffect(() => {
+    getNovels();
+  },[getPage])
+
   const getNovels = async () => {
+    setIsLoading(true)
     try {
       const response = await instance.get("/novel", {
         params: {
           size: 50,
-          index: 1,
+          index: getPage,
           viewType: sort,
         },
       });
-      setNovels(response.data);
+      setNovels((prevData: { data: Novel[]; meta: any }) => ({
+        ...prevData,
+        data: [...prevData.data, ...response.data],
+      }))
+      
     } catch (error: any) {
       if (error.response) {
         window.alert(`${error.response.status}에러가 발생했습니다.`);
@@ -47,6 +78,7 @@ const MainPage = () => {
       }
       console.log(error);
     }
+    setIsLoading(false)
   };
 
   return (
@@ -66,13 +98,6 @@ const MainPage = () => {
         </S.ListBox>
       </Row>
       <S.ContentsArea>
-        <NovelBox
-          uid={1}
-          thumbnail={"13"}
-          title={"ㅁㅇㄹ"}
-          user={"novel.user"}
-          views={24}
-        />
         {novels.data.map((novel: Novel, index: number) => (
           <NovelBox
             key={index}
@@ -83,6 +108,8 @@ const MainPage = () => {
             views={novel.views}
           />
         ))}
+        {isLoading && <>로딩중</>}
+        <div id="observer" style={{height: "10px"}}></div>
       </S.ContentsArea>
     </>
   );
