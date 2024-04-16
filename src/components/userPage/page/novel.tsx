@@ -2,7 +2,19 @@ import styled from "styled-components";
 import { useCommentModal } from "../../../hooks/useCommentModal";
 import { Column } from "../../../styles/ui";
 
-const NovelContents = ({ uid, thumbnail, title, views, content }: { uid: number, thumbnail: String, title: String, views: number, content: String }) => {
+const NovelContents = ({
+  uid,
+  thumbnail,
+  title,
+  views,
+  content,
+}: {
+  uid: number;
+  thumbnail: String;
+  title: String;
+  views: number;
+  content: String;
+}) => {
   const { openCommentModal } = useCommentModal(uid);
   return (
     <Box id={uid.toString()} onClick={openCommentModal}>
@@ -10,13 +22,15 @@ const NovelContents = ({ uid, thumbnail, title, views, content }: { uid: number,
         <ImageBox $url={thumbnail} />
         <Column gap="2">
           <NovelTitle>{title}</NovelTitle>
-          <NovelContent>조회수 {new Intl.NumberFormat('ko-KR', {
-                                notation: 'compact',
-                                maximumFractionDigits: 1,
-                              }).format(views)}회</NovelContent>
           <NovelContent>
-            {content}
+            조회수{" "}
+            {new Intl.NumberFormat("ko-KR", {
+              notation: "compact",
+              maximumFractionDigits: 1,
+            }).format(views)}
+            회
           </NovelContent>
+          <NovelContent>{content}</NovelContent>
         </Column>
       </Row>
     </Box>
@@ -48,7 +62,7 @@ const ImageBox = styled.div<ImageBoxProps>`
   flex-shrink: 0;
 
   background-color: #f5f5f5;
-  background-image: ${props => `url(${props.$url})`};
+  background-image: ${(props) => `url(${props.$url})`};
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
