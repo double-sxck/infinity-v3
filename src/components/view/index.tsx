@@ -17,6 +17,7 @@ import {
 import ShopIcon from "../../assets/images/ShopIcon";
 import { instance } from "../../apis/instance";
 import { customErrToast, customSucToast, customWaitToast } from "../../toasts/customToast";
+import Modal from "./modal";
 
 const ViewPage = () => {
   interface Keywords {
@@ -38,6 +39,7 @@ const ViewPage = () => {
   const [thumbnail, setThumbnail] = useState("");
   const [title, setTitle] = useState("");
   const [flag, setFlag] = useState(false)
+  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
     const k = localStorage.getItem("keywords");
@@ -146,7 +148,16 @@ const ViewPage = () => {
 
   return (
     <>
+      {
+        showModal &&
+        <Modal
+          closeModal={setShowModal}
+        />
+      }
       <S.Title>업로드 설정</S.Title>
+      <S.ShowModal
+        onClick={() => setShowModal(bf => !bf)}
+      >키워드 & 소설 확인</S.ShowModal>
       <Row alignItems="center" gap={8}>
         <S.ContentBox>
           <Column gap={2} alignItems="center" justifyContent="center">
