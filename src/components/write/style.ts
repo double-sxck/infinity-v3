@@ -17,6 +17,15 @@ export const ContentBox = styled.div`
   border-radius: 2.4rem;
 `;
 
+export const Rollback = styled.p`
+  width: 14rem;
+  font-size: 1.2rem;
+  height: fit-content;
+  margin: auto 0rem 1rem;
+  color: #9a9a9a;
+  cursor: pointer;
+`
+
 export const ContentText = styled.p`
   font-size: 3.2rem;
   font-weight: 400;

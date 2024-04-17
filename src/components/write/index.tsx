@@ -25,6 +25,7 @@ const WritePage = () => {
   const [event, setEvent] = useState("");
   const [background, setBackground] = useState("");
   const [sseData, setSseData] = useState("");
+  const [cache, setCache] = useState("");
   const [flag, setFlag] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -157,6 +158,7 @@ const WritePage = () => {
           }
           customSucToast("소설이 다 작성되었습니다.");
           setFlag(() => false);
+          setCache(sseData);
         };
 
         return readChunk();
@@ -175,6 +177,14 @@ const WritePage = () => {
       localStorage.setItem("keywords", JSON.stringify(makeDto(keywords)));
       localStorage.setItem("novel", sseData);
       window.location.href = "/view";
+    }
+  };
+
+  const rollback = () => {
+    if (!flag) {
+      const temp = sseData;
+      setSseData(() => cache);
+      setCache(() => temp);
     }
   };
 
@@ -280,7 +290,19 @@ const WritePage = () => {
           <PencilIcon width={4} height={4} />
         </S.WriteButton>
         <Column>
-          <S.ContentText>소설 미리 보기</S.ContentText>
+          <Row justifyContent="center" gap={0.8}>
+            {
+              sseData !== "" &&
+              <S.Rollback />
+            }
+            <S.ContentText>소설 미리 보기</S.ContentText>
+            {
+              sseData !== "" &&
+              <S.Rollback
+                onClick={() => rollback()}
+              >이전 소설이 더 마음에 들어요</S.Rollback>
+            }
+          </Row>
           <S.ContentBox>
             <S.VeiwNovel ref={scrollRef}>
               {sseData !== ""
