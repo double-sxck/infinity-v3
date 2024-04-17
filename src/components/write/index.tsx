@@ -126,7 +126,7 @@ const WritePage = () => {
     setSseData("");
     customWaitToast("소설 생성 중...");
 
-    fetch("http://localhost:3001/api/v3/ai", {
+    fetch(`${process.env.REACT_APP_API_KEY}/ai`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

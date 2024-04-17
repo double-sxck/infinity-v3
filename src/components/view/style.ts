@@ -32,7 +32,7 @@ export const Thumbnail = styled.div<ThumbnailProps>`
   border-radius: 2rem;
 
   background-color: #f5f5f5;
-  background-image: ${(props) => `url(http://localhost:3001${props.$url})`};
+  background-image: ${(props) => `url(${process.env.REACT_APP_IMAGE_KEY}${props.$url})`};
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

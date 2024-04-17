@@ -124,7 +124,7 @@ const ViewPage = () => {
       await instance.post(
         "/novel",
         {
-          thumbnail: `http://localhost:3001${dto.thumbnail}`,
+          thumbnail: `${process.env.REACT_APP_IMAGE_KEY}${dto.thumbnail}`,
           title: dto.title,
           category: dto.category,
           content: dto.content,
