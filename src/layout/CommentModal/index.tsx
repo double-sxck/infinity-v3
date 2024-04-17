@@ -19,7 +19,6 @@ const CommentModal = () => {
   const [likeCount, setLikeCount] = useState<number>(0);
   const ref = useRef<HTMLDivElement>(null);
   useOutSideClick(ref, async () => {
-    postLike();
     closeCommentModal();
     window.location.reload();
   });
@@ -50,15 +49,12 @@ const CommentModal = () => {
   };
 
   const postLike = async () => {
-    console.log("user" + uid);
-    if (comment?.novelResult[0].like !== like) {
-      try {
-        const requestBody = { user_uid: uid }; // user_uid를 포함한 객체 생성
-        await instance.post(`/novel/like/${id}`, requestBody, Authorization());
-        console.log("실행 좋아요");
-      } catch (err) {
-        console.error(err);
-      }
+    try {
+      const requestBody = { user_uid: uid }; // user_uid를 포함한 객체 생성
+      await instance.post(`/novel/like/${id}`, requestBody, Authorization());
+      // console.log("실행 좋아요");
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -106,14 +102,15 @@ const CommentModal = () => {
     // console.log(likeCount);
 
     setLike(!like);
+
     if (
-      (comment?.novelResult[0].like && like) ||
-      (!comment?.novelResult[0].like && like)
+      like
     ) {
       setLikeCount(bf => bf - 1);
     } else {
       setLikeCount(bf => bf + 1);
     }
+    
     postLike();
   };
 
