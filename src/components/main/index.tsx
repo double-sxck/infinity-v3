@@ -27,36 +27,35 @@ const MainPage = () => {
   });
 
   // Intersection observer 설정
-  const handleObserver = (entries: IntersectionObserverEntry[]) =>{
+  const handleObserver = (entries: IntersectionObserverEntry[]) => {
     const target = entries[0];
-    if(target.isIntersecting && !isLoading){
-      setGetPage((prevPage) => prevPage + 1)
+    if (target.isIntersecting && !isLoading) {
+      setGetPage((prevPage) => prevPage + 1);
     }
-  }
+  };
   // handleObserver: 교차점이 발생했을 때 실행되는 콜백 함수.
   // entries: 교차점 정보를 담는 배열
   // isIntersection: 교차점(intersection)이 발생한 요소의 상태
   // 교차점이 발생하면 getPage 1증가
 
-
   useEffect(() => {
-    const observer = new IntersectionObserver(handleObserver,{
+    const observer = new IntersectionObserver(handleObserver, {
       threshold: 0, // intersection Observer의 옵션, 0일 때는 교차점이 한번말 발생하도록 실행
     });
     // 최하단 요소를 관찰 대상으로 지정함
     const observerTarget = document.getElementById("observer");
     // 관찰 시작
-    if (observerTarget){
+    if (observerTarget) {
       observer.observe(observerTarget);
     }
   }, []);
 
   useEffect(() => {
     getNovels();
-  },[getPage])
+  }, [getPage]);
 
   const getNovels = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const response = await instance.get("/novel", {
         params: {
@@ -67,9 +66,9 @@ const MainPage = () => {
       });
       setNovels((prevData: { data: Novel[]; meta: any }) => ({
         ...prevData,
-        data: [...prevData.data, ...response.data],
-      }))
-      
+        data: [...prevData.data, ...response.data.data],
+        meta: { ...response.data.meta },
+      }));
     } catch (error: any) {
       if (error.response) {
         window.alert(`${error.response.status}에러가 발생했습니다.`);
@@ -78,7 +77,7 @@ const MainPage = () => {
       }
       console.log(error);
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   return (
@@ -109,7 +108,7 @@ const MainPage = () => {
           />
         ))}
         {isLoading && <>로딩중</>}
-        <div id="observer" style={{height: "10px"}}></div>
+        <div id="observer" style={{ height: "10px" }}></div>
       </S.ContentsArea>
     </>
   );
