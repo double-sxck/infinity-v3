@@ -21,7 +21,7 @@ interface Novel {
 
 const UserPage = () => {
   const [pageType, setPageType] = useState<number>(0); // number 타입으로 변경
-  const [userInfo, setUserInfo] = useState({totalLikesCount: 0, totalNovels: 0, userInfo: {uid: 0, id: "아이디", nickname: "닉네임"}, views: 0});
+  const [userInfo, setUserInfo] = useState({totalLikesCounts: 0, totalNovels: [], userInfo: {uid: 0, id: "아이디", nickname: "닉네임"}, views: 0});
   const [novels, setNovels] = useState<Novel[]>([]);
   const [flag, setFlag] = useState(0);
   const { type } = useParams<string>();
@@ -56,7 +56,7 @@ const UserPage = () => {
               Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response)
+        // console.log(response)
         setUserInfo(response.data)
     } catch (error) {
         console.log(error);
@@ -85,8 +85,8 @@ const UserPage = () => {
           <UserDefualtIcon />
           <Column justifyContent="space-around">
             <S.NickNameText>{userInfo.userInfo.nickname}</S.NickNameText>
-            <S.UserProfileText>소설 {userInfo.totalNovels}개</S.UserProfileText>
-            <S.UserProfileText>조회수 {userInfo.views ? userInfo.views : 0}회 ‧ 좋아요 {userInfo.totalLikesCount}개</S.UserProfileText>
+            <S.UserProfileText>소설 {userInfo.totalNovels.length}개</S.UserProfileText>
+            <S.UserProfileText>조회수 {userInfo.views ? userInfo.views : 0}회 ‧ 좋아요 {userInfo.totalLikesCounts}개</S.UserProfileText>
           </Column>
         </Row>
       </S.UserPageBox>
