@@ -34,7 +34,7 @@ const SearchPage = () => {
 
   useEffect(() => {
     getSearchedNovels();
-  }, []);
+  }, [sort]);
 
   const getSearchedNovels = async () => {
     try {

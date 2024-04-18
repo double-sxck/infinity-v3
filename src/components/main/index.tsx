@@ -54,21 +54,32 @@ const MainPage = () => {
     getNovels();
   }, [getPage]);
 
+  useEffect(() => {
+    setNovels(() => ({data: [], meta: {}}));
+    setGetPage(() => 1);
+  }, [sort]);
+
   const getNovels = async () => {
     setIsLoading(true);
     try {
       const response = await instance.get("/novel", {
         params: {
-          size: 50,
+          size: 8,
           index: getPage,
           viewType: sort,
         },
       });
+      console.log(getPage, sort)
+      console.log(response.data)
       setNovels((prevData: { data: Novel[]; meta: any }) => ({
         ...prevData,
         data: [...prevData.data, ...response.data.data],
         meta: { ...response.data.meta },
       }));
+      // setNovels(() => ({
+      //   data: response.data.data,
+      //   meta: response.data.meta,
+      // }))
     } catch (error: any) {
       if (error.response) {
         window.alert(`${error.response.status}에러가 발생했습니다.`);
@@ -84,13 +95,13 @@ const MainPage = () => {
     <>
       <Row gap={2.4}>
         <S.ListBox
-          onClick={() => setSort("LATEST")}
+          onClick={() => setSort(() => "LATEST")}
           $selected={sort === "LATEST"}
         >
           최신
         </S.ListBox>
         <S.ListBox
-          onClick={() => setSort("POPULAR")}
+          onClick={() => setSort(() => "POPULAR")}
           $selected={sort === "POPULAR"}
         >
           인기
