@@ -26,10 +26,15 @@ const NovelSearchBox = ({
           <NovelTitle>{title}</NovelTitle>
           <NovelContent>
             조회수{" "}
-            {new Intl.NumberFormat("ko-KR", {
-              notation: "compact",
-              maximumFractionDigits: 1,
-            }).format(views)}
+            <span className="views">
+              {
+                views &&
+                new Intl.NumberFormat("ko-KR", {
+                  notation: "compact",
+                  maximumFractionDigits: 1,
+                }).format(views)
+              }
+            </span>
             회
           </NovelContent>
           <NovelContent>{user}</NovelContent>
