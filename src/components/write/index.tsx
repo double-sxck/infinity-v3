@@ -233,7 +233,7 @@ const WritePage = () => {
             >
               <Column gap={4}>
                 <Row alignItems="center">
-                  <UserIcon />
+                  <UserIcon width={2} height={2} />
                   <S.RowText>인물</S.RowText>
                   <S.ContentInputBox
                     placeholder="인물 추가..."
