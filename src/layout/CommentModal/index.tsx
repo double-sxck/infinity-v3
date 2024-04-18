@@ -20,7 +20,11 @@ const CommentModal = () => {
   const ref = useRef<HTMLDivElement>(null);
   useOutSideClick(ref, async () => {
     closeCommentModal();
-    window.location.reload();
+    // window.location.reload();
+    const view = document.getElementById(id.toString())?.getElementsByClassName("views")[0]
+    if (view?.innerHTML !== undefined) {
+      view.innerHTML = (parseInt(view?.innerHTML || "0") + 1).toString()
+    }
   });
 
   const [message, setMessage] = useState<MessageItem[]>([]);
