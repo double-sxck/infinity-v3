@@ -32,6 +32,35 @@ const WritePage = () => {
   const scrollRef2 = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const keyword = localStorage.getItem('keywords');
+
+    if (keyword !== null) {
+      setKeywords(() => [])
+      const keywordJSON = JSON.parse(keyword)
+      let i = 1;
+    
+      const characterArr: [] = keywordJSON.characters.split(', ');
+      characterArr.forEach((character: string) => {
+        addKeyword(i++, 'P', character);
+      });
+    
+      const eventArr: [] = keywordJSON.events.split(', ');
+      eventArr.forEach((event: string) => {
+        addKeyword(i++, 'E', event);
+      });
+    
+      const backgroundArr: [] = keywordJSON.backgrounds.split(', ');
+      backgroundArr.forEach((background: string) => {
+        addKeyword(i++, 'B', background);
+      });
+    };
+    const content = localStorage.getItem('novel');
+    if (content !== null) {
+      setSseData(() => content);
+    }
+  }, [])
+
+  useEffect(() => {
     scrollToBottom();
   }, [sseData]);
 
