@@ -69,8 +69,6 @@ const MainPage = () => {
           viewType: sort,
         },
       });
-      console.log(getPage, sort)
-      console.log(response.data)
       setNovels((prevData: { data: Novel[]; meta: any }) => ({
         ...prevData,
         data: [...prevData.data, ...response.data.data],
