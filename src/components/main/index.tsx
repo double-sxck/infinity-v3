@@ -80,7 +80,7 @@ const MainPage = () => {
   };
 
   return (
-    <>
+    <div>
       <Row gap={2.4}>
         <S.ListBox
           onClick={() => setSort("LATEST")}
@@ -109,7 +109,7 @@ const MainPage = () => {
         {isLoading && <S.LoadingBox>로딩중</S.LoadingBox>}
         <div id="observer" style={{ height: "10px" }}></div>
       </S.ContentsArea>
-    </>
+    </div>
   );
 };
 
