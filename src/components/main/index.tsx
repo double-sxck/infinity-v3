@@ -121,8 +121,8 @@ const MainPage = () => {
           isLoading &&
           <Loading />
         }
-        <div id="observer" style={{ height: "10px" }}></div>
       </S.ContentsArea>
+      <div id="observer" style={{ height: "10px" }}></div>
     </>
   );
 };
