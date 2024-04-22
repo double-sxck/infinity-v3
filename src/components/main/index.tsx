@@ -57,7 +57,8 @@ const MainPage = () => {
 
   useEffect(() => {
     setNovels(() => ({data: [], meta: {}}));
-    setGetPage(() => 1);
+    if(getPage === 1 && novels.data.length !== 0) getNovels();
+    else setGetPage(() => 1);
   }, [sort]);
 
   const getNovels = async () => {
@@ -121,8 +122,8 @@ const MainPage = () => {
           isLoading &&
           <Loading />
         }
+        <div id="observer" style={{ height: "10px" }}></div>
       </S.ContentsArea>
-      <div id="observer" style={{ height: "10px" }}></div>
     </>
   );
 };
