@@ -52,7 +52,7 @@ const MainPage = () => {
 
   useEffect(() => {
     getNovels();
-  }, [getPage]);
+  }, [getPage, sort]);
 
   const getNovels = async () => {
     setIsLoading(true);
