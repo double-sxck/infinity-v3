@@ -30,7 +30,6 @@ export const Modal = styled.div`
 export const ImageBox = styled.div<{ $img: string }>`
   width: 34rem;
   height: 34rem;
-  margin-left: 8.6rem;
   background-color: black;
   background-image: url(${(props) => props.$img || "none"});
   background-size: cover;
@@ -40,7 +39,7 @@ export const ImageBox = styled.div<{ $img: string }>`
 export const NovelTitle = styled.p`
   font-size: 3.6rem;
   font-weight: 700;
-  max-width: 40rem;
+  width: 40rem;
 `;
 
 export const NovelContent = styled.div`
@@ -113,4 +112,12 @@ export const MessageInput = styled.input`
 export const Comment = styled.div`
   font-size: 3rem;
   font-weight: bold;
+`
+
+export const DeleteNovel = styled.div`
+  width: 0;
+  word-break: keep-all;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #9a9a9a;
 `

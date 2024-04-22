@@ -10,6 +10,7 @@ import NovelType from "./NovelCategory";
 import { CommentIcon, LikeIcon } from "../../assets";
 import { CommentType } from "../../types/layoutType/CommentType";
 import { MessageItem } from "../../types/layoutType/MessageItemType";
+import { customWaitToast } from "../../toasts/customToast";
 
 var id = 0;
 var uid = 0;
@@ -147,11 +148,24 @@ const CommentModal = () => {
     }
   };
 
+  const deleteNovel = async () => {
+    customWaitToast("소설 삭제 중...");
+    try {
+      await instance.delete(
+        "/novel/" + id,
+        Authorization()
+      );
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <S.Page>
       <S.Modal ref={ref}>
         <Column gap={10} justifyContent="center" alignItems="center">
-          <div style={{ alignSelf: "flex-start" }}>
+          <div style={{ display: "flex", alignSelf: "center" }}>
             <Row gap={8.6}>
               {comment?.novelResult && comment.novelResult[0] && (
                 <S.ImageBox
@@ -196,6 +210,7 @@ const CommentModal = () => {
                 </div>
               </Column>
             </Row>
+            {comment?.novelResult[0].user_uid === uid && <S.DeleteNovel onClick={() => deleteNovel()}>삭제</S.DeleteNovel>}
           </div>
           <S.HelfLine />
 
