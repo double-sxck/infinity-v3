@@ -34,6 +34,13 @@ const WritePage = () => {
   const keywordId = useRef(0);
 
   useEffect(() => {
+    if(localStorage.getItem("refresh-token") === null) {
+      alert("로그인 해주세요.");
+      window.location.href = "/";
+    };
+  }, []);
+
+  useEffect(() => {
     const keyword = localStorage.getItem('keywords');
 
     if (keyword !== null) {
