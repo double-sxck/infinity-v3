@@ -42,6 +42,13 @@ const ViewPage = () => {
   const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
+    if(localStorage.getItem("refresh-token") === null) {
+      alert("로그인 해주세요.");
+      window.location.href = "/";
+    };
+  }, []);
+
+  useEffect(() => {
     const k = localStorage.getItem("keywords");
     if (k !== null) setKeywords(JSON.parse(k));
     const n = localStorage.getItem("novel");

@@ -26,6 +26,13 @@ const UserPage = () => {
   const { type } = useParams<string>();
 
   useEffect(() => {
+    if(localStorage.getItem("refresh-token") === null) {
+      alert("로그인 해주세요.");
+      window.location.href = "/";
+    };
+  }, []);
+
+  useEffect(() => {
     getUserInfo();
     if (type === "info") setPageType(0);
     else if (type === "novel") setPageType(1);
