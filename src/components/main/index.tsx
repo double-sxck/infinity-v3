@@ -59,7 +59,7 @@ const MainPage = () => {
     try {
       const response = await instance.get("/novel", {
         params: {
-          size: 50,
+          size: 30,
           index: getPage,
           viewType: sort,
         },
