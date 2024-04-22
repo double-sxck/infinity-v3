@@ -31,27 +31,31 @@ const WritePage = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const scrollRef2 = useRef<HTMLDivElement>(null);
 
+  const keywordId = useRef(0);
+
   useEffect(() => {
     const keyword = localStorage.getItem('keywords');
 
     if (keyword !== null) {
       setKeywords(() => [])
       const keywordJSON = JSON.parse(keyword)
-      let i = 1;
     
       const characterArr: [] = keywordJSON.characters.split(', ');
       characterArr.forEach((character: string) => {
-        addKeyword(i++, 'P', character);
+        if(character === '') return;
+        addKeyword(keywordId.current++, 'P', character);
       });
     
       const eventArr: [] = keywordJSON.events.split(', ');
       eventArr.forEach((event: string) => {
-        addKeyword(i++, 'E', event);
+        if(event === '') return;
+        addKeyword(keywordId.current++, 'E', event);
       });
     
       const backgroundArr: [] = keywordJSON.backgrounds.split(', ');
       backgroundArr.forEach((background: string) => {
-        addKeyword(i++, 'B', background);
+        if(background === '') return;
+        addKeyword(keywordId.current++, 'B', background);
       });
     };
     const content = localStorage.getItem('novel');
@@ -60,19 +64,11 @@ const WritePage = () => {
     }
   }, [])
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [sseData]);
-
   const scrollToBottom = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   };
-
-  useEffect(() => {
-    scrollToBottom2();
-  }, [keywords]);
 
   const scrollToBottom2 = () => {
     if (scrollRef2.current) {
@@ -80,32 +76,18 @@ const WritePage = () => {
     }
   };
 
+  useEffect(() => {
+    scrollToBottom();
+    localStorage.setItem("novel", sseData);
+  }, [sseData]);
+
+  useEffect(() => {
+    scrollToBottom2();
+    localStorage.setItem("keywords", JSON.stringify(makeDto(keywords)));
+  }, [keywords]);
+
   const addKeyword = (id: number, type: string, word: string) => {
     setKeywords((bf) => [...bf, { id: id, type: type, word: word }]);
-  };
-
-  const keywordId = useRef(0);
-
-  const Keyword: React.FC<KeywordProps> = ({ id, type, word }) => {
-    return (
-      <div>
-        <Row alignItems="center" justifyContent="space-between">
-          <div style={{ display: "flex", alignItems: "center" }}>
-            {type === "P" ? (
-              <UserIcon width={2.4} height={2.4} />
-            ) : type === "E" ? (
-              <PlayButtonIcon width={2.4} height={2.4} />
-            ) : (
-              <ImagesIcon width={2.4} height={2.4} />
-            )}
-            <S.AddContentText>{word}</S.AddContentText>
-          </div>
-          <S.Delete onClick={() => remove(id)}>
-            <TrashIcon />
-          </S.Delete>
-        </Row>
-      </div>
-    );
   };
 
   const remove = (id: number) => {
@@ -202,6 +184,10 @@ const WritePage = () => {
       customErrToast("소설을 작성해주세요.");
       return;
     }
+    if (flag) {
+      customWaitToast("소설 생성 중입니다.");
+      return;
+    }
     else {
       localStorage.setItem("keywords", JSON.stringify(makeDto(keywords)));
       localStorage.setItem("novel", sseData);
@@ -215,6 +201,28 @@ const WritePage = () => {
       setSseData(() => cache);
       setCache(() => temp);
     }
+  };
+
+  const Keyword: React.FC<KeywordProps> = ({ id, type, word }) => {
+    return (
+      <div>
+        <Row alignItems="center" justifyContent="space-between">
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {type === "P" ? (
+              <UserIcon width={2.4} height={2.4} />
+            ) : type === "E" ? (
+              <PlayButtonIcon width={2.4} height={2.4} />
+            ) : (
+              <ImagesIcon width={2.4} height={2.4} />
+            )}
+            <S.AddContentText>{word}</S.AddContentText>
+          </div>
+          <S.Delete onClick={() => remove(id)}>
+            <TrashIcon />
+          </S.Delete>
+        </Row>
+      </div>
+    );
   };
 
   return (
