@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Title = styled.div`
-  width: calc(100% - 24rem);
+  width: 120rem;
   margin: 4rem 0;
 
   font-size: 4.8rem;
@@ -32,7 +32,7 @@ export const Thumbnail = styled.div<ThumbnailProps>`
   border-radius: 2rem;
 
   background-color: #f5f5f5;
-  background-image: ${(props) => `url(http://localhost:3001${props.$url})`};
+  background-image: ${(props) => `url(${process.env.REACT_APP_IMAGE_KEY}${props.$url})`};
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -183,4 +183,53 @@ export const Selected = styled.div`
   margin: auto 0 auto auto;
 
   background-color: #2c333e;
+`
+
+export const ShowModal = styled.div`
+  width: 120rem;
+  height: 0rem;
+  text-align: right;
+  cursor: pointer;
+  margin: -4rem 4rem 4rem -4rem;
+  font-size: 2rem;
+  color: #9a9a9a;
+`
+
+export const Background = styled.div`
+  position: absolute;
+  width: 120rem;
+  height: 66.3rem;
+
+  margin-top: 12.8rem;
+
+  border: 0.1rem solid #9a9a9a;
+  border-radius: 2.4rem;
+
+  display: flex;
+  padding: 4rem;
+
+  background-color: white;
+
+  font-size: 2rem;
+`
+
+export const ViewNovel = styled(VeiwNovel)`
+  background-color: #fafafa;
+  border-radius: 2rem;
+`
+
+export const ModalKeyword = styled.div`
+  width: 30rem;
+  word-break: keep-all;
+  background-color: #fafafa;
+  padding: 1rem 2rem;
+  border-radius: 2rem;
+`
+
+export const ModalKeywordTitle = styled.div`
+  width: auto;
+  text-align: center;
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
 `

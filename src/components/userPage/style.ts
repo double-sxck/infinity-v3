@@ -40,6 +40,7 @@ export const InfoItem = styled.p<{ type: string }>`
 
   font-weight: 400;
   font-size: 2.4rem;
+  color: black;
 
   cursor: pointer;
 `;

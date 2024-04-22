@@ -3,6 +3,7 @@ import { NovelBox, Row } from "../../styles/ui";
 import { useState } from "react";
 import { useEffect } from "react";
 import { instance } from "../../apis/instance";
+import Loading from "./loading";
 
 interface Novel {
   uid: number;
@@ -54,6 +55,12 @@ const MainPage = () => {
     getNovels();
   }, [getPage, sort]);
 
+  useEffect(() => {
+    setNovels(() => ({data: [], meta: {}}));
+    if(getPage === 1 && novels.data.length !== 0) getNovels();
+    else setGetPage(() => 1);
+  }, [sort]);
+
   const getNovels = async () => {
     setIsLoading(true);
     try {
@@ -66,7 +73,8 @@ const MainPage = () => {
       });
       setNovels((prevData: { data: Novel[]; meta: any }) => ({
         ...prevData,
-        data: [...prevData.data, ...response.data],
+        data: [...prevData.data, ...response.data.data],
+        meta: { ...response.data.meta },
       }));
     } catch (error: any) {
       if (error.response) {
@@ -83,13 +91,13 @@ const MainPage = () => {
     <div>
       <Row gap={2.4}>
         <S.ListBox
-          onClick={() => setSort("LATEST")}
+          onClick={() => setSort(() => "LATEST")}
           $selected={sort === "LATEST"}
         >
           최신
         </S.ListBox>
         <S.ListBox
-          onClick={() => setSort("POPULAR")}
+          onClick={() => setSort(() => "POPULAR")}
           $selected={sort === "POPULAR"}
         >
           인기
@@ -106,7 +114,10 @@ const MainPage = () => {
             views={novel.views}
           />
         ))}
-        {isLoading && <S.LoadingBox>로딩중</S.LoadingBox>}
+        {
+          isLoading &&
+          <Loading />
+        }
         <div id="observer" style={{ height: "10px" }}></div>
       </S.ContentsArea>
     </div>

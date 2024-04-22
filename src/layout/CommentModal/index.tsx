@@ -10,6 +10,7 @@ import NovelType from "./NovelCategory";
 import { CommentIcon, LikeIcon } from "../../assets";
 import { CommentType } from "../../types/layoutType/CommentType";
 import { MessageItem } from "../../types/layoutType/MessageItemType";
+import { customWaitToast } from "../../toasts/customToast";
 
 var id = 0;
 var uid = 0;
@@ -19,9 +20,12 @@ const CommentModal = () => {
   const [likeCount, setLikeCount] = useState<number>(0);
   const ref = useRef<HTMLDivElement>(null);
   useOutSideClick(ref, async () => {
-    postLike();
     closeCommentModal();
-    window.location.reload();
+    // window.location.reload();
+    const view = document.getElementById(id.toString())?.getElementsByClassName("views")[0]
+    if (view?.innerHTML !== undefined) {
+      view.innerHTML = (parseInt(view?.innerHTML || "0") + 1).toString()
+    }
   });
 
   const [message, setMessage] = useState<MessageItem[]>([]);
@@ -50,15 +54,12 @@ const CommentModal = () => {
   };
 
   const postLike = async () => {
-    console.log("user" + uid);
-    if (comment?.novelResult[0].like !== like) {
-      try {
-        const requestBody = { user_uid: uid }; // user_uid를 포함한 객체 생성
-        await instance.post(`/novel/like/${id}`, requestBody, Authorization());
-        // console.log("실행 좋아요");
-      } catch (err) {
-        console.error(err);
-      }
+    try {
+      const requestBody = { user_uid: uid }; // user_uid를 포함한 객체 생성
+      await instance.post(`/novel/like/${id}`, requestBody, Authorization());
+      // console.log("실행 좋아요");
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -76,16 +77,15 @@ const CommentModal = () => {
     try {
       id = modalCState.id;
       if (localStorage.getItem("refresh-token")) {
-        const response = await instance.get(
-          "/novel/loggedin/" + id,
+        const response = await instance.get("/novel/" + id,
           Authorization()
         );
-        // console.log(response.data.novelResult[0]);
         setLike(response.data.novelResult[0]?.like);
         setLikeCount(response.data.novelResult[0]?.likeCount);
         setComment(response.data);
       } else {
-        const response = await instance.get("/novel/" + id, Authorization());
+        const response = await instance.get("/novel/" + id);
+        setLike(response.data.novelResult[0]?.like);
         setLikeCount(response.data.novelResult[0]?.likeCount);
         setComment(response.data);
       }
@@ -106,14 +106,15 @@ const CommentModal = () => {
     // console.log(likeCount);
 
     setLike(!like);
+
     if (
-      (comment?.novelResult[0].like && like) ||
-      (!comment?.novelResult[0].like && like)
+      like
     ) {
       setLikeCount(bf => bf - 1);
     } else {
       setLikeCount(bf => bf + 1);
     }
+    
     postLike();
   };
 
@@ -146,28 +147,46 @@ const CommentModal = () => {
     }
   };
 
+  const deleteNovel = async () => {
+    customWaitToast("소설 삭제 중...");
+    try {
+      await instance.delete(
+        "/novel/" + id,
+        Authorization()
+      );
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <S.Page>
       <S.Modal ref={ref}>
         <Column gap={10} justifyContent="center" alignItems="center">
-          <div style={{ alignSelf: "flex-start" }}>
+          <div style={{ display: "flex", alignSelf: "center" }}>
             <Row gap={8.6}>
-              {comment?.novelResult && comment.novelResult[0] && (
+              {comment?.novelResult ?
                 <S.ImageBox
-                  img={
-                    (comment?.novelResult &&
-                      comment.novelResult[0]?.thumbnail) ||
-                    ""
-                  }
-                />
-              )}
+                  $img={comment.novelResult[0]?.thumbnail}
+                /> :
+                <S.EmptyImageBox />
+              }
               <Column gap={4}>
-                <S.NovelTitle>
-                  {comment?.novelResult && comment.novelResult[0]?.title}
-                </S.NovelTitle>
-                <S.NovelContent>{comment?.userResult?.nickname}</S.NovelContent>
+                {comment?.novelResult ?
+                  <S.NovelTitle>
+                    {comment.novelResult[0]?.title}
+                  </S.NovelTitle> :
+                  <S.EmptyNovelTitle />
+                }
+                {comment?.novelResult ?
+                  <S.NovelContent>
+                    {comment?.userResult?.nickname}
+                  </S.NovelContent> :
+                  <S.EmptyNovelContent />
+                }
                 <Row gap={2}>
-                  {comment?.novelResult && comment.novelResult[0]?.category ? (
+                  {comment?.novelResult ? comment.novelResult[0]?.category ? (
                     <>
                       {NovelType[comment.novelResult[0]?.category]?.icon}
                       <S.NovelContent>
@@ -179,29 +198,45 @@ const CommentModal = () => {
                       {NovelType.ETC.icon}
                       <S.NovelContent>{NovelType.ETC.label}</S.NovelContent>
                     </>
-                  )}
+                  ) : <S.EmptyNovelContent1 />}
                 </Row>
-                <S.NovelContent>
-                  조회수 {comment?.novelResult && comment.novelResult[0]?.views}회
-                </S.NovelContent>
+                {comment?.novelResult ?
+                  <S.NovelContent>
+                    조회수 {comment.novelResult[0]?.views}회
+                  </S.NovelContent> :
+                  <S.EmptyNovelContent />
+                }
                 <div
                   onClick={handleLikeClick}
                   style={{ cursor: isClickable() ? "pointer" : "default" }}
                 >
                   <Row gap={2} alignItems="center">
                     {like ? <LikeIcon color={"#ff0000"} /> : <LikeIcon />}
-                    <S.NovelContent>{likeCount}</S.NovelContent>
+                    {comment?.novelResult ?
+                      <S.NovelContent>
+                        {likeCount}
+                        </S.NovelContent> :
+                      <S.EmptyNovelContent />
+                    }
                   </Row>
                 </div>
               </Column>
             </Row>
+            {comment?.novelResult[0].user_uid === uid && <S.DeleteNovel onClick={() => deleteNovel()}>삭제</S.DeleteNovel>}
           </div>
           <S.HelfLine />
-
           <S.NovelContent>
-            <pre style={{ whiteSpace: "pre-wrap" }}>
-              {comment?.novelResult[0]?.content}
-            </pre>
+            {comment?.novelResult ?
+              <pre style={{ whiteSpace: "pre-wrap" }}>
+                {comment?.novelResult[0]?.content}
+              </pre> :
+              <Column gap={4}>
+                <S.EmptyNovel />
+                <S.EmptyNovel />
+                <S.EmptyNovel />
+              </Column>
+            }
+            
           </S.NovelContent>
           <S.HelfLine />
           <div
@@ -232,14 +267,14 @@ const CommentModal = () => {
             {message &&
               message
                 .map((prev) => (
-                  <>
-                    <S.MessageUser key={prev.uid*prev.uid-1} isMy={!(uid === prev.user.uid)}>
+                  <S.MessageWrapper key={prev.uid} $isMy={!(uid === prev.user.uid)}>
+                    <S.MessageUser $isMy={!(uid === prev.user.uid)}>
                       {prev.user.nickname}
                     </S.MessageUser>
-                    <S.MessageBox key={prev.uid} isMy={!(uid === prev.user.uid)}>
+                    <S.MessageBox $isMy={!(uid === prev.user.uid)}>
                       {prev.review}
                     </S.MessageBox>
-                  </>
+                  </S.MessageWrapper>
                 ))}
           </div>
         </Column>

@@ -25,14 +25,51 @@ const WritePage = () => {
   const [event, setEvent] = useState("");
   const [background, setBackground] = useState("");
   const [sseData, setSseData] = useState("");
+  const [cache, setCache] = useState("");
   const [flag, setFlag] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const scrollRef2 = useRef<HTMLDivElement>(null);
 
+  const keywordId = useRef(0);
+
   useEffect(() => {
-    scrollToBottom();
-  }, [sseData]);
+    if(localStorage.getItem("refresh-token") === null) {
+      alert("로그인 해주세요.");
+      window.location.href = "/";
+    };
+  }, []);
+
+  useEffect(() => {
+    const keyword = localStorage.getItem('keywords');
+
+    if (keyword !== null) {
+      setKeywords(() => [])
+      const keywordJSON = JSON.parse(keyword)
+    
+      const characterArr: [] = keywordJSON.characters.split(', ');
+      characterArr.forEach((character: string) => {
+        if(character === '') return;
+        addKeyword(keywordId.current++, 'P', character);
+      });
+    
+      const eventArr: [] = keywordJSON.events.split(', ');
+      eventArr.forEach((event: string) => {
+        if(event === '') return;
+        addKeyword(keywordId.current++, 'E', event);
+      });
+    
+      const backgroundArr: [] = keywordJSON.backgrounds.split(', ');
+      backgroundArr.forEach((background: string) => {
+        if(background === '') return;
+        addKeyword(keywordId.current++, 'B', background);
+      });
+    };
+    const content = localStorage.getItem('novel');
+    if (content !== null) {
+      setSseData(() => content);
+    }
+  }, [])
 
   const scrollToBottom = () => {
     if (scrollRef.current) {
@@ -40,42 +77,24 @@ const WritePage = () => {
     }
   };
 
-  useEffect(() => {
-    scrollToBottom2();
-  }, [keywords]);
-
   const scrollToBottom2 = () => {
     if (scrollRef2.current) {
       scrollRef2.current.scrollTop = scrollRef2.current.scrollHeight;
     }
   };
 
+  useEffect(() => {
+    scrollToBottom();
+    localStorage.setItem("novel", sseData);
+  }, [sseData]);
+
+  useEffect(() => {
+    scrollToBottom2();
+    localStorage.setItem("keywords", JSON.stringify(makeDto(keywords)));
+  }, [keywords]);
+
   const addKeyword = (id: number, type: string, word: string) => {
     setKeywords((bf) => [...bf, { id: id, type: type, word: word }]);
-  };
-
-  const keywordId = useRef(0);
-
-  const Keyword: React.FC<KeywordProps> = ({ id, type, word }) => {
-    return (
-      <div>
-        <Row alignItems="center" justifyContent="space-between">
-          <div style={{ display: "flex", alignItems: "center" }}>
-            {type === "P" ? (
-              <UserIcon width={2.4} height={2.4} />
-            ) : type === "E" ? (
-              <PlayButtonIcon width={2.4} height={2.4} />
-            ) : (
-              <ImagesIcon width={2.4} height={2.4} />
-            )}
-            <S.AddContentText>{word}</S.AddContentText>
-          </div>
-          <S.Delete onClick={() => remove(id)}>
-            <TrashIcon />
-          </S.Delete>
-        </Row>
-      </div>
-    );
   };
 
   const remove = (id: number) => {
@@ -126,7 +145,7 @@ const WritePage = () => {
     setSseData("");
     customWaitToast("소설 생성 중...");
 
-    fetch("http://localhost:3001/api/v3/ai", {
+    fetch(`${process.env.REACT_APP_API_KEY}/ai`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -157,6 +176,7 @@ const WritePage = () => {
           }
           customSucToast("소설이 다 작성되었습니다.");
           setFlag(() => false);
+          setCache(sseData);
         };
 
         return readChunk();
@@ -171,11 +191,45 @@ const WritePage = () => {
       customErrToast("소설을 작성해주세요.");
       return;
     }
+    if (flag) {
+      customWaitToast("소설 생성 중입니다.");
+      return;
+    }
     else {
       localStorage.setItem("keywords", JSON.stringify(makeDto(keywords)));
       localStorage.setItem("novel", sseData);
       window.location.href = "/view";
     }
+  };
+
+  const rollback = () => {
+    if (!flag) {
+      const temp = sseData;
+      setSseData(() => cache);
+      setCache(() => temp);
+    }
+  };
+
+  const Keyword: React.FC<KeywordProps> = ({ id, type, word }) => {
+    return (
+      <div>
+        <Row alignItems="center" justifyContent="space-between">
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {type === "P" ? (
+              <UserIcon width={2.4} height={2.4} />
+            ) : type === "E" ? (
+              <PlayButtonIcon width={2.4} height={2.4} />
+            ) : (
+              <ImagesIcon width={2.4} height={2.4} />
+            )}
+            <S.AddContentText>{word}</S.AddContentText>
+          </div>
+          <S.Delete onClick={() => remove(id)}>
+            <TrashIcon />
+          </S.Delete>
+        </Row>
+      </div>
+    );
   };
 
   return (
@@ -194,7 +248,7 @@ const WritePage = () => {
             >
               <Column gap={4}>
                 <Row alignItems="center">
-                  <UserIcon />
+                  <UserIcon width={2} height={2} />
                   <S.RowText>인물</S.RowText>
                   <S.ContentInputBox
                     placeholder="인물 추가..."
@@ -280,7 +334,19 @@ const WritePage = () => {
           <PencilIcon width={4} height={4} />
         </S.WriteButton>
         <Column>
-          <S.ContentText>소설 미리 보기</S.ContentText>
+          <Row justifyContent="center" gap={0.8}>
+            {
+              sseData !== "" &&
+              <S.Rollback />
+            }
+            <S.ContentText>소설 미리 보기</S.ContentText>
+            {
+              sseData !== "" &&
+              <S.Rollback
+                onClick={() => rollback()}
+              >이전 소설이 더 마음에 들어요</S.Rollback>
+            }
+          </Row>
           <S.ContentBox>
             <S.VeiwNovel ref={scrollRef}>
               {sseData !== ""

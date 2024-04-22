@@ -34,7 +34,7 @@ const SearchPage = () => {
 
   useEffect(() => {
     getSearchedNovels();
-  }, []);
+  }, [sort]);
 
   const getSearchedNovels = async () => {
     try {
@@ -84,14 +84,6 @@ const SearchPage = () => {
             />
           ))
         )}
-        <NovelSearchBox
-          uid={3}
-          thumbnail={"fsdg"}
-          title={"novel.title"}
-          user={"novel.user"}
-          views={134}
-          content={"novel.content"}
-        />
       </S.SearchContentsArea>
     </>
   );
