@@ -77,16 +77,15 @@ const CommentModal = () => {
     try {
       id = modalCState.id;
       if (localStorage.getItem("refresh-token")) {
-        const response = await instance.get(
-          "/novel/loggedin/" + id,
+        const response = await instance.get("/novel/" + id,
           Authorization()
         );
-        // console.log(response.data.novelResult[0]);
         setLike(response.data.novelResult[0]?.like);
         setLikeCount(response.data.novelResult[0]?.likeCount);
         setComment(response.data);
       } else {
-        const response = await instance.get("/novel/" + id, Authorization());
+        const response = await instance.get("/novel/" + id);
+        setLike(response.data.novelResult[0]?.like);
         setLikeCount(response.data.novelResult[0]?.likeCount);
         setComment(response.data);
       }
