@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const Page = styled.div`
   width: 100vw;
@@ -112,7 +112,7 @@ export const MessageInput = styled.input`
 export const Comment = styled.div`
   font-size: 3rem;
   font-weight: bold;
-`
+`;
 
 export const DeleteNovel = styled.div`
   width: 0;
@@ -120,4 +120,49 @@ export const DeleteNovel = styled.div`
   font-size: 1.6rem;
   cursor: pointer;
   color: #9a9a9a;
+`;
+
+const moveGradient = keyframes`
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+`;
+
+export const EmptyImageBox = styled.div`
+  width: 34rem;
+  height: 34rem;
+
+  background: linear-gradient(to right, #f0f0f0, #ddd, #f0f0f0);
+  background-size: 200% 100%;
+  animation: ${moveGradient} 1.5s infinite linear;
+  
+  border-radius: 2.4rem;
+`;
+
+export const EmptyNovelTitle = styled.div`
+  display: flex;
+  width: 40rem;
+  height: 3.6rem;
+
+  background: linear-gradient(to right, #f0f0f0, #ddd, #f0f0f0);
+  background-size: 200% 100%;
+  animation: ${moveGradient} 1.5s infinite linear;
+
+  border-radius: 2.4rem;
+`;
+
+export const EmptyNovelContent = styled(EmptyNovelTitle)`
+  width: 20rem;
+  height: 3rem;
+`;
+
+export const EmptyNovelContent1 = styled(EmptyNovelContent)`
+  width: 25rem;
+`
+
+export const EmptyNovel = styled(EmptyNovelContent)`
+  width: 80rem;
 `
