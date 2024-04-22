@@ -19,7 +19,7 @@ interface Novel {
 }
 
 const MainPage = () => {
-  const [sort, setSort] = useState("LATEST");
+  const [sort, setSort] = useState<string>("LATEST");
   const [isLoading, setIsLoading] = useState<Boolean>(false);
   const [getPage, setGetPage] = useState<number>(1);
   const [novels, setNovels] = useState<{ data: Novel[]; meta: any }>({
@@ -53,7 +53,7 @@ const MainPage = () => {
 
   useEffect(() => {
     getNovels();
-  }, [getPage]);
+  }, [getPage, sort]);
 
   useEffect(() => {
     setNovels(() => ({data: [], meta: {}}));
@@ -66,7 +66,7 @@ const MainPage = () => {
     try {
       const response = await instance.get("/novel", {
         params: {
-          size: 8,
+          size: 30,
           index: getPage,
           viewType: sort,
         },
@@ -76,10 +76,6 @@ const MainPage = () => {
         data: [...prevData.data, ...response.data.data],
         meta: { ...response.data.meta },
       }));
-      // setNovels(() => ({
-      //   data: response.data.data,
-      //   meta: response.data.meta,
-      // }))
     } catch (error: any) {
       if (error.response) {
         window.alert(`${error.response.status}에러가 발생했습니다.`);
@@ -92,7 +88,7 @@ const MainPage = () => {
   };
 
   return (
-    <>
+    <div>
       <Row gap={2.4}>
         <S.ListBox
           onClick={() => setSort(() => "LATEST")}
@@ -124,7 +120,7 @@ const MainPage = () => {
         }
         <div id="observer" style={{ height: "10px" }}></div>
       </S.ContentsArea>
-    </>
+    </div>
   );
 };
 

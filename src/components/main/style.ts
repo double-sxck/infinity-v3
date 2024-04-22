@@ -12,8 +12,8 @@ export const ListBox = styled.div<ListBoxProps>`
   align-items: center;
   justify-content: center;
 
-  background-color: ${props => props.$selected ? '#2c333e' : '#f1f1f1'};
-  color: ${props => props.$selected ? 'white' : 'black'};
+  background-color: ${(props) => (props.$selected ? "#2c333e" : "#f1f1f1")};
+  color: ${(props) => (props.$selected ? "white" : "black")};
 
   border-radius: 0.8rem;
 
