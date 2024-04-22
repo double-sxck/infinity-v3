@@ -16,9 +16,13 @@ const HeaderBar = () => {
   const [profile, setProfile] = useState<string>('false');
   const [searchValue, setSearchValue] = useState<string>("");
 
+  const forURL = (value: string) => {
+    return encodeURIComponent(value);
+  };
+
   return (
     <>
-      <S.Header id="유성욱" type={profile}>
+      <S.Header id="header" type={profile}>
         <Link to="/" onClick={() => setProfile('false')}>
           <LogoTextIcon width={12} height={4} />
         </Link>
@@ -32,12 +36,12 @@ const HeaderBar = () => {
             onKeyDown={(e: any) => {
               if (e.key === 'Enter') {
                 setProfile('false');
-                window.location.href = `/search/${searchValue}`;
+                if(searchValue !== "") window.location.href = `/search/${forURL(searchValue)}`;
               }
             }}
           ></S.InputBox>
           <Link
-            to={`/search/${searchValue}`}
+            to={searchValue !== "" ? `/search/${forURL(searchValue)}` : "/"}
             onClick={() => {
               setProfile('false');
             }}

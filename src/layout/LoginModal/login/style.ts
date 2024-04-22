@@ -72,12 +72,3 @@ export const ShowPW = styled.label`
   margin-right: 0.2rem;
   cursor: pointer;
 `;
-
-export const FaildLogin = styled.p`
-  color: #2c333e;
-  font-size: 2rem;
-  font-weight: 400;
-
-  margin: 0 0 0 auto;
-  cursor: default;
-`;

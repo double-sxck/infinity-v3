@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useCommentModal } from "../../../hooks/useCommentModal";
+import { useCommentModal } from "../../../../hooks/useCommentModal";
 
 const NovelBox = ({
   uid,
@@ -22,11 +22,15 @@ const NovelBox = ({
       <NovelContents>{user}</NovelContents>
       <NovelContents>
         조회수{" "}
-        {views &&
-          new Intl.NumberFormat("ko-KR", {
-            notation: "compact",
-            maximumFractionDigits: 1,
-          }).format(views)}
+        <span className="views">
+          {
+            views &&
+            new Intl.NumberFormat("ko-KR", {
+              notation: "compact",
+              maximumFractionDigits: 1,
+            }).format(views)
+          }
+        </span>
         회
       </NovelContents>
     </Box>

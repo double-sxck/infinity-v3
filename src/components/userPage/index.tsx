@@ -21,14 +21,9 @@ interface Novel {
 
 const UserPage = () => {
   const [pageType, setPageType] = useState<number>(0); // number 타입으로 변경
-  const [userInfo, setUserInfo] = useState({totalLikesCount: 0, totalNovels: 0, userInfo: {uid: 0, id: "아이디", nickname: "닉네임"}, views: 0});
+  const [userInfo, setUserInfo] = useState({totalLikesCounts: 0, totalNovels: [], userInfo: {uid: 0, id: "아이디", nickname: "닉네임"}, views: 0});
   const [novels, setNovels] = useState<Novel[]>([]);
-  const [flag, setFlag] = useState(0);
   const { type } = useParams<string>();
-
-  const PageNation = (id: number) => {
-    setPageType(id); // boolean 대신 id를 설정
-  };
 
   useEffect(() => {
     getUserInfo();
@@ -38,15 +33,8 @@ const UserPage = () => {
   }, [type]);
 
   useEffect(() => {
-    if (pageType === 1 && flag !== 1) { // pageType이 1일 때만
-      getNovels()
-      setFlag(1)
-    }
-    else if (pageType === 2 && flag !== 2) { // pageType이 2일 때만
-      getNovels()
-      setFlag(2)
-    } 
-  }, [pageType, flag])
+    getNovels();
+  }, [pageType, userInfo])
 
   const getUserInfo = async () => {
     try {
@@ -56,14 +44,15 @@ const UserPage = () => {
               Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response)
-        setUserInfo(response.data)
+        // console.log(response)
+        setUserInfo(response.data);
     } catch (error) {
         console.log(error);
     }
   };
 
   const getNovels = async () => {
+    if (pageType === 0) return;
     try {
         const response = await instance.get("/novel/user/"+userInfo.userInfo.uid, {
           params: {
@@ -85,38 +74,31 @@ const UserPage = () => {
           <UserDefualtIcon />
           <Column justifyContent="space-around">
             <S.NickNameText>{userInfo.userInfo.nickname}</S.NickNameText>
-            <S.UserProfileText>소설 {userInfo.totalNovels}개</S.UserProfileText>
-            <S.UserProfileText>조회수 {userInfo.views ? userInfo.views : 0}회 ‧ 좋아요 {userInfo.totalLikesCount}개</S.UserProfileText>
+            <S.UserProfileText>소설 {userInfo.totalNovels.length}개</S.UserProfileText>
+            <S.UserProfileText>조회수 {userInfo.views ? userInfo.views : 0}회 ‧ 좋아요 {userInfo.totalLikesCounts}개</S.UserProfileText>
           </Column>
         </Row>
       </S.UserPageBox>
       <S.ChooseInfomation>
         <div className="ml-20 mt-8">
           <Row gap={4}>
-            <S.InfoItem
-              type={(pageType === 0).toString()} // pageType이 0일 때만
-              onClick={() => {
-                PageNation(0);
-              }}
-            >
-              내 정보
-            </S.InfoItem>
-            <S.InfoItem
-              type={(pageType === 1).toString()} // pageType이 1일 때만
-              onClick={() => {
-                PageNation(1);
-              }}
-            >
-              내 소설
-            </S.InfoItem>
-            <S.InfoItem
-              type={(pageType === 2).toString()} // pageType이 2일 때만
-              onClick={() => {
-                PageNation(2);
-              }}
-            >
-              좋아요한 소설
-            </S.InfoItem>
+            <Link to="/profile/info">
+              <S.InfoItem type={(pageType === 0).toString()} >
+                내 정보
+              </S.InfoItem>
+            </Link>
+            
+            <Link to="/profile/novel">
+              <S.InfoItem type={(pageType === 1).toString()} >
+                내 소설
+              </S.InfoItem>
+            </Link>
+            
+            <Link to="/profile/like">
+              <S.InfoItem type={(pageType === 2).toString()}>
+                좋아요한 소설
+              </S.InfoItem>
+            </Link>
           </Row>
         </div>
       </S.ChooseInfomation>

@@ -9,6 +9,7 @@ import {
   TrashIcon,
   UserIcon,
 } from "../../assets";
+import { customErrToast, customSucToast, customWaitToast } from "../../toasts/customToast";
 
 interface KeywordProps {
   id: number;
@@ -24,16 +25,40 @@ const WritePage = () => {
   const [event, setEvent] = useState("");
   const [background, setBackground] = useState("");
   const [sseData, setSseData] = useState("");
+  const [cache, setCache] = useState("");
   const [flag, setFlag] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const scrollRef2 = useRef<HTMLDivElement>(null);
 
-  const [err, setErr] = useState(0);
-
   useEffect(() => {
-    setErr(0);
-  }, [keywords, sseData])
+    const keyword = localStorage.getItem('keywords');
+
+    if (keyword !== null) {
+      setKeywords(() => [])
+      const keywordJSON = JSON.parse(keyword)
+      let i = 1;
+    
+      const characterArr: [] = keywordJSON.characters.split(', ');
+      characterArr.forEach((character: string) => {
+        addKeyword(i++, 'P', character);
+      });
+    
+      const eventArr: [] = keywordJSON.events.split(', ');
+      eventArr.forEach((event: string) => {
+        addKeyword(i++, 'E', event);
+      });
+    
+      const backgroundArr: [] = keywordJSON.backgrounds.split(', ');
+      backgroundArr.forEach((background: string) => {
+        addKeyword(i++, 'B', background);
+      });
+    };
+    const content = localStorage.getItem('novel');
+    if (content !== null) {
+      setSseData(() => content);
+    }
+  }, [])
 
   useEffect(() => {
     scrollToBottom();
@@ -111,10 +136,13 @@ const WritePage = () => {
 
   const writeNovel = (keywords: { type: string; word: string }[]) => {
     if (keywords.length === 0) {
-      setErr(1);
+      customErrToast("키워드를 추가해주세요.");
       return;
     }
-    if (flag) return;
+    if (flag) {
+      customWaitToast("소설 생성 중입니다.");
+      return;
+    }
     setFlag(() => true);
     const dto = makeDto(keywords);
     fetchSSE(dto);
@@ -126,8 +154,9 @@ const WritePage = () => {
     backgrounds: string;
   }) => {
     setSseData("");
+    customWaitToast("소설 생성 중...");
 
-    fetch("http://localhost:3001/api/v3/ai", {
+    fetch(`${process.env.REACT_APP_API_KEY}/ai`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -156,7 +185,9 @@ const WritePage = () => {
           if (!result.done) {
             return readChunk();
           }
+          customSucToast("소설이 다 작성되었습니다.");
           setFlag(() => false);
+          setCache(sseData);
         };
 
         return readChunk();
@@ -168,13 +199,21 @@ const WritePage = () => {
 
   const nextStep = () => {
     if (sseData === "") {
-      setErr(2);
+      customErrToast("소설을 작성해주세요.");
       return;
     }
     else {
       localStorage.setItem("keywords", JSON.stringify(makeDto(keywords)));
       localStorage.setItem("novel", sseData);
       window.location.href = "/view";
+    }
+  };
+
+  const rollback = () => {
+    if (!flag) {
+      const temp = sseData;
+      setSseData(() => cache);
+      setCache(() => temp);
     }
   };
 
@@ -194,7 +233,7 @@ const WritePage = () => {
             >
               <Column gap={4}>
                 <Row alignItems="center">
-                  <UserIcon />
+                  <UserIcon width={2} height={2} />
                   <S.RowText>인물</S.RowText>
                   <S.ContentInputBox
                     placeholder="인물 추가..."
@@ -274,19 +313,25 @@ const WritePage = () => {
             </div>
           </S.ContentBox>
         </Column>
-        <Column justifyContent="center" alignItems="center">
-          <S.WriteButton
-            onClick={() => writeNovel(keywords)}
-            disabled={flag}
-          >
-            <PencilIcon width={4} height={4} />
-          </S.WriteButton>
-          {
-            err === 1 && <S.ErrMsg>최소 한 가지의<br />키워드를 추가해주세요.</S.ErrMsg>
-          }
-        </Column>
+        <S.WriteButton
+          onClick={() => writeNovel(keywords)}
+        >
+          <PencilIcon width={4} height={4} />
+        </S.WriteButton>
         <Column>
-          <S.ContentText>소설 미리 보기</S.ContentText>
+          <Row justifyContent="center" gap={0.8}>
+            {
+              sseData !== "" &&
+              <S.Rollback />
+            }
+            <S.ContentText>소설 미리 보기</S.ContentText>
+            {
+              sseData !== "" &&
+              <S.Rollback
+                onClick={() => rollback()}
+              >이전 소설이 더 마음에 들어요</S.Rollback>
+            }
+          </Row>
           <S.ContentBox>
             <S.VeiwNovel ref={scrollRef}>
               {sseData !== ""
@@ -295,14 +340,9 @@ const WritePage = () => {
             </S.VeiwNovel>
           </S.ContentBox>
         </Column>
-        <Column justifyContent="center" alignItems="center">
-          <S.WriteButton onClick={() => nextStep()}>
-            <NextIcon width={4} height={4} />
-          </S.WriteButton>
-          {
-            err === 2 && <S.ErrMsg>글쓰기 버튼을 눌러<br />소설을 작성해주세요.</S.ErrMsg>
-          }
-        </Column>
+        <S.WriteButton onClick={() => nextStep()}>
+          <NextIcon width={4} height={4} />
+        </S.WriteButton>
       </Row>
     </>
   );

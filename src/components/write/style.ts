@@ -17,6 +17,15 @@ export const ContentBox = styled.div`
   border-radius: 2.4rem;
 `;
 
+export const Rollback = styled.p`
+  width: 14rem;
+  font-size: 1.2rem;
+  height: fit-content;
+  margin: auto 0rem 1rem;
+  color: #9a9a9a;
+  cursor: pointer;
+`
+
 export const ContentText = styled.p`
   font-size: 3.2rem;
   font-weight: 400;
@@ -68,7 +77,7 @@ export const AddContentText = styled.p`
   margin-left: 2rem;
 `;
 
-export const WriteButton = styled.button`
+export const WriteButton = styled.div`
   width: 8rem;
   height: 8rem;
 
@@ -107,15 +116,6 @@ export const KeywordBox = styled.div`
   gap: 2.5rem;
 
   overflow: auto;
-`
-
-export const ErrMsg = styled.div`
-  width: 20rem;
-  height: 0rem;
-  margin: 2rem -10rem -2rem;
-  font-size: 2rem;
-  text-align: center;
-  color: #9a9a9a;
 `
 
 export const Desc = styled.div`

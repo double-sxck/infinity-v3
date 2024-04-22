@@ -3,6 +3,7 @@ import {
   FindPage,
   HeaderBar,
   MainPage,
+  SearchPage,
   Sidebar,
   UserPage,
   ViewPage,
@@ -13,6 +14,8 @@ import { useCommentModal } from "./hooks/useCommentModal";
 import LoginModal from "./layout/LoginModal/modal";
 import { QueryClient, QueryClientProvider } from "react-query";
 import CommentModal from "./layout/CommentModal/index";
+import 'react-toastify/dist/ReactToastify.css';
+import { CustomToastContainer } from "./toasts/customToastContainer";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,6 +28,9 @@ function App() {
   const { modalCState } = useCommentModal(0);
   return (
     <QueryClientProvider client={queryClient}>
+      <CustomToastContainer
+        limit={3}
+      />
       {modalCState.show && <CommentModal />}
       {modalState.show && <LoginModal />}
       <HeaderBar />
@@ -43,7 +49,7 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/search/:value" element={<MainPage />} />
+          <Route path="/search/:value" element={<SearchPage />} />
           <Route path="/profile/:type" element={<UserPage />} />
           <Route path="/write" element={<WritePage />} />
           <Route path="/view" element={<ViewPage />} />

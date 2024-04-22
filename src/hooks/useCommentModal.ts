@@ -9,7 +9,7 @@ export const useCommentModal = (id: number) => {
   };
 
   const closeCommentModal = () => {
-    console.log(id);
+    // console.log(id);
     setModalState({ ...modalCState, animationState: false });
     setTimeout(() => {
       setModalState({ ...modalCState, show: false });

@@ -1,13 +1,9 @@
-import React from "react";
 import * as S from "./style";
-import { Row } from "../../styles/ui";
-import NovelBox from "./default";
-import NovelSearchBox from "./search";
-import { useLocation } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { NovelBox, Row } from "../../styles/ui";
 import { useState } from "react";
 import { useEffect } from "react";
 import { instance } from "../../apis/instance";
+import Loading from "./loading";
 
 interface Novel {
   uid: number;
@@ -19,100 +15,114 @@ interface Novel {
   category: any;
   views: number;
   novel_likes: any;
-  comment: any; // Fix typo here
+  comment: any;
 }
 
 const MainPage = () => {
-  const path = useLocation().pathname;
-
   const [sort, setSort] = useState("LATEST");
-
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [getPage, setGetPage] = useState<number>(1);
   const [novels, setNovels] = useState<{ data: Novel[]; meta: any }>({
     data: [],
     meta: {},
   });
 
-  const {value} = useParams<string>();
+  // Intersection observer 설정
+  const handleObserver = (entries: IntersectionObserverEntry[]) => {
+    const target = entries[0];
+    if (target.isIntersecting && !isLoading) {
+      setGetPage((prevPage) => prevPage + 1);
+    }
+  };
+  // handleObserver: 교차점이 발생했을 때 실행되는 콜백 함수.
+  // entries: 교차점 정보를 담는 배열
+  // isIntersection: 교차점(intersection)이 발생한 요소의 상태
+  // 교차점이 발생하면 getPage 1증가
 
   useEffect(() => {
-    if (path === "/") getNovels();
-    else if (path.includes("/search")) getSearchedNovels();
-  }, [sort, value, path]);
+    const observer = new IntersectionObserver(handleObserver, {
+      threshold: 0, // intersection Observer의 옵션, 0일 때는 교차점이 한번말 발생하도록 실행
+    });
+    // 최하단 요소를 관찰 대상으로 지정함
+    const observerTarget = document.getElementById("observer");
+    // 관찰 시작
+    if (observerTarget) {
+      observer.observe(observerTarget);
+    }
+  }, []);
+
+  useEffect(() => {
+    getNovels();
+  }, [getPage]);
+
+  useEffect(() => {
+    setNovels(() => ({data: [], meta: {}}));
+    setGetPage(() => 1);
+  }, [sort]);
 
   const getNovels = async () => {
+    setIsLoading(true);
     try {
       const response = await instance.get("/novel", {
         params: {
-          size: 50,
-          index: 1,
+          size: 8,
+          index: getPage,
           viewType: sort,
         },
       });
-      setNovels(response.data);
-    } catch (error) {
+      setNovels((prevData: { data: Novel[]; meta: any }) => ({
+        ...prevData,
+        data: [...prevData.data, ...response.data.data],
+        meta: { ...response.data.meta },
+      }));
+      // setNovels(() => ({
+      //   data: response.data.data,
+      //   meta: response.data.meta,
+      // }))
+    } catch (error: any) {
+      if (error.response) {
+        window.alert(`${error.response.status}에러가 발생했습니다.`);
+      } else {
+        window.alert("네트워크 에러가 발생했습니다.");
+      }
       console.log(error);
     }
-  };
-
-  const getSearchedNovels = async () => {
-    try {
-      // console.log(searchQueryValue);
-      const response = await instance.get("/novel/search", {
-        params: {
-          query: value,
-          size: 10,
-          index: 1,
-          viewType: sort,
-        },
-      });
-      // console.log(response.data);
-      setNovels(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    setIsLoading(false);
   };
 
   return (
     <>
       <Row gap={2.4}>
-        <S.ListBox onClick={() => setSort("LATEST")} $selected={sort === "LATEST"}>
+        <S.ListBox
+          onClick={() => setSort(() => "LATEST")}
+          $selected={sort === "LATEST"}
+        >
           최신
         </S.ListBox>
-        <S.ListBox onClick={() => setSort("POPULAR")} $selected={sort === "POPULAR"}>
+        <S.ListBox
+          onClick={() => setSort(() => "POPULAR")}
+          $selected={sort === "POPULAR"}
+        >
           인기
         </S.ListBox>
       </Row>
-      {path === "/" ? (
-        <S.ContentsArea>
-          {novels.data.map((novel: Novel, index: number) => (
-            <NovelBox
-              key={index}
-              uid={novel.uid}
-              thumbnail={novel.thumbnail}
-              title={novel.title}
-              user={novel.user}
-              views={novel.views}
-            />
-          ))}
-        </S.ContentsArea>
-      ) : (
-        <S.SearchContentsArea>
-          {
-            novels.data.length === 0 ?
-            <S.NoResult>검색어와 일치하는 결과가 없습니다.</S.NoResult> :
-            novels.data.map((novel: Novel, index: number) => (
-            <NovelSearchBox
-              key={index}
-              uid={novel.uid}
-              thumbnail={novel.thumbnail}
-              title={novel.title}
-              user={novel.user}
-              views={novel.views}
-              content={novel.content}
-            />
-          ))}
-        </S.SearchContentsArea>
-      )}
+      <S.ContentsArea>
+        {novels.data.map((novel: Novel, index: number) => (
+          <NovelBox
+            key={index}
+            uid={novel.uid}
+            thumbnail={novel.thumbnail}
+            title={novel.title}
+            user={novel.user}
+            views={novel.views}
+          />
+        ))}
+        {
+          isLoading &&
+          <Loading />
+        }
+      </S.ContentsArea>
+      <div id="observer" style={{ height: "10px" }}></div>
     </>
   );
 };

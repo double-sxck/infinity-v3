@@ -60,18 +60,6 @@ export const Row = styled.div`
   align-items: center;
 `;
 
-export const ErrorMsg = styled.p`
-  line-height: 1rem;
-
-  color: #2c333e;
-  font-size: 2rem;
-  font-weight: 400;
-
-  margin: 0 0 0 auto;
-
-  cursor: default;
-`;
-
 export const Empty = styled.div`
   height: 1rem;
 `
