@@ -10,6 +10,7 @@ import NovelType from "./NovelCategory";
 import { CommentIcon, LikeIcon } from "../../assets";
 import { CommentType } from "../../types/layoutType/CommentType";
 import { MessageItem } from "../../types/layoutType/MessageItemType";
+import { customWaitToast } from "../../toasts/customToast";
 
 var id = 0;
 var uid = 0;
@@ -147,28 +148,46 @@ const CommentModal = () => {
     }
   };
 
+  const deleteNovel = async () => {
+    customWaitToast("소설 삭제 중...");
+    try {
+      await instance.delete(
+        "/novel/" + id,
+        Authorization()
+      );
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <S.Page>
       <S.Modal ref={ref}>
         <Column gap={10} justifyContent="center" alignItems="center">
-          <div style={{ alignSelf: "flex-start" }}>
+          <div style={{ display: "flex", alignSelf: "center" }}>
             <Row gap={8.6}>
-              {comment?.novelResult && comment.novelResult[0] && (
+              {comment?.novelResult ?
                 <S.ImageBox
-                  $img={
-                    (comment?.novelResult &&
-                      comment.novelResult[0]?.thumbnail) ||
-                    ""
-                  }
-                />
-              )}
+                  $img={comment.novelResult[0]?.thumbnail}
+                /> :
+                <S.EmptyImageBox />
+              }
               <Column gap={4}>
-                <S.NovelTitle>
-                  {comment?.novelResult && comment.novelResult[0]?.title}
-                </S.NovelTitle>
-                <S.NovelContent>{comment?.userResult?.nickname}</S.NovelContent>
+                {comment?.novelResult ?
+                  <S.NovelTitle>
+                    {comment.novelResult[0]?.title}
+                  </S.NovelTitle> :
+                  <S.EmptyNovelTitle />
+                }
+                {comment?.novelResult ?
+                  <S.NovelContent>
+                    {comment?.userResult?.nickname}
+                  </S.NovelContent> :
+                  <S.EmptyNovelContent />
+                }
                 <Row gap={2}>
-                  {comment?.novelResult && comment.novelResult[0]?.category ? (
+                  {comment?.novelResult ? comment.novelResult[0]?.category ? (
                     <>
                       {NovelType[comment.novelResult[0]?.category]?.icon}
                       <S.NovelContent>
@@ -180,29 +199,45 @@ const CommentModal = () => {
                       {NovelType.ETC.icon}
                       <S.NovelContent>{NovelType.ETC.label}</S.NovelContent>
                     </>
-                  )}
+                  ) : <S.EmptyNovelContent1 />}
                 </Row>
-                <S.NovelContent>
-                  조회수 {comment?.novelResult && comment.novelResult[0]?.views}회
-                </S.NovelContent>
+                {comment?.novelResult ?
+                  <S.NovelContent>
+                    조회수 {comment.novelResult[0]?.views}회
+                  </S.NovelContent> :
+                  <S.EmptyNovelContent />
+                }
                 <div
                   onClick={handleLikeClick}
                   style={{ cursor: isClickable() ? "pointer" : "default" }}
                 >
                   <Row gap={2} alignItems="center">
                     {like ? <LikeIcon color={"#ff0000"} /> : <LikeIcon />}
-                    <S.NovelContent>{likeCount}</S.NovelContent>
+                    {comment?.novelResult ?
+                      <S.NovelContent>
+                        {likeCount}
+                        </S.NovelContent> :
+                      <S.EmptyNovelContent />
+                    }
                   </Row>
                 </div>
               </Column>
             </Row>
+            {comment?.novelResult[0].user_uid === uid && <S.DeleteNovel onClick={() => deleteNovel()}>삭제</S.DeleteNovel>}
           </div>
           <S.HelfLine />
-
           <S.NovelContent>
-            <pre style={{ whiteSpace: "pre-wrap" }}>
-              {comment?.novelResult[0]?.content}
-            </pre>
+            {comment?.novelResult ?
+              <pre style={{ whiteSpace: "pre-wrap" }}>
+                {comment?.novelResult[0]?.content}
+              </pre> :
+              <Column gap={4}>
+                <S.EmptyNovel />
+                <S.EmptyNovel />
+                <S.EmptyNovel />
+              </Column>
+            }
+            
           </S.NovelContent>
           <S.HelfLine />
           <div
