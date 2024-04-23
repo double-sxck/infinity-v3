@@ -53,7 +53,7 @@ const MainPage = () => {
 
   useEffect(() => {
     getNovels();
-  }, [getPage, sort]);
+  }, [getPage]);
 
   useEffect(() => {
     setNovels(() => ({data: [], meta: {}}));
