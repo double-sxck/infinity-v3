@@ -27,12 +27,18 @@ const JoinInfinity: React.FC<ChildProps> = ({
         pwd: value.pw,
         nickname: value.nickName,
       });
+      console.log("탑", response);
       customSucToast("회원가입되었습니다.");
       inputState({ id: "", pw: "", nickName: "" });
       setState(false);
-    } catch (e) {
-      customErrToast("아이디 혹은 닉네임이 중복되었습니다.");
-      console.error(e);
+    } catch (error:any) {
+      console.error(error);
+      if (error.response && error.response.status === 409) {
+        customErrToast("아이디 또는 닉네임이 중복되었습니다.");
+        setInputType(() => "id");
+      } else {
+        customErrToast("서버 에러가 발생했습니다.");
+      }
     }
   };
 
@@ -43,8 +49,7 @@ const JoinInfinity: React.FC<ChildProps> = ({
           customErrToast("아이디를 입력해주세요.");
         } else if (value.pw === "") {
           customErrToast("비밀번호를 입력해주세요.");
-        }
-        else if (value.id !== "" && value.pw !== "") {
+        } else if (value.id !== "" && value.pw !== "") {
           setInputType("nick");
         }
       } else {
@@ -75,18 +80,22 @@ const JoinInfinity: React.FC<ChildProps> = ({
                 type="email"
                 placeholder="아이디"
                 value={value.id}
-                onChange={(e: any) => inputState({ ...value, id: e.target.value })}
+                onChange={(e: any) =>
+                  inputState({ ...value, id: e.target.value })
+                }
                 onKeyDown={(e: any) => {
-                  if(e.key === 'Enter') NextButtonClickHandler();
+                  if (e.key === "Enter") NextButtonClickHandler();
                 }}
               />
               <S.InputText
                 type="password"
                 placeholder="비밀번호"
                 value={value.pw}
-                onChange={(e: any) => inputState({ ...value, pw: e.target.value })}
+                onChange={(e: any) =>
+                  inputState({ ...value, pw: e.target.value })
+                }
                 onKeyDown={(e: any) => {
-                  if(e.key === 'Enter') NextButtonClickHandler();
+                  if (e.key === "Enter") NextButtonClickHandler();
                 }}
               />
             </>
@@ -99,7 +108,7 @@ const JoinInfinity: React.FC<ChildProps> = ({
                 inputState({ ...value, nickName: e.target.value })
               }
               onKeyDown={(e: any) => {
-                if(e.key === 'Enter') NextButtonClickHandler();
+                if (e.key === "Enter") NextButtonClickHandler();
               }}
             />
           )}
