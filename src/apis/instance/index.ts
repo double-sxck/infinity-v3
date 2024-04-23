@@ -25,7 +25,7 @@
       return res;
     },
     async (error) => {
-      console.log("인셉",error);
+      console.log(error);
       return Promise.reject(error);
     },
   );

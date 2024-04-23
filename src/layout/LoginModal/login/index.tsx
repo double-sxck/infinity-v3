@@ -52,6 +52,7 @@ const LoginModalPage: React.FC<ChildProps> = ({
       customSucToast("로그인되었습니다.");
       closeModal();
     } catch (error) {
+      customErrToast("일치하는 정보가 없습니다.");
       console.error(error);
     }
   };
