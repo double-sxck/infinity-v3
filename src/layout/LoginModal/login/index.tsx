@@ -48,8 +48,8 @@ const LoginModalPage: React.FC<ChildProps> = ({
         id: value.id,
         pwd: value.pw,
       });
-      customSucToast("로그인되었습니다.");
       localStorage.setItem("refresh-token", response.data.token);
+      customSucToast("로그인되었습니다.");
       closeModal();
     } catch (error) {
       console.error(error);
