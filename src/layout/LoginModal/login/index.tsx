@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as S from "./style";
 import { useOutSideClick } from "../../../hooks/useOutsideClick";
 import { useLoginModal } from "../../../hooks/useLoginMdal";
@@ -25,6 +25,11 @@ const LoginModalPage: React.FC<ChildProps> = ({
   useOutSideClick(ref, closeModal);
   const [showPW, setShowPW] = useState<boolean>(false);
   const [inputType, setInputType] = useState<string>("id");
+  const focusRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    focusRef.current?.focus();
+  }, []);
 
   const NextButtonClickHandler = () => {
     if (inputType === "id") {
@@ -53,6 +58,8 @@ const LoginModalPage: React.FC<ChildProps> = ({
       closeModal();
     } catch (error) {
       customErrToast("일치하는 정보가 없습니다.");
+      inputState({...value, pw: ''});
+      setInputType("id");
       console.error(error);
     }
   };
@@ -77,6 +84,7 @@ const LoginModalPage: React.FC<ChildProps> = ({
             onKeyDown={(e: any) => {
               if(e.key === 'Enter') NextButtonClickHandler();
             }}
+            ref={focusRef}
           />
         ) : (
           <S.InputText

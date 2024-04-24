@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as S from "./style";
 import { Column } from "../../../styles/ui";
 import { LogoTextIcon } from "../../../assets";
@@ -19,6 +19,13 @@ const JoinInfinity: React.FC<ChildProps> = ({
   value,
 }) => {
   const [inputType, setInputType] = useState<string>("id");
+  const focusRef = useRef<HTMLInputElement>(null);
+  const focusRef2 = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    focusRef.current?.focus();
+    focusRef2.current?.focus();
+  }, [inputType]);
 
   const PostLogin = async () => {
     try {
@@ -51,6 +58,7 @@ const JoinInfinity: React.FC<ChildProps> = ({
           customErrToast("비밀번호를 입력해주세요.");
         } else if (value.id !== "" && value.pw !== "") {
           setInputType("nick");
+          focusRef2.current?.focus();
         }
       } else {
         customErrToast("계정 정보를 입력해주세요.");
@@ -86,6 +94,7 @@ const JoinInfinity: React.FC<ChildProps> = ({
                 onKeyDown={(e: any) => {
                   if (e.key === "Enter") NextButtonClickHandler();
                 }}
+                ref={focusRef}
               />
               <S.InputText
                 type="password"
@@ -110,6 +119,7 @@ const JoinInfinity: React.FC<ChildProps> = ({
               onKeyDown={(e: any) => {
                 if (e.key === "Enter") NextButtonClickHandler();
               }}
+              ref={focusRef2}
             />
           )}
         </Column>
