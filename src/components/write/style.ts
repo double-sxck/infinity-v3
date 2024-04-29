@@ -127,3 +127,14 @@ export const Desc = styled.div`
 export const Delete = styled.div`
   cursor: pointer;
 `
+
+export const NovelReWriteInput = styled.textarea`
+  width: 100%;
+  height: 100%;
+
+  border: none;
+  resize: none;
+  
+  overflow: auto;
+  white-space: pre-wrap; /* 줄 바꿈 활성화 */
+`;
