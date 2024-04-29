@@ -9,7 +9,11 @@ import {
   TrashIcon,
   UserIcon,
 } from "../../assets";
-import { customErrToast, customSucToast, customWaitToast } from "../../toasts/customToast";
+import {
+  customErrToast,
+  customSucToast,
+  customWaitToast,
+} from "../../toasts/customToast";
 
 interface KeywordProps {
   id: number;
@@ -34,42 +38,42 @@ const WritePage = () => {
   const keywordId = useRef(0);
 
   useEffect(() => {
-    if(localStorage.getItem("refresh-token") === null) {
+    if (localStorage.getItem("refresh-token") === null) {
       alert("로그인 해주세요.");
       window.location.href = "/";
-    };
+    }
   }, []);
 
   useEffect(() => {
-    const keyword = localStorage.getItem('keywords');
+    const keyword = localStorage.getItem("keywords");
 
     if (keyword !== null) {
-      setKeywords(() => [])
-      const keywordJSON = JSON.parse(keyword)
-    
-      const characterArr: [] = keywordJSON.characters.split(', ');
+      setKeywords(() => []);
+      const keywordJSON = JSON.parse(keyword);
+
+      const characterArr: [] = keywordJSON.characters.split(", ");
       characterArr.forEach((character: string) => {
-        if(character === '') return;
-        addKeyword(keywordId.current++, 'P', character);
+        if (character === "") return;
+        addKeyword(keywordId.current++, "P", character);
       });
-    
-      const eventArr: [] = keywordJSON.events.split(', ');
+
+      const eventArr: [] = keywordJSON.events.split(", ");
       eventArr.forEach((event: string) => {
-        if(event === '') return;
-        addKeyword(keywordId.current++, 'E', event);
+        if (event === "") return;
+        addKeyword(keywordId.current++, "E", event);
       });
-    
-      const backgroundArr: [] = keywordJSON.backgrounds.split(', ');
+
+      const backgroundArr: [] = keywordJSON.backgrounds.split(", ");
       backgroundArr.forEach((background: string) => {
-        if(background === '') return;
-        addKeyword(keywordId.current++, 'B', background);
+        if (background === "") return;
+        addKeyword(keywordId.current++, "B", background);
       });
-    };
-    const content = localStorage.getItem('novel');
+    }
+    const content = localStorage.getItem("novel");
     if (content !== null) {
       setSseData(() => content);
     }
-  }, [])
+  }, []);
 
   const scrollToBottom = () => {
     if (scrollRef.current) {
@@ -194,8 +198,7 @@ const WritePage = () => {
     if (flag) {
       customWaitToast("소설 생성 중입니다.");
       return;
-    }
-    else {
+    } else {
       localStorage.setItem("keywords", JSON.stringify(makeDto(keywords)));
       localStorage.setItem("novel", sseData);
       window.location.href = "/view";
@@ -257,7 +260,7 @@ const WritePage = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setPerson(e.target.value)
                     }
-                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
                       if (e.key === "Enter" && person !== "") {
                         addKeyword(keywordId.current++, "P", person);
                         setPerson("");
@@ -275,7 +278,7 @@ const WritePage = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setEvent(e.target.value)
                     }
-                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
                       if (e.key === "Enter" && event !== "") {
                         addKeyword(keywordId.current++, "E", event);
                         setEvent("");
@@ -293,7 +296,7 @@ const WritePage = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setBackground(e.target.value)
                     }
-                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
                       if (e.key === "Enter" && background !== "") {
                         addKeyword(keywordId.current++, "B", background);
                         setBackground("");
@@ -312,8 +315,7 @@ const WritePage = () => {
               }}
             >
               <S.KeywordBox ref={scrollRef2}>
-                {
-                  keywords.length > 0 ?
+                {keywords.length > 0 ? (
                   keywords.map((keyword, index) => (
                     <Keyword
                       key={index}
@@ -321,31 +323,26 @@ const WritePage = () => {
                       type={keyword.type}
                       word={keyword.word}
                     />
-                  )) :
+                  ))
+                ) : (
                   <S.Desc>엔터를 눌러 키워드를 추가해주세요</S.Desc>
-                }
+                )}
               </S.KeywordBox>
             </div>
           </S.ContentBox>
         </Column>
-        <S.WriteButton
-          onClick={() => writeNovel(keywords)}
-        >
+        <S.WriteButton onClick={() => writeNovel(keywords)}>
           <PencilIcon width={4} height={4} />
         </S.WriteButton>
         <Column>
           <Row justifyContent="center" gap={0.8}>
-            {
-              sseData !== "" &&
-              <S.Rollback />
-            }
+            {sseData !== "" && <S.Rollback />}
             <S.ContentText>소설 미리 보기</S.ContentText>
-            {
-              sseData !== "" &&
-              <S.Rollback
-                onClick={() => rollback()}
-              >이전 소설이 더 마음에 들어요</S.Rollback>
-            }
+            {sseData !== "" && (
+              <S.Rollback onClick={() => rollback()}>
+                이전 소설이 더 마음에 들어요
+              </S.Rollback>
+            )}
           </Row>
           <S.ContentBox>
             <S.VeiwNovel ref={scrollRef}>
