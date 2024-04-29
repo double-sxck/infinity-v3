@@ -28,7 +28,7 @@ const WritePage = () => {
   const [person, setPerson] = useState("");
   const [event, setEvent] = useState("");
   const [background, setBackground] = useState("");
-  const [sseData, setSseData] = useState("");
+  const [sseData, setSseData] = useState(""); // 소설 저장 state
   const [cache, setCache] = useState("");
   const [flag, setFlag] = useState(false);
 
@@ -346,9 +346,16 @@ const WritePage = () => {
           </Row>
           <S.ContentBox>
             <S.VeiwNovel ref={scrollRef}>
-              {sseData !== ""
-                ? sseData
-                : "키워드를 입력하고 소설을 생성해보세요."}
+              {sseData !== "" ? (
+                <S.NovelReWriteInput
+                  value={sseData}
+                  onChange={(e) => {
+                    setSseData(e.target.value);
+                  }}
+                />
+              ) : (
+                "키워드를 입력하고 소설을 생성해보세요."
+              )}
             </S.VeiwNovel>
           </S.ContentBox>
         </Column>
