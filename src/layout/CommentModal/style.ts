@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const Page = styled.div`
   width: 100vw;
@@ -30,7 +30,6 @@ export const Modal = styled.div`
 export const ImageBox = styled.div<{ $img: string }>`
   width: 34rem;
   height: 34rem;
-  margin-left: 8.6rem;
   background-color: black;
   background-image: url(${(props) => props.$img || "none"});
   background-size: cover;
@@ -40,7 +39,7 @@ export const ImageBox = styled.div<{ $img: string }>`
 export const NovelTitle = styled.p`
   font-size: 3.6rem;
   font-weight: 700;
-  max-width: 40rem;
+  width: 40rem;
 `;
 
 export const NovelContent = styled.div`
@@ -113,4 +112,57 @@ export const MessageInput = styled.input`
 export const Comment = styled.div`
   font-size: 3rem;
   font-weight: bold;
+`;
+
+export const DeleteNovel = styled.div`
+  width: 0;
+  word-break: keep-all;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #9a9a9a;
+`;
+
+const moveGradient = keyframes`
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+`;
+
+export const EmptyImageBox = styled.div`
+  width: 34rem;
+  height: 34rem;
+
+  background: linear-gradient(to right, #f0f0f0, #ddd, #f0f0f0);
+  background-size: 200% 100%;
+  animation: ${moveGradient} 1.5s infinite linear;
+  
+  border-radius: 2.4rem;
+`;
+
+export const EmptyNovelTitle = styled.div`
+  display: flex;
+  width: 40rem;
+  height: 3.6rem;
+
+  background: linear-gradient(to right, #f0f0f0, #ddd, #f0f0f0);
+  background-size: 200% 100%;
+  animation: ${moveGradient} 1.5s infinite linear;
+
+  border-radius: 2.4rem;
+`;
+
+export const EmptyNovelContent = styled(EmptyNovelTitle)`
+  width: 20rem;
+  height: 3rem;
+`;
+
+export const EmptyNovelContent1 = styled(EmptyNovelContent)`
+  width: 25rem;
+`
+
+export const EmptyNovel = styled(EmptyNovelContent)`
+  width: 80rem;
 `

@@ -9,7 +9,11 @@ import {
   TrashIcon,
   UserIcon,
 } from "../../assets";
-import { customErrToast, customSucToast, customWaitToast } from "../../toasts/customToast";
+import {
+  customErrToast,
+  customSucToast,
+  customWaitToast,
+} from "../../toasts/customToast";
 
 interface KeywordProps {
   id: number;
@@ -31,38 +35,45 @@ const WritePage = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const scrollRef2 = useRef<HTMLDivElement>(null);
 
+  const keywordId = useRef(0);
+
   useEffect(() => {
-    const keyword = localStorage.getItem('keywords');
+    if (localStorage.getItem("refresh-token") === null) {
+      alert("로그인 해주세요.");
+      window.location.href = "/";
+    }
+  }, []);
+
+  useEffect(() => {
+    const keyword = localStorage.getItem("keywords");
 
     if (keyword !== null) {
-      setKeywords(() => [])
-      const keywordJSON = JSON.parse(keyword)
-      let i = 1;
-    
-      const characterArr: [] = keywordJSON.characters.split(', ');
+      setKeywords(() => []);
+      const keywordJSON = JSON.parse(keyword);
+
+      const characterArr: [] = keywordJSON.characters.split(", ");
       characterArr.forEach((character: string) => {
-        addKeyword(i++, 'P', character);
+        if (character === "") return;
+        addKeyword(keywordId.current++, "P", character);
       });
-    
-      const eventArr: [] = keywordJSON.events.split(', ');
+
+      const eventArr: [] = keywordJSON.events.split(", ");
       eventArr.forEach((event: string) => {
-        addKeyword(i++, 'E', event);
+        if (event === "") return;
+        addKeyword(keywordId.current++, "E", event);
       });
-    
-      const backgroundArr: [] = keywordJSON.backgrounds.split(', ');
+
+      const backgroundArr: [] = keywordJSON.backgrounds.split(", ");
       backgroundArr.forEach((background: string) => {
-        addKeyword(i++, 'B', background);
+        if (background === "") return;
+        addKeyword(keywordId.current++, "B", background);
       });
-    };
-    const content = localStorage.getItem('novel');
+    }
+    const content = localStorage.getItem("novel");
     if (content !== null) {
       setSseData(() => content);
     }
-  }, [])
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [sseData]);
+  }, []);
 
   const scrollToBottom = () => {
     if (scrollRef.current) {
@@ -70,42 +81,24 @@ const WritePage = () => {
     }
   };
 
-  useEffect(() => {
-    scrollToBottom2();
-  }, [keywords]);
-
   const scrollToBottom2 = () => {
     if (scrollRef2.current) {
       scrollRef2.current.scrollTop = scrollRef2.current.scrollHeight;
     }
   };
 
+  useEffect(() => {
+    scrollToBottom();
+    localStorage.setItem("novel", sseData);
+  }, [sseData]);
+
+  useEffect(() => {
+    scrollToBottom2();
+    localStorage.setItem("keywords", JSON.stringify(makeDto(keywords)));
+  }, [keywords]);
+
   const addKeyword = (id: number, type: string, word: string) => {
     setKeywords((bf) => [...bf, { id: id, type: type, word: word }]);
-  };
-
-  const keywordId = useRef(0);
-
-  const Keyword: React.FC<KeywordProps> = ({ id, type, word }) => {
-    return (
-      <div>
-        <Row alignItems="center" justifyContent="space-between">
-          <div style={{ display: "flex", alignItems: "center" }}>
-            {type === "P" ? (
-              <UserIcon width={2.4} height={2.4} />
-            ) : type === "E" ? (
-              <PlayButtonIcon width={2.4} height={2.4} />
-            ) : (
-              <ImagesIcon width={2.4} height={2.4} />
-            )}
-            <S.AddContentText>{word}</S.AddContentText>
-          </div>
-          <S.Delete onClick={() => remove(id)}>
-            <TrashIcon />
-          </S.Delete>
-        </Row>
-      </div>
-    );
   };
 
   const remove = (id: number) => {
@@ -202,7 +195,10 @@ const WritePage = () => {
       customErrToast("소설을 작성해주세요.");
       return;
     }
-    else {
+    if (flag) {
+      customWaitToast("소설 생성 중입니다.");
+      return;
+    } else {
       localStorage.setItem("keywords", JSON.stringify(makeDto(keywords)));
       localStorage.setItem("novel", sseData);
       window.location.href = "/view";
@@ -215,6 +211,28 @@ const WritePage = () => {
       setSseData(() => cache);
       setCache(() => temp);
     }
+  };
+
+  const Keyword: React.FC<KeywordProps> = ({ id, type, word }) => {
+    return (
+      <div>
+        <Row alignItems="center" justifyContent="space-between">
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {type === "P" ? (
+              <UserIcon width={2.4} height={2.4} />
+            ) : type === "E" ? (
+              <PlayButtonIcon width={2.4} height={2.4} />
+            ) : (
+              <ImagesIcon width={2.4} height={2.4} />
+            )}
+            <S.AddContentText>{word}</S.AddContentText>
+          </div>
+          <S.Delete onClick={() => remove(id)}>
+            <TrashIcon />
+          </S.Delete>
+        </Row>
+      </div>
+    );
   };
 
   return (
@@ -242,7 +260,7 @@ const WritePage = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setPerson(e.target.value)
                     }
-                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
                       if (e.key === "Enter" && person !== "") {
                         addKeyword(keywordId.current++, "P", person);
                         setPerson("");
@@ -260,7 +278,7 @@ const WritePage = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setEvent(e.target.value)
                     }
-                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
                       if (e.key === "Enter" && event !== "") {
                         addKeyword(keywordId.current++, "E", event);
                         setEvent("");
@@ -278,7 +296,7 @@ const WritePage = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setBackground(e.target.value)
                     }
-                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
                       if (e.key === "Enter" && background !== "") {
                         addKeyword(keywordId.current++, "B", background);
                         setBackground("");
@@ -297,8 +315,7 @@ const WritePage = () => {
               }}
             >
               <S.KeywordBox ref={scrollRef2}>
-                {
-                  keywords.length > 0 ?
+                {keywords.length > 0 ? (
                   keywords.map((keyword, index) => (
                     <Keyword
                       key={index}
@@ -306,31 +323,26 @@ const WritePage = () => {
                       type={keyword.type}
                       word={keyword.word}
                     />
-                  )) :
+                  ))
+                ) : (
                   <S.Desc>엔터를 눌러 키워드를 추가해주세요</S.Desc>
-                }
+                )}
               </S.KeywordBox>
             </div>
           </S.ContentBox>
         </Column>
-        <S.WriteButton
-          onClick={() => writeNovel(keywords)}
-        >
+        <S.WriteButton onClick={() => writeNovel(keywords)}>
           <PencilIcon width={4} height={4} />
         </S.WriteButton>
         <Column>
           <Row justifyContent="center" gap={0.8}>
-            {
-              sseData !== "" &&
-              <S.Rollback />
-            }
+            {sseData !== "" && <S.Rollback />}
             <S.ContentText>소설 미리 보기</S.ContentText>
-            {
-              sseData !== "" &&
-              <S.Rollback
-                onClick={() => rollback()}
-              >이전 소설이 더 마음에 들어요</S.Rollback>
-            }
+            {sseData !== "" && (
+              <S.Rollback onClick={() => rollback()}>
+                이전 소설이 더 마음에 들어요
+              </S.Rollback>
+            )}
           </Row>
           <S.ContentBox>
             <S.VeiwNovel ref={scrollRef}>
