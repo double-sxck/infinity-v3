@@ -4,7 +4,7 @@ import {Storage} from "../../storage/token/index"
 export const Authorization = () => {
   return {
     headers: {
-      Authorization: Storage.getItem(TOKEN.ACCESS),
+      Authorization: `Bearer ${Storage.getItem(TOKEN.ACCESS)}`,
     },
   };
 };
