@@ -55,8 +55,8 @@ const MainPage = () => {
   }, [getPage]);
 
   useEffect(() => {
-    setNovels(() => ({data: [], meta: {}}));
-    if(getPage === 1 && novels.data.length !== 0) getNovels();
+    setNovels(() => ({ data: [], meta: {} }));
+    if (getPage === 1 && novels.data.length !== 0) getNovels();
     else setGetPage(() => 1);
   }, [sort]);
 
@@ -113,8 +113,8 @@ const MainPage = () => {
             views={novel.views}
           />
         ))}
-        <div id="observer" style={{ height: "10px" }}></div>
       </S.ContentsArea>
+      <div id="observer" style={{ height: "10px" }}></div>
     </div>
   );
 };
