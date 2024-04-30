@@ -15,6 +15,7 @@ import {
   customWaitToast,
 } from "../../toasts/customToast";
 import { Storage } from "../../storage/token";
+import TOKEN from "../../constants/token.constants";
 
 interface KeywordProps {
   id: number;
@@ -39,7 +40,7 @@ const WritePage = () => {
   const keywordId = useRef(0);
 
   useEffect(() => {
-    if (Storage.getItem("access-token") === null) {
+    if (Storage.getItem(TOKEN.ACCESS) === null) {
       alert("로그인 해주세요.");
       window.location.href = "/";
     }
