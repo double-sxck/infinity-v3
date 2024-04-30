@@ -10,6 +10,8 @@ import {
 import { Column, Row } from "../../styles/ui";
 import { useLoginModal } from "../../hooks/useLoginMdal"; // useLoginModal 임포트 위치 변경
 import { Link } from "react-router-dom";
+import TOKEN from "../../constants/token.constants";
+import { Storage } from "../../storage/token";
 
 const HeaderBar = () => {
   const { openModal } = useLoginModal(); // useLoginModal 호출 위치 변경
@@ -52,7 +54,7 @@ const HeaderBar = () => {
           </Link>
         </Row>
         <Row alignItems="center" justifyContent="center" gap={2.8}>
-          {localStorage.getItem("refresh-token") ? (
+          {Storage.getItem(TOKEN.ACCESS) ? (
             <>
               <Link to="/write" onClick={() => setProfile('false')}>
                 <S.UserProfileBox>
@@ -79,8 +81,8 @@ const HeaderBar = () => {
                     <S.ProfileLine />
                     <div
                       onClick={() => {
-                        // console.log("로그아웃");
-                        localStorage.removeItem("refresh-token");
+                        Storage.delItem(TOKEN.ACCESS)
+                        Storage.delItem(TOKEN.REFRESH)
                         window.location.href="/";
                       }}
                     >

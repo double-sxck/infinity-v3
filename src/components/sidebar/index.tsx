@@ -12,6 +12,8 @@ import {
   GenreIconComponents,
   UserIconComponents,
 } from "./icons/GenreIconComponents";
+import TOKEN from "../../constants/token.constants";
+import { Storage } from "../../storage/token";
 
 const Sidebar = () => {
   const { openModal } = useLoginModal();
@@ -27,7 +29,7 @@ const Sidebar = () => {
             </ItemBox>
           </Link>
           <S.SidebarContour />
-          {localStorage.getItem("refresh-token") ? (
+          {Storage.getItem(TOKEN.ACCESS) ? (
             <>
               <S.Subtitle>나</S.Subtitle>
               {UserIconComponents.map((item, index) => (
