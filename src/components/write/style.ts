@@ -103,8 +103,8 @@ export const VeiwNovel = styled.div`
   line-height: 3.2rem;
   letter-spacing: 0.1rem;
 
-  overflow: auto;
-  white-space: pre-wrap;
+  /* overflow: auto;
+  white-space: pre-wrap; */
 `;
 
 export const KeywordBox = styled.div`
@@ -137,4 +137,8 @@ export const NovelReWriteInput = styled.textarea`
   
   overflow: auto;
   white-space: pre-wrap; /* 줄 바꿈 활성화 */
+
+  &:disabled {
+    background-color: white;
+  }
 `;
