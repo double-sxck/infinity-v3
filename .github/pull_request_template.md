@@ -10,7 +10,7 @@
 - [ ] 문서 내용 변경
 - [ ] Other… Please describe:
 
-## Summary(컴잇내용)
+## Summary(커밋내용)
 
 -
 
@@ -21,7 +21,7 @@
 -
 
 ## issue(이슈 등록)
-- 
+이슈 번호 #번호 해주삼
 
 <br>
 
