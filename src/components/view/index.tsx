@@ -22,6 +22,7 @@ import {
   customWaitToast,
 } from "../../toasts/customToast";
 import Modal from "./modal";
+import { Authorization } from "../../apis/authorization";
 
 const ViewPage = () => {
   interface Keywords {
@@ -95,11 +96,7 @@ const ViewPage = () => {
           {
             prompt: prompt,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          Authorization()
         );
         setThumbnail(response.data);
         setFlag(() => false);
