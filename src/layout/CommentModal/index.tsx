@@ -39,19 +39,7 @@ const CommentModal = () => {
   useLayoutEffect(() => {
     getNovel();
     getComment();
-    if (isClickable()) {
-      getUser();
-    }
   }, []);
-
-  const getUser = async () => {
-    try {
-      const response = await instance.get("/user/onlyuser", Authorization());
-      uid = response.data.uid;
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   const postLike = async () => {
     try {
