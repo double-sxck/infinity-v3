@@ -32,7 +32,7 @@ const WritePage = () => {
   const [cache, setCache] = useState("");
   const [flag, setFlag] = useState(false);
 
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLTextAreaElement>(null);
   const scrollRef2 = useRef<HTMLDivElement>(null);
 
   const keywordId = useRef(0);
@@ -345,13 +345,15 @@ const WritePage = () => {
             )}
           </Row>
           <S.ContentBox>
-            <S.VeiwNovel ref={scrollRef}>
+            <S.VeiwNovel>
               {sseData !== "" ? (
                 <S.NovelReWriteInput
+                  ref={scrollRef}
                   value={sseData}
                   onChange={(e) => {
                     setSseData(e.target.value);
                   }}
+                  disabled={flag}
                 />
               ) : (
                 "키워드를 입력하고 소설을 생성해보세요."
