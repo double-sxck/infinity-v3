@@ -51,9 +51,7 @@ const UserPage = () => {
 
   const getUserInfo = async () => {
     try {
-      console.log(Authorization())
       const response = await instance.get("/user", Authorization());
-      // console.log(response)
       setUserInfo(response.data);
     } catch (error) {
       console.log(error);
@@ -67,7 +65,7 @@ const UserPage = () => {
         "/novel/user/" + userInfo.userInfo.uid,
         {
           params: {
-            size: 10,
+            size: 20,
             index: 1,
             userFeedType: pageType === 1 ? "FEED" : "USER_LIKED", // pageType이 1이면 FEED, 아니면 USER_LIKED
           },

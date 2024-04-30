@@ -3,7 +3,6 @@ import * as S from "./style";
 import { useCommentModal } from "../../hooks/useCommentModal";
 import { useOutSideClick } from "../../hooks/useOutsideClick";
 import { Column, Row } from "../../styles/ui";
-import { useGetListQuery } from "./api";
 import { instance } from "../../apis/instance";
 import { Authorization } from "../../apis/authorization";
 import NovelType from "./NovelCategory";
@@ -11,6 +10,8 @@ import { CommentIcon, LikeIcon } from "../../assets";
 import { CommentType } from "../../types/layoutType/CommentType";
 import { MessageItem } from "../../types/layoutType/MessageItemType";
 import { customWaitToast } from "../../toasts/customToast";
+import TOKEN from "../../constants/token.constants";
+import { Storage } from "../../storage/token";
 
 var id = 0;
 var uid = 0;
@@ -35,8 +36,6 @@ const CommentModal = () => {
   //feed list 받아온 값을 저장하는 state
   const [comment, setComment] = useState<CommentType>();
   const [sendMessageState, setSendMessageState] = useState("");
-  // query key를 지정하여 새로고침 없이 실행시킬 react query
-  const { data } = useGetListQuery(id) as { data: any };
 
   useLayoutEffect(() => {
     getNovel();
@@ -68,7 +67,6 @@ const CommentModal = () => {
   const getComment = async () => {
     try {
       const response = await instance.get("/comment/" + id, Authorization());
-      // console.log(response.data
       setMessage(response.data.reverse());
     } catch (err) {
       console.error(err);
@@ -78,7 +76,7 @@ const CommentModal = () => {
   const getNovel = async () => {
     try {
       id = modalCState.id;
-      if (localStorage.getItem("refresh-token")) {
+      if (Storage.getItem(TOKEN.ACCESS)) {
         const response = await instance.get("/novel/" + id, Authorization());
         setLike(response.data.novelResult[0]?.like);
         setLikeCount(response.data.novelResult[0]?.likeCount);
@@ -96,14 +94,13 @@ const CommentModal = () => {
 
   // 클릭 가능 여부를 확인하는 함수
   const isClickable = () => {
-    return localStorage.getItem("refresh-token") !== null;
+    return Storage.getItem(TOKEN.ACCESS) !== null;
   };
 
   // 클릭 시 실행되는 함수
   const handleLikeClick = () => {
     // refresh-token이 없으면 클릭 불가능하므로 함수 종료
     if (!isClickable()) return;
-    // console.log(likeCount);
 
     setLike(!like);
 
@@ -248,11 +245,11 @@ const CommentModal = () => {
             <div className="mb-12">
               <S.MessageInput
                 placeholder={
-                  localStorage.getItem("refresh-token") !== null
+                  Storage.getItem(TOKEN.ACCESS) !== null
                     ? "감상평 남기기..."
                     : "댓글을 남기려면 로그인해주세요"
                 }
-                disabled={localStorage.getItem("refresh-token") === null}
+                disabled={Storage.getItem(TOKEN.ACCESS) === null}
                 value={sendMessageState}
                 onChange={(e: any) => {
                   setSendMessageState(e.target.value);
