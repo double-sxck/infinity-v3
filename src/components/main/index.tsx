@@ -3,6 +3,7 @@ import { NovelBox, Row } from "../../styles/ui";
 import { useState } from "react";
 import { useEffect } from "react";
 import { instance } from "../../apis/instance";
+import Loading from "./loding";
 
 interface Novel {
   uid: number;
@@ -113,6 +114,10 @@ const MainPage = () => {
             views={novel.views}
           />
         ))}
+        {
+          isLoading &&
+          <Loading />
+        }
       </S.ContentsArea>
       <div id="observer" style={{ height: "10px" }}></div>
     </div>
