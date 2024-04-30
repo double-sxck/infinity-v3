@@ -19,6 +19,7 @@ interface Novel {
 }
 
 const MainPage = () => {
+  const [scroll, setScroll] = useState<boolean>(true);
   const [sort, setSort] = useState<string>("LATEST");
   const [isLoading, setIsLoading] = useState<Boolean>(false);
   const [getPage, setGetPage] = useState<number>(1);
@@ -71,6 +72,9 @@ const MainPage = () => {
           viewType: sort,
         },
       });
+      if(response.data.data.length === 0){
+        setScroll(false);
+      }
       setNovels((prevData: { data: Novel[]; meta: any }) => ({
         ...prevData,
         data: [...prevData.data, ...response.data.data],
@@ -114,12 +118,11 @@ const MainPage = () => {
             views={novel.views}
           />
         ))}
-        {
-          isLoading &&
-          <Loading />
-        }
+        {isLoading && <Loading />}
       </S.ContentsArea>
-      <div id="observer" style={{ height: "10px" }}></div>
+      {scroll && (
+        <div id="observer" style={{ height: "5px", marginTop: "40rem" }}></div>
+      )}
     </div>
   );
 };
