@@ -10,8 +10,7 @@ export class Storage {
   }
 
   static setItem(key: LocalStorageKey, value: string) {
-    if (this.isWindowAvailable()) return;
-    localStorage.setItem(key, value);
+    if (this.isWindowAvailable()) return localStorage.setItem(key, value);
   }
 
   static delItem(key: LocalStorageKey) {
