@@ -14,6 +14,8 @@ import {
   customSucToast,
   customWaitToast,
 } from "../../toasts/customToast";
+import { Storage } from "../../storage/token";
+import TOKEN from "../../constants/token.constants";
 
 interface KeywordProps {
   id: number;
@@ -28,17 +30,17 @@ const WritePage = () => {
   const [person, setPerson] = useState("");
   const [event, setEvent] = useState("");
   const [background, setBackground] = useState("");
-  const [sseData, setSseData] = useState("");
+  const [sseData, setSseData] = useState(""); // 소설 저장 state
   const [cache, setCache] = useState("");
   const [flag, setFlag] = useState(false);
 
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLTextAreaElement>(null);
   const scrollRef2 = useRef<HTMLDivElement>(null);
 
   const keywordId = useRef(0);
 
   useEffect(() => {
-    if (localStorage.getItem("refresh-token") === null) {
+    if (Storage.getItem(TOKEN.ACCESS) === null) {
       alert("로그인 해주세요.");
       window.location.href = "/";
     }
@@ -345,10 +347,19 @@ const WritePage = () => {
             )}
           </Row>
           <S.ContentBox>
-            <S.VeiwNovel ref={scrollRef}>
-              {sseData !== ""
-                ? sseData
-                : "키워드를 입력하고 소설을 생성해보세요."}
+            <S.VeiwNovel>
+              {sseData !== "" ? (
+                <S.NovelReWriteInput
+                  ref={scrollRef}
+                  value={sseData}
+                  onChange={(e) => {
+                    setSseData(e.target.value);
+                  }}
+                  disabled={flag}
+                />
+              ) : (
+                "키워드를 입력하고 소설을 생성해보세요."
+              )}
             </S.VeiwNovel>
           </S.ContentBox>
         </Column>

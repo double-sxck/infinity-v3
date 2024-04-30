@@ -41,7 +41,7 @@ const SearchPage = () => {
       const response = await instance.get("/novel/search", {
         params: {
           query: value,
-          size: 10,
+          size: 20,
           index: 1,
           viewType: sort,
         },

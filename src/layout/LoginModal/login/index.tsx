@@ -6,6 +6,7 @@ import { Column } from "../../../styles/ui";
 import { LogoTextIcon } from "../../../assets";
 import { instance } from "../../../apis/instance";
 import { customErrToast, customSucToast } from "../../../toasts/customToast";
+import { Storage } from "../../../storage/token";
 
 interface ChildProps {
   setState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -53,12 +54,13 @@ const LoginModalPage: React.FC<ChildProps> = ({
         id: value.id,
         pwd: value.pw,
       });
-      localStorage.setItem("refresh-token", response.data.token);
+      Storage.setItem("refresh-token", response.data.token); // 임시 토큰
+      Storage.setItem("access-token", response.data.token);
       customSucToast("로그인되었습니다.");
       closeModal();
     } catch (error) {
       customErrToast("일치하는 정보가 없습니다.");
-      inputState({...value, pw: ''});
+      inputState({ ...value, pw: "" });
       setInputType("id");
       console.error(error);
     }
@@ -82,7 +84,7 @@ const LoginModalPage: React.FC<ChildProps> = ({
               inputState({ ...value, id: e.target.value });
             }}
             onKeyDown={(e: any) => {
-              if(e.key === 'Enter') NextButtonClickHandler();
+              if (e.key === "Enter") NextButtonClickHandler();
             }}
             ref={focusRef}
           />
@@ -95,7 +97,7 @@ const LoginModalPage: React.FC<ChildProps> = ({
               inputState({ ...value, pw: e.target.value });
             }}
             onKeyDown={(e: any) => {
-              if(e.key === 'Enter') NextButtonClickHandler();
+              if (e.key === "Enter") NextButtonClickHandler();
             }}
           />
         )}
