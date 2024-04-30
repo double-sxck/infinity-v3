@@ -105,8 +105,17 @@ const ViewPage = () => {
         setFlag(() => false);
         setUserPrompt("");
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      if (error.response && error.response.status === 500) {
+        // 서버에서 500 에러 응답을 받았을 때 처리할 내용을 여기에 추가합니다.
+        console.error("서버에서 500 에러를 받았습니다:", error);
+        customErrToast(
+          "서버에서 오류가 발생했습니다. 부적절한 단어가 있는지 확인해주세요."
+        );
+      } else {
+        // 다른 종류의 에러가 발생했을 때 처리할 내용을 여기에 추가합니다.
+        console.error("에러가 발생했습니다:", error);
+      }
     }
   };
 
