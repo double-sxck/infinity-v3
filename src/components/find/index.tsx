@@ -28,22 +28,16 @@ const FindPage = () => {
 
   const getType = async () => {
     try {
-      // console.log(type);
       const response: NovelResponse = await instance.get<{ data: Novel[] }>( // 응답 형식 수정
         "/novel/category",
         {
           params: {
-            size: 10,
+            size: 30,
             index: 1,
             category: type,
           },
         }
       );
-
-      // API 응답 데이터 확인
-      // console.log("API Response:", response.data);
-
-      // API 응답으로 받은 소설 데이터를 상태에 저장합니다.
       setNovels(response.data.data); // 소설 데이터 설정
     } catch (error) {
       console.log(error);

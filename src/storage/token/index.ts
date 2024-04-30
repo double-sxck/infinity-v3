@@ -14,8 +14,7 @@ export class Storage {
   }
 
   static delItem(key: LocalStorageKey) {
-    if (this.isWindowAvailable()) return;
-    localStorage.removeItem(key);
+    if (this.isWindowAvailable()) return localStorage.removeItem(key);
   }
 
   static clear() {

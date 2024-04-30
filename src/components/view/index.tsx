@@ -22,6 +22,7 @@ import {
   customWaitToast,
 } from "../../toasts/customToast";
 import Modal from "./modal";
+import { Authorization } from "../../apis/authorization";
 
 const ViewPage = () => {
   interface Keywords {
@@ -88,18 +89,13 @@ const ViewPage = () => {
     try {
       setFlag(() => true);
       setThumbnail(() => "");
-      const token = localStorage.getItem("refresh-token");
       if (prompt) {
         const response = await instance.post(
           "/image",
           {
             prompt: prompt,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          Authorization()
         );
         setThumbnail(response.data);
         setFlag(() => false);
@@ -149,7 +145,6 @@ const ViewPage = () => {
     content: string;
   }) => {
     try {
-      const token = localStorage.getItem("refresh-token");
       await instance.post(
         "/novel",
         {
@@ -158,11 +153,7 @@ const ViewPage = () => {
           category: dto.category,
           content: dto.content,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        Authorization()
       );
       customSucToast("소설이 게시되었습니다.");
       localStorage.removeItem("keywords");
