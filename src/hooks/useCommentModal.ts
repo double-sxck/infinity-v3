@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { CommentModalStateAtom } from "../store/modal/CommentModalState";
+import { CommentModalStateAtom } from "../storage/modal/CommentModalState";
 
 export const useCommentModal = (id: number) => {
   const [modalCState, setModalState] = useRecoilState(CommentModalStateAtom);

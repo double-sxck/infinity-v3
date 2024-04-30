@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { loginModalStateAtom } from "../store/modal/loginModalState";
+import { loginModalStateAtom } from "../storage/modal/loginModalState";
 
 export const useLoginModal = () => {
   const [modalState, setModalState] = useRecoilState(loginModalStateAtom);
