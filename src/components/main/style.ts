@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 interface ListBoxProps {
   $selected: boolean;
@@ -50,4 +50,34 @@ export const SearchContentsArea = styled.div`
 
 export const NoResult = styled.div`
   font-size: 3rem;
-`
+`;
+
+export const LoadingNovel = styled.div``;
+
+const moveGradient = keyframes`
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+`;
+
+export const LoadingImage = styled.div`
+  width: 30rem;
+  height: 30rem;
+  background: linear-gradient(to right, #f0f0f0, #ddd, #f0f0f0);
+  background-size: 200% 100%;
+  animation: ${moveGradient} 1.5s infinite linear;
+  border-radius: 2.4rem;
+  margin-bottom: 1.2rem;
+`;
+
+export const LoadingTitle = styled(LoadingImage)`
+  height: 3rem;
+  margin-bottom: 0.4rem;
+`;
+
+export const LoadingViews = styled(LoadingImage)`
+  height: 2.2rem;
+`;

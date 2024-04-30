@@ -3,6 +3,7 @@ import { NovelBox, Row } from "../../styles/ui";
 import { useState } from "react";
 import { useEffect } from "react";
 import { instance } from "../../apis/instance";
+import Loading from "./loding";
 
 interface Novel {
   uid: number;
@@ -55,8 +56,8 @@ const MainPage = () => {
   }, [getPage]);
 
   useEffect(() => {
-    setNovels(() => ({data: [], meta: {}}));
-    if(getPage === 1 && novels.data.length !== 0) getNovels();
+    setNovels(() => ({ data: [], meta: {} }));
+    if (getPage === 1 && novels.data.length !== 0) getNovels();
     else setGetPage(() => 1);
   }, [sort]);
 
@@ -113,8 +114,12 @@ const MainPage = () => {
             views={novel.views}
           />
         ))}
-        <div id="observer" style={{ height: "10px" }}></div>
+        {
+          isLoading &&
+          <Loading />
+        }
       </S.ContentsArea>
+      <div id="observer" style={{ height: "10px" }}></div>
     </div>
   );
 };
