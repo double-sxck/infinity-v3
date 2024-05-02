@@ -1,6 +1,9 @@
 import React from "react";
 import * as S from "./style";
 import { Column } from "../../../styles/ui";
+import TOKEN from "../../../constants/token.constants";
+import { Storage } from "../../../storage/token";
+import { customWaitToast } from "../../../toasts/customToast";
 
 interface UserContentsProps {
   userid: string;
@@ -25,14 +28,28 @@ const UserContents: React.FC<UserContentsProps> = ({ userid, nickname }) => {
         <S.MainText>계정 관리</S.MainText>
         <div className="pl-8 mt-16">
           <Column gap={2.5}>
-            <S.MainContent2>내 소설 모두 삭제</S.MainContent2>
             <S.MainContent2
               onClick={() => {
-                localStorage.removeItem("refresh-token");
-                window.location.href="/";
+                customWaitToast("기능 구현중");
               }}
-            >로그아웃</S.MainContent2>
-            <S.DeleteButton>회원 탈퇴</S.DeleteButton>
+            >
+              내 소설 모두 삭제
+            </S.MainContent2>
+            <S.MainContent2
+              onClick={() => {
+                Storage.delItem(TOKEN.ACCESS);
+                window.location.href = "/";
+              }}
+            >
+              로그아웃
+            </S.MainContent2>
+            <S.DeleteButton
+              onClick={() => {
+                customWaitToast("기능 구현중");
+              }}
+            >
+              회원 탈퇴
+            </S.DeleteButton>
           </Column>
         </div>
       </div>
