@@ -65,14 +65,15 @@ const MainPage = () => {
   const getNovels = async () => {
     setIsLoading(true);
     try {
+      console.log(getPage)
       const response = await instance.get("/novel", {
         params: {
-          size: 30,
+          size: 300,
           index: getPage,
           viewType: sort,
         },
       });
-      if(response.data.data.length === 0){
+      if (response.data.data.length === 0) {
         setScroll(false);
       }
       setNovels((prevData: { data: Novel[]; meta: any }) => ({
